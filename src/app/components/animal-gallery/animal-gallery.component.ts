@@ -9,11 +9,12 @@ import { FormsModule } from '@angular/forms';
 import { AnimalsService } from '../../services/animals.service';
 import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-animal-gallery',
   standalone: true,
-  imports: [AnimalCardComponent, FormsModule, HttpClientModule],
+  imports: [AnimalCardComponent, FormsModule, HttpClientModule, RouterModule],
   providers: [AnimalsService],
   templateUrl: './animal-gallery.component.html',
   styleUrl: './animal-gallery.component.scss',
@@ -30,7 +31,7 @@ export class AnimalGalleryComponent implements OnInit {
   public selectedSex: string = '0';
   public selectedColor: string = '0';
 
-  constructor(private animalsService: AnimalsService) {
+  constructor(private animalsService: AnimalsService, private router: Router) {
     //
   }
 
@@ -85,5 +86,9 @@ export class AnimalGalleryComponent implements OnInit {
     this.selectedSex = '0';
     this.selectedColor = '0';
     this.animals = this.initialAnimals;
+  }
+
+  public navigateToAnimal(id: string) {
+    this.router.navigate(['/animais', id]);
   }
 }

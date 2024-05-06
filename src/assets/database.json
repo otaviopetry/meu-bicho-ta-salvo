@@ -4,9 +4,9 @@
     "species": "Cachorro",
     "sex": "macho",
     "imageURLs": [
-      "https://example.com/animal1.jpg"
+      "https://via.placeholder.com/300x200"
     ],
-    "characteristics": "Cão dócil e amigável",
+    "characteristics": "Amigável e brincalhão",
     "size": "médio",
     "color": "Marrom",
     "hair": "Curto",
@@ -21,9 +21,9 @@
     "species": "Gato",
     "sex": "fêmea",
     "imageURLs": [
-      "https://example.com/animal2.jpg"
+      "https://via.placeholder.com/300x200"
     ],
-    "characteristics": "Gato carinhoso e brincalhão",
+    "characteristics": "Carinhoso e independente",
     "size": "pequeno",
     "color": "Branco e preto",
     "hair": "Curto",
@@ -38,9 +38,9 @@
     "species": "Cachorro",
     "sex": "não se sabe",
     "imageURLs": [
-      "https://example.com/animal3.jpg"
+      "https://via.placeholder.com/300x200"
     ],
-    "characteristics": "Cão leal e protetor",
+    "characteristics": "Protetor e leal",
     "size": "grande",
     "color": "Preto",
     "hair": "Médio",
@@ -55,9 +55,9 @@
     "species": "Gato",
     "sex": "macho",
     "imageURLs": [
-      "https://example.com/animal4.jpg"
+      "https://via.placeholder.com/300x200"
     ],
-    "characteristics": "Gato tranquilo e observador",
+    "characteristics": "Observador e tranquilo",
     "size": "pequeno",
     "color": "Cinza",
     "hair": "Longo",
@@ -72,9 +72,9 @@
     "species": "Cachorro",
     "sex": "fêmea",
     "imageURLs": [
-      "https://example.com/animal5.jpg"
+      "https://via.placeholder.com/300x200"
     ],
-    "characteristics": "Cão energético e brincalhão",
+    "characteristics": "Energético e brincalhão",
     "size": "médio",
     "color": "Branco e marrom",
     "hair": "Curto",
@@ -83,5 +83,175 @@
     "contactInformation": "Contato: (444) 444-4444",
     "whereWasFound": "Rua Alagada",
     "breed": "Golden Retriever"
+  },
+  {
+    "id": "6",
+    "species": "Gato",
+    "sex": "macho",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Curioso e carinhoso",
+    "size": "pequeno",
+    "color": "Laranja",
+    "hair": "Curto",
+    "whereItIs": "Casa de família",
+    "foundOwner": false,
+    "contactInformation": "Contato: (333) 333-3333",
+    "whereWasFound": "Parque da cidade",
+    "breed": "Siamês"
+  },
+  {
+    "id": "7",
+    "species": "Cachorro",
+    "sex": "fêmea",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Dócil e companheira",
+    "size": "pequeno",
+    "color": "Caramelo",
+    "hair": "Curto",
+    "whereItIs": "Casa com jardim",
+    "foundOwner": false,
+    "contactInformation": "Contato: (222) 222-2222",
+    "whereWasFound": "Praia",
+    "breed": "Shih Tzu"
+  },
+  {
+    "id": "8",
+    "species": "Gato",
+    "sex": "fêmea",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Brincalhona e sociável",
+    "size": "pequeno",
+    "color": "Branco",
+    "hair": "Curto",
+    "whereItIs": "Casa de campo",
+    "foundOwner": false,
+    "contactInformation": "Contato: (666) 666-6666",
+    "whereWasFound": "Rua movimentada",
+    "breed": "Persa"
+  },
+  {
+    "id": "9",
+    "species": "Cachorro",
+    "sex": "macho",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Alegre e obediente",
+    "size": "médio",
+    "color": "Preto e branco",
+    "hair": "Curto",
+    "whereItIs": "Condomínio fechado",
+    "foundOwner": false,
+    "contactInformation": "Contato: (777) 777-7777",
+    "whereWasFound": "Parque da cidade",
+    "breed": "Border Collie"
+  },
+  {
+    "id": "10",
+    "species": "Gato",
+    "sex": "fêmea",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Dorminhoca e tranquila",
+    "size": "pequeno",
+    "color": "Cinza e branco",
+    "hair": "Curto",
+    "whereItIs": "Apartamento",
+    "foundOwner": false,
+    "contactInformation": "Contato: (999) 999-9999",
+    "whereWasFound": "Rua residencial",
+    "breed": "Angorá"
+  },
+  {
+    "id": "11",
+    "species": "Cachorro",
+    "sex": "fêmea",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Brincalhona e carinhosa",
+    "size": "pequeno",
+    "color": "Branco e marrom",
+    "hair": "Curto",
+    "whereItIs": "Casa com quintal",
+    "foundOwner": false,
+    "contactInformation": "Contato: (888) 888-8888",
+    "whereWasFound": "Rua tranquila",
+    "breed": "Dachshund"
+  },
+  {
+    "id": "12",
+    "species": "Gato",
+    "sex": "macho",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Independente e observador",
+    "size": "pequeno",
+    "color": "Preto",
+    "hair": "Curto",
+    "whereItIs": "Casa de apartamento",
+    "foundOwner": false,
+    "contactInformation": "Contato: (777) 777-7777",
+    "whereWasFound": "Jardim público",
+    "breed": "Bombay"
+  },
+  {
+    "id": "13",
+    "species": "Cachorro",
+    "sex": "macho",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Leal e protetor",
+    "size": "grande",
+    "color": "Preto e marrom",
+    "hair": "Curto",
+    "whereItIs": "Casa de campo",
+    "foundOwner": false,
+    "contactInformation": "Contato: (666) 666-6666",
+    "whereWasFound": "Floresta",
+    "breed": "Rottweiler"
+  },
+  {
+    "id": "14",
+    "species": "Gato",
+    "sex": "fêmea",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Calma e afetuosa",
+    "size": "pequeno",
+    "color": "Cinza",
+    "hair": "Curto",
+    "whereItIs": "Casa com jardim",
+    "foundOwner": false,
+    "contactInformation": "Contato: (555) 555-5555",
+    "whereWasFound": "Rua arborizada",
+    "breed": "Russian Blue"
+  },
+  {
+    "id": "15",
+    "species": "Cachorro",
+    "sex": "macho",
+    "imageURLs": [
+      "https://via.placeholder.com/300x200"
+    ],
+    "characteristics": "Energético e brincalhão",
+    "size": "médio",
+    "color": "Branco e preto",
+    "hair": "Curto",
+    "whereItIs": "Casa com crianças",
+    "foundOwner": false,
+    "contactInformation": "Contato: (444) 444-4444",
+    "whereWasFound": "Parque infantil",
+    "breed": "Dálmata"
   }
 ]
