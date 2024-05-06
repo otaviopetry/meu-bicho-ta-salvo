@@ -6,93 +6,19 @@ import {
 } from '../../interfaces/animal.interface';
 import { AnimalCardComponent } from '../animal-card/animal-card.component';
 import { FormsModule } from '@angular/forms';
+import { AnimalsService } from '../../services/animals.service';
+import { take } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-animal-gallery',
   standalone: true,
-  imports: [AnimalCardComponent, FormsModule],
+  imports: [AnimalCardComponent, FormsModule, HttpClientModule],
+  providers: [AnimalsService],
   templateUrl: './animal-gallery.component.html',
   styleUrl: './animal-gallery.component.scss',
 })
 export class AnimalGalleryComponent implements OnInit {
-  private readonly animalsDatabase: IAnimal[] = [
-    {
-      id: '1',
-      species: 'Cachorro',
-      sex: 'macho',
-      imageURLs: ['https://example.com/animal1.jpg'],
-      characteristics: 'Cão dócil e amigável',
-      size: 'médio',
-      color: 'Marrom',
-      hair: 'Curto',
-      whereItIs: 'Abrigo de animais',
-      foundOwner: false,
-      contactInformation: 'Contato: (123) 456-7890',
-      whereWasFound: 'Rua Principal',
-      breed: 'Vira-lata',
-    },
-    {
-      id: '2',
-      species: 'Gato',
-      sex: 'fêmea',
-      imageURLs: ['https://example.com/animal2.jpg'],
-      characteristics: 'Gato carinhoso e brincalhão',
-      size: 'pequeno',
-      color: 'Branco e preto',
-      hair: 'Curto',
-      whereItIs: 'Casa temporária',
-      foundOwner: false,
-      contactInformation: 'Contato: (987) 654-3210',
-      whereWasFound: 'Praça Central',
-      breed: 'Sem raça definida',
-    },
-    {
-      id: '3',
-      species: 'Cachorro',
-      sex: 'não se sabe',
-      imageURLs: ['https://example.com/animal3.jpg'],
-      characteristics: 'Cão leal e protetor',
-      size: 'grande',
-      color: 'Preto',
-      hair: 'Médio',
-      whereItIs: 'Residência temporária',
-      foundOwner: false,
-      contactInformation: 'Contato: (555) 555-5555',
-      whereWasFound: 'Margem do Rio',
-      breed: 'Pastor Alemão',
-    },
-    {
-      id: '4',
-      species: 'Gato',
-      sex: 'macho',
-      imageURLs: ['https://example.com/animal4.jpg'],
-      characteristics: 'Gato tranquilo e observador',
-      size: 'pequeno',
-      color: 'Cinza',
-      hair: 'Longo',
-      whereItIs: 'Casa de passagem',
-      foundOwner: false,
-      contactInformation: 'Contato: (111) 222-3333',
-      whereWasFound: 'Área de Comércio',
-      breed: 'Maine Coon',
-    },
-    {
-      id: '5',
-      species: 'Cachorro',
-      sex: 'fêmea',
-      imageURLs: ['https://example.com/animal5.jpg'],
-      characteristics: 'Cão energético e brincalhão',
-      size: 'médio',
-      color: 'Branco e marrom',
-      hair: 'Curto',
-      whereItIs: 'Centro de adoção',
-      foundOwner: false,
-      contactInformation: 'Contato: (444) 444-4444',
-      whereWasFound: 'Rua Alagada',
-      breed: 'Golden Retriever',
-    },
-  ];
-
   public animals: IAnimal[] = [];
 
   public sizeOptions: AnimalSize[] = ['pequeno', 'médio', 'grande'];
@@ -103,10 +29,20 @@ export class AnimalGalleryComponent implements OnInit {
   public selectedSex: string = '0';
   public selectedColor: string = '0';
 
+  constructor(private animalsService: AnimalsService) {
+    //
+  }
+
   ngOnInit() {
-    this.animals = this.animalsDatabase;
-    this.colorOptions = this.getColorOptions();
-    console.log('===> colorOptions', this.colorOptions);
+    this.animalsService
+      .getAnimals()
+      .pipe(take(1))
+      .subscribe({
+        next: (animals) => {
+          this.animals = animals;
+          this.colorOptions = this.getColorOptions();
+        },
+      });
   }
 
   private getColorOptions() {
@@ -124,17 +60,11 @@ export class AnimalGalleryComponent implements OnInit {
   }
 
   public filterAnimals() {
-    console.log(
-      '===> filters',
-      this.selectedSize,
-      this.selectedSex,
-      this.selectedColor
-    );
     const shouldFilterSize = this.selectedSize !== '0';
     const shouldFilterSex = this.selectedSex !== '0';
     const shouldFilterColor = this.selectedColor !== '0';
 
-    this.animals = this.animalsDatabase.filter((animal) => {
+    this.animals = this.animals.filter((animal) => {
       if (shouldFilterSize && animal.size !== this.selectedSize) {
         return false;
       }
