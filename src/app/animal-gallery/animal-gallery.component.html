@@ -1,24 +1,71 @@
-<div class="masonry-grid md:columns-2 lg:columns-3 w-full">
-  <div
-    class="initiative-card max-w-sm rounded overflow-hidden shadow-lg mx-auto"
-  >
-    <img
-      class="w-full"
-      src="https://via.placeholder.com/400"
-      alt="Nature"
-      style="height: 200px; object-fit: cover"
-    />
-
-    <div class="p-4">
-      <h2 class="text-lg font-bold mb-2">Animal 1</h2>
-      <p class="text-gray-700">Descrição do Animal 1.</p>
-    </div>
-    <div class="px-6 pt-4 pb-2">
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-      >
-        Tag 1
-      </span>
-    </div>
+<div class="flex flex-wrap items-center justify-center space-x-4 mb-8">
+  <!-- Color Filter -->
+  <div class="mb-4">
+    <label for="color" class="block text-sm font-medium text-gray-700"
+      >Cor:</label
+    >
+    <select
+      id="color"
+      name="color"
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      [(ngModel)]="selectedColor"
+    >
+      <option value="0">Qualquer cor</option>
+      @for (colorOption of colorOptions; track $index) {
+      <option value="{{ colorOption }}">
+        {{ capitalizeFirstWord(colorOption) }}
+      </option>
+      }
+    </select>
   </div>
+  <div class="mb-4">
+    <label for="size" class="block text-sm font-medium text-gray-700"
+      >Tamanho:</label
+    >
+    <select
+      id="size"
+      name="size"
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      [(ngModel)]="selectedSize"
+    >
+      <option value="0">Qualquer tamanho</option>
+      @for (sizeOption of sizeOptions; track $index) {
+      <option value="{{ sizeOption }}">
+        {{ capitalizeFirstWord(sizeOption) }}
+      </option>
+      }
+    </select>
+  </div>
+  <div class="mb-4">
+    <label for="sex" class="block text-sm font-medium text-gray-700"
+      >Sexo:</label
+    >
+    <select
+      id="sex"
+      name="sex"
+      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      [(ngModel)]="selectedSex"
+    >
+      <option value="0">Qualquer sexo</option>
+      @for (sexOption of sexOptions; track $index) {
+      <option value="{{ sexOption }}">
+        {{ capitalizeFirstWord(sexOption) }}
+      </option>
+      }
+    </select>
+  </div>
+  <div class="mb-4">
+    <button
+      class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600"
+      (click)="filterAnimals()"
+    >
+      Filtrar
+    </button>
+  </div>
+</div>
+
+<div class="masonry-grid md:columns-2 lg:columns-3 w-full">
+  @for (animal of animals; track animal.id) {
+  <app-animal-card [animal]="animal"></app-animal-card>
+  }
 </div>
