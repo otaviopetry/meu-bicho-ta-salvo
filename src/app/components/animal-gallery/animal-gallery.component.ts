@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './animal-gallery.component.scss',
 })
 export class AnimalGalleryComponent implements OnInit {
+  public initialAnimals: IAnimal[] = [];
   public animals: IAnimal[] = [];
 
   public sizeOptions: AnimalSize[] = ['pequeno', 'médio', 'grande'];
@@ -34,11 +35,16 @@ export class AnimalGalleryComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getAnimals();
+  }
+
+  private getAnimals() {
     this.animalsService
       .getAnimals()
       .pipe(take(1))
       .subscribe({
         next: (animals) => {
+          this.initialAnimals = animals;
           this.animals = animals;
           this.colorOptions = this.getColorOptions();
         },
@@ -64,20 +70,13 @@ export class AnimalGalleryComponent implements OnInit {
     const shouldFilterSex = this.selectedSex !== '0';
     const shouldFilterColor = this.selectedColor !== '0';
 
-    this.animals = this.animals.filter((animal) => {
-      if (shouldFilterSize && animal.size !== this.selectedSize) {
-        return false;
-      }
+    this.animals = this.initialAnimals.filter((animal) => {
+      const sizeMatch = !shouldFilterSize || animal.size === this.selectedSize;
+      const colorMatch =
+        !shouldFilterColor || animal.color === this.selectedColor;
+      const sexMatch = !shouldFilterSex || animal.sex === this.selectedSex;
 
-      if (shouldFilterColor && animal.color !== this.selectedColor) {
-        return false;
-      }
-
-      if (shouldFilterSex && animal.sex !== this.selectedSex) {
-        return false;
-      }
-
-      return true;
+      return sizeMatch && colorMatch && sexMatch;
     });
   }
 }
