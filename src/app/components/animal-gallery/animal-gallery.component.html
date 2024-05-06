@@ -1,5 +1,4 @@
 <div class="flex flex-wrap items-center justify-center space-x-4 mb-8">
-  <!-- Color Filter -->
   <div class="mb-4">
     <label for="color" class="block text-sm font-medium text-gray-700"
       >Cor:</label
@@ -60,6 +59,12 @@
       (click)="filterAnimals()"
     >
       Filtrar
+    </button>
+    <button
+      class="bg-gray-500 text-white ml-2 px-4 py-2 rounded-md hover:bg-gray-600"
+      (click)="resetFilter()"
+    >
+      Limpar filtros
     </button>
   </div>
 </div>

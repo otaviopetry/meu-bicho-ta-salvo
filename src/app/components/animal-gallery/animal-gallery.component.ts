@@ -79,4 +79,11 @@ export class AnimalGalleryComponent implements OnInit {
       return sizeMatch && colorMatch && sexMatch;
     });
   }
+
+  public resetFilter() {
+    this.selectedSize = '0';
+    this.selectedSex = '0';
+    this.selectedColor = '0';
+    this.animals = this.initialAnimals;
+  }
 }
