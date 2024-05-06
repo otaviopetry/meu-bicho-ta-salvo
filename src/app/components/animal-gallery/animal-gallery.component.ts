@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AnimalSex, AnimalSize, IAnimal } from '../interfaces/animal.interface';
+import {
+  AnimalSex,
+  AnimalSize,
+  IAnimal,
+} from '../../interfaces/animal.interface';
 import { AnimalCardComponent } from '../animal-card/animal-card.component';
 import { FormsModule } from '@angular/forms';
 

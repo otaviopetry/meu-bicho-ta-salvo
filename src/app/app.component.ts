@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AnimalGalleryComponent } from './animal-gallery/animal-gallery.component';
+import { AnimalGalleryComponent } from './components/animal-gallery/animal-gallery.component';
 
 @Component({
   selector: 'app-root',

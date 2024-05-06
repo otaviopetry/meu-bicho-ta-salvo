@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IAnimal } from '../interfaces/animal.interface';
+import { IAnimal } from '../../interfaces/animal.interface';
 
 @Component({
   selector: 'app-animal-card',
