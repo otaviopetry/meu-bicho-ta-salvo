@@ -7,7 +7,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Amigável e brincalhão",
-    "size": "médio",
+    "size": "m",
     "color": "Marrom",
     "hair": "Curto",
     "whereItIs": "Abrigo de animais",
@@ -24,7 +24,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Carinhoso e independente",
-    "size": "pequeno",
+    "size": "p",
     "color": "Branco e preto",
     "hair": "Curto",
     "whereItIs": "Casa temporária",
@@ -41,7 +41,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Protetor e leal",
-    "size": "grande",
+    "size": "gg",
     "color": "Preto",
     "hair": "Médio",
     "whereItIs": "Residência temporária",
@@ -58,7 +58,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Observador e tranquilo",
-    "size": "pequeno",
+    "size": "p",
     "color": "Cinza",
     "hair": "Longo",
     "whereItIs": "Casa de passagem",
@@ -75,7 +75,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Energético e brincalhão",
-    "size": "médio",
+    "size": "m",
     "color": "Branco e marrom",
     "hair": "Curto",
     "whereItIs": "Centro de adoção",
@@ -92,7 +92,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Curioso e carinhoso",
-    "size": "pequeno",
+    "size": "p",
     "color": "Laranja",
     "hair": "Curto",
     "whereItIs": "Casa de família",
@@ -109,7 +109,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Dócil e companheira",
-    "size": "pequeno",
+    "size": "p",
     "color": "Caramelo",
     "hair": "Curto",
     "whereItIs": "Casa com jardim",
@@ -126,7 +126,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Brincalhona e sociável",
-    "size": "pequeno",
+    "size": "p",
     "color": "Branco",
     "hair": "Curto",
     "whereItIs": "Casa de campo",
@@ -143,7 +143,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Alegre e obediente",
-    "size": "médio",
+    "size": "m",
     "color": "Preto e branco",
     "hair": "Curto",
     "whereItIs": "Condomínio fechado",
@@ -160,7 +160,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Dorminhoca e tranquila",
-    "size": "pequeno",
+    "size": "p",
     "color": "Cinza e branco",
     "hair": "Curto",
     "whereItIs": "Apartamento",
@@ -177,7 +177,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Brincalhona e carinhosa",
-    "size": "pequeno",
+    "size": "p",
     "color": "Branco e marrom",
     "hair": "Curto",
     "whereItIs": "Casa com quintal",
@@ -194,7 +194,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Independente e observador",
-    "size": "pequeno",
+    "size": "p",
     "color": "Preto",
     "hair": "Curto",
     "whereItIs": "Casa de apartamento",
@@ -211,7 +211,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Leal e protetor",
-    "size": "grande",
+    "size": "gg",
     "color": "Preto e marrom",
     "hair": "Curto",
     "whereItIs": "Casa de campo",
@@ -228,7 +228,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Calma e afetuosa",
-    "size": "pequeno",
+    "size": "p",
     "color": "Cinza",
     "hair": "Curto",
     "whereItIs": "Casa com jardim",
@@ -245,7 +245,7 @@
       "https://via.placeholder.com/300x200"
     ],
     "characteristics": "Energético e brincalhão",
-    "size": "médio",
+    "size": "m",
     "color": "Branco e preto",
     "hair": "Curto",
     "whereItIs": "Casa com crianças",

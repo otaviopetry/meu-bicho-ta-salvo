@@ -23,7 +23,7 @@ export class AnimalGalleryComponent implements OnInit {
   public initialAnimals: IAnimal[] = [];
   public animals: IAnimal[] = [];
 
-  public sizeOptions: AnimalSize[] = ['pequeno', 'médio', 'grande'];
+  public sizeOptions: AnimalSize[] = ['pp', 'p', 'm', 'g', 'gg'];
   public sexOptions: AnimalSex[] = ['fêmea', 'macho', 'não se sabe'];
   public colorOptions: string[] = [];
 
