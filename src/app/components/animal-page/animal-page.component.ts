@@ -6,12 +6,13 @@ import { Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-animal-page',
   standalone: true,
-  imports: [AsyncPipe, RouterModule],
-  providers: [AnimalsService],
+  imports: [AsyncPipe, RouterModule, HttpClientModule],
+  providers: [AnimalsService, FirebaseService],
   templateUrl: './animal-page.component.html',
   styleUrl: './animal-page.component.scss',
 })

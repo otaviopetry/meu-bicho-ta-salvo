@@ -1,28 +1,20 @@
-import { initializeApp } from 'firebase/app';
-import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
 import { IAnimal } from '../interfaces/animal.interface';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseService {
-  private app = initializeApp(environment.firebase);
-  private db = getFirestore(this.app);
+  private apiEndpoint =
+    'https://bicho-salvo-api-production.up.railway.app/animals';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  async getAnimals() {
+  async getAnimals(): Promise<IAnimal[] | undefined> {
     try {
-      const animalCol = collection(this.db, 'animals');
-      const animalSnapshot = await getDocs(animalCol);
-      const animalList = animalSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      return animalList;
+      return this.http.get<IAnimal[]>(`${this.apiEndpoint}`).toPromise();
     } catch (error) {
       console.error('Error fetching animals:', error);
       throw new Error('Failed to fetch animals');

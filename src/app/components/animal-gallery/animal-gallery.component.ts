@@ -11,12 +11,13 @@ import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-animal-gallery',
   standalone: true,
   imports: [AnimalCardComponent, FormsModule, HttpClientModule, RouterModule],
-  providers: [AnimalsService],
+  providers: [AnimalsService, FirebaseService],
   templateUrl: './animal-gallery.component.html',
   styleUrl: './animal-gallery.component.scss',
 })
