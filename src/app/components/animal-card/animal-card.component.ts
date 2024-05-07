@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { IAnimal } from '../../interfaces/animal.interface';
+import { AnimalSize, IAnimal } from '../../interfaces/animal.interface';
+import { getSizeWord } from '../../utils/label-functions';
 
 @Component({
   selector: 'app-animal-card',
@@ -10,4 +11,8 @@ import { IAnimal } from '../../interfaces/animal.interface';
 })
 export class AnimalCardComponent {
   @Input() animal!: IAnimal;
+
+  public getSizeWord(sizeOption: AnimalSize) {
+    return getSizeWord(sizeOption);
+  }
 }

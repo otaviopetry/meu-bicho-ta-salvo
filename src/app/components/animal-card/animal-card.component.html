@@ -3,7 +3,7 @@
 >
   <img
     class="w-full"
-    src="https://via.placeholder.com/400"
+    [src]="animal.imageURLs[0]"
     alt="Animal resgatado"
     style="height: 200px; object-fit: cover"
   />
@@ -11,7 +11,7 @@
   <div class="p-4">
     <p>
       <span class="font-bold">Porte:</span>
-      {{ animal.size }}
+      {{ getSizeWord(animal.size) }}
     </p>
     <p>
       <span class="font-bold">Pelagem:</span>

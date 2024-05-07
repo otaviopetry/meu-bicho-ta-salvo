@@ -3,27 +3,13 @@
   <div class="mb-8">
     <!-- Photo Stripe -->
     <div class="flex space-x-4 overflow-x-auto">
-      <!-- Placeholder Photos -->
+      @for (imageURL of animal.imageURLs; track imageURL) {
       <img
-        src="https://via.placeholder.com/300x200"
+        [src]="imageURL"
         alt="Placeholder Image"
         class="w-64 h-48 object-cover rounded-lg shadow-lg"
       />
-      <img
-        src="https://via.placeholder.com/300x200"
-        alt="Placeholder Image"
-        class="w-64 h-48 object-cover rounded-lg shadow-lg"
-      />
-      <img
-        src="https://via.placeholder.com/300x200"
-        alt="Placeholder Image"
-        class="w-64 h-48 object-cover rounded-lg shadow-lg"
-      />
-      <img
-        src="https://via.placeholder.com/300x200"
-        alt="Placeholder Image"
-        class="w-64 h-48 object-cover rounded-lg shadow-lg"
-      />
+      }
     </div>
   </div>
 
@@ -35,11 +21,11 @@
     <div class="grid grid-cols-2 gap-4">
       <div>
         <p class="font-bold">Espécie:</p>
-        <p>{{ animal.species }}</p>
+        <p>{{ capitalizeFirstWord(animal.species) }}</p>
       </div>
       <div>
         <p class="font-bold">Tamanho:</p>
-        <p>{{ animal.size }}</p>
+        <p>{{ getSizeWord(animal.size) }}</p>
       </div>
       <!-- Add more details here -->
     </div>
@@ -47,19 +33,20 @@
     <!-- Contact Information -->
     <div class="mt-4">
       <h3 class="text-lg font-bold mb-2">Informações de Contato</h3>
-      <p>{{ animal.contactInformation }}</p>
+      <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
     </div>
 
     <!-- Other Details -->
     <div class="mt-4">
       <h3 class="text-lg font-bold mb-2">Outros Detalhes</h3>
-      <p>{{ animal.characteristics }}</p>
+      <p>{{ capitalizeFirstWord(animal.characteristics) }}</p>
     </div>
 
     <!-- Button to Go Back -->
     <div class="mt-6">
       <button
         class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+        (click)="navigateToHome()"
       >
         Voltar
       </button>

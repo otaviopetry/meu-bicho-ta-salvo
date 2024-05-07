@@ -10,7 +10,7 @@ import { AnimalsService } from '../../services/animals.service';
 import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
-import { getSizeWord } from '../../utils/label-functions';
+import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 
 @Component({
   selector: 'app-animal-gallery',
@@ -67,7 +67,7 @@ export class AnimalGalleryComponent implements OnInit {
   }
 
   public capitalizeFirstWord(phrase: string) {
-    return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+    return capitalizeFirstWord(phrase);
   }
 
   public filterAnimals() {
