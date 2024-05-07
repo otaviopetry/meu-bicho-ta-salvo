@@ -10,6 +10,7 @@ import { AnimalsService } from '../../services/animals.service';
 import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { getSizeWord } from '../../utils/label-functions';
 
 @Component({
   selector: 'app-animal-gallery',
@@ -31,8 +32,10 @@ export class AnimalGalleryComponent implements OnInit {
   public selectedSex: string = '0';
   public selectedColor: string = '0';
 
+  public loading = false;
+
   constructor(private animalsService: AnimalsService, private router: Router) {
-    //
+    this.loading = true;
   }
 
   ngOnInit() {
@@ -48,6 +51,7 @@ export class AnimalGalleryComponent implements OnInit {
           this.initialAnimals = animals;
           this.animals = animals;
           this.colorOptions = this.getColorOptions();
+          this.loading = false;
         },
       });
   }
@@ -90,5 +94,9 @@ export class AnimalGalleryComponent implements OnInit {
 
   public navigateToAnimal(id: string) {
     this.router.navigate(['/animais', id]);
+  }
+
+  public getSizeWord(sizeOption: AnimalSize) {
+    return getSizeWord(sizeOption);
   }
 }

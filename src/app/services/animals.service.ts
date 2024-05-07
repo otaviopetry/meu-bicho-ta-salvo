@@ -1,38 +1,39 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, concatMap, of, tap } from 'rxjs';
+import { Observable, ReplaySubject, concatMap, of, switchMap, tap } from 'rxjs';
 import { IAnimal } from '../interfaces/animal.interface';
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnimalsService {
-  private animalsUrl = 'assets/database.json';
-  private animalsCache: Observable<IAnimal[]> = of([]);
+  private animalsCache = new ReplaySubject<IAnimal[]>(1); // Caches the last fetched value
 
-  constructor(private http: HttpClient) {}
-
-  public getAnimals() {
-    return this.animalsCache.pipe(
-      concatMap((animals) => {
-        if (animals.length) {
-          return of(animals);
-        }
-
-        return this.http.get<IAnimal[]>(this.animalsUrl).pipe(
-          tap((animals) => {
-            this.animalsCache = of(animals);
-          })
-        );
-      })
-    );
+  constructor(private firestoreService: FirebaseService) {
+    this.loadInitialData();
   }
 
-  public getAnimalById(id: string) {
-    return this.getAnimals().pipe(
-      concatMap((animals) => {
-        return of(animals.find((animal) => animal.id === id));
+  private loadInitialData() {
+    this.firestoreService
+      .getAnimals()
+      .then((animals) => {
+        this.animalsCache.next(animals as IAnimal[]);
+        console.log('===> animals', animals);
       })
+      .catch((error) => {
+        console.error('Error fetching animals from Firestore:', error);
+        this.animalsCache.next([]);
+      });
+  }
+
+  public getAnimals(): Observable<IAnimal[]> {
+    return this.animalsCache.asObservable();
+  }
+
+  public getAnimalById(id: string): Observable<IAnimal | undefined> {
+    return this.getAnimals().pipe(
+      switchMap((animals) => of(animals.find((animal) => animal.id === id)))
     );
   }
 }

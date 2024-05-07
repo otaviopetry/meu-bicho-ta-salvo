@@ -30,7 +30,7 @@
       <option value="0">Qualquer tamanho</option>
       @for (sizeOption of sizeOptions; track $index) {
       <option value="{{ sizeOption }}">
-        {{ capitalizeFirstWord(sizeOption) }}
+        {{ getSizeWord(sizeOption) }}
       </option>
       }
     </select>
@@ -75,5 +75,16 @@
     [animal]="animal"
     (click)="navigateToAnimal(animal.id)"
   ></app-animal-card>
+  } @empty {
+  <div class="empty-list">
+    <p class="text-gray-500 text-center w-full">
+      Nenhum animal com os critérios selecionados.
+    </p>
+  </div>
   }
 </div>
+@if (loading) {
+<div class="loader-overlay">
+  <div class="loader"></div>
+</div>
+}
