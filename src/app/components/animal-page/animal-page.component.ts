@@ -19,6 +19,10 @@ import { FirebaseService } from '../../services/firebase.service';
 export class AnimalPageComponent {
   public animal$!: Observable<IAnimal | undefined>;
 
+  showModal: boolean = false;
+  currentImageIndex: number = 0;
+  currentImageUrl: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private animalsService: AnimalsService,
@@ -43,5 +47,28 @@ export class AnimalPageComponent {
 
   public navigateToHome() {
     this.router.navigate(['animais']);
+  }
+
+  openModal(index: number, imageURLs: string[]): void {
+    this.currentImageIndex = index;
+    this.currentImageUrl = imageURLs[index];
+    this.showModal = true;
+  }
+
+  changeImage(step: number, imageURLs: string[]): void {
+    this.currentImageIndex += step;
+
+    if (this.currentImageIndex >= imageURLs.length) {
+      this.currentImageIndex = 0; // Loop back to the first image
+    }
+    if (this.currentImageIndex < 0) {
+      this.currentImageIndex = imageURLs.length - 1; // Loop to the last image
+    }
+
+    this.currentImageUrl = imageURLs[this.currentImageIndex];
+  }
+
+  closeModal(): void {
+    this.showModal = false;
   }
 }

@@ -6,7 +6,7 @@
       class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto"
     >
       @for (imageURL of animal.imageURLs; track imageURL) {
-      <div class="max-w-xs">
+      <div class="max-w-xs" (click)="openModal($index, animal.imageURLs)">
         <img
           [src]="imageURL"
           alt="Animal Image"
@@ -17,38 +17,49 @@
     </div>
   </div>
 
-  <!-- Animal Details -->
   <div class="bg-white rounded-lg shadow-lg p-6">
     <h2 class="text-2xl font-bold mb-4">Detalhes do Animal</h2>
 
-    <!-- Animal Information -->
+    <!-- Unified Grid Layout for All Details -->
     <div class="grid grid-cols-2 gap-4">
+      <!-- Size Information -->
       <div>
-        <p class="font-bold">Espécie:</p>
-        <p>{{ capitalizeFirstWord(animal.species) }}</p>
-      </div>
-      <div>
-        <p class="font-bold">Tamanho:</p>
+        <h3 class="font-bold mb-2">Tamanho:</h3>
         <p>{{ getSizeWord(animal.size) }}</p>
       </div>
-      <!-- Add more details here -->
-    </div>
 
-    <!-- Contact Information -->
-    @if (animal.contactInformation.length) {
-    <div class="mt-4">
-      <h3 class="text-lg font-bold mb-2">Informações de Contato</h3>
-      <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
-    </div>
-    }
+      <!-- Sex Information -->
+      <div>
+        <h3 class="font-bold mb-2">Sexo:</h3>
+        <p>{{ capitalizeFirstWord(animal.sex) }}</p>
+      </div>
 
-    <!-- Other Details -->
-    @if (animal.characteristics.length) {
-    <div class="mt-4">
-      <h3 class="text-lg font-bold mb-2">Outros Detalhes</h3>
-      <p>{{ capitalizeFirstWord(animal.characteristics) }}</p>
+      <!-- Contact Information -->
+      @if (animal.contactInformation.length) {
+      <div>
+        <h3 class="font-bold mb-2">Informações de Contato</h3>
+        <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
+      </div>
+      }
+
+      <!-- Other Details -->
+      @if (animal.characteristics.length) {
+      <div>
+        <h3 class="font-bold mb-2">Outros Detalhes</h3>
+        <p>{{ capitalizeFirstWord(animal.characteristics) }}</p>
+      </div>
+      } @if (animal.whereItIs.length > 1) {
+      <div>
+        <h3 class="font-bold mb-2">Onde está abrigado?</h3>
+        <p>{{ capitalizeFirstWord(animal.whereItIs) }}</p>
+      </div>
+      } @if (animal.whereWasFound && animal.whereWasFound.length > 1) {
+      <div>
+        <h3 class="font-bold mb-2">Onde foi encontrado?</h3>
+        <p>{{ capitalizeFirstWord(animal.whereWasFound) }}</p>
+      </div>
+      }
     </div>
-    }
 
     <!-- Button to Go Back -->
     <div class="mt-6">
@@ -62,4 +73,23 @@
   </div>
 </div>
 
-}
+@if (showModal) {
+<div
+  class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+>
+  <div class="bg-white p-4">
+    <img
+      [src]="currentImageUrl"
+      alt="Current Image"
+      class="max-w-full h-auto"
+    />
+    <div class="flex justify-between items-center mt-4">
+      @if (animal.imageURLs.length > 1) {
+      <button (click)="changeImage(-1, animal.imageURLs)">Anterior</button>
+      <button (click)="changeImage(1, animal.imageURLs)">Próxima</button>
+      }
+      <button (click)="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+} }
