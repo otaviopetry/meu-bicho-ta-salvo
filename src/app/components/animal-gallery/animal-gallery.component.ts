@@ -17,7 +17,6 @@ import { FirebaseService } from '../../services/firebase.service';
   selector: 'app-animal-gallery',
   standalone: true,
   imports: [AnimalCardComponent, FormsModule, HttpClientModule, RouterModule],
-  providers: [AnimalsService, FirebaseService],
   templateUrl: './animal-gallery.component.html',
   styleUrl: './animal-gallery.component.scss',
 })

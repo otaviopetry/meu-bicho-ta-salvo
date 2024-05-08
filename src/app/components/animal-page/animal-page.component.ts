@@ -11,8 +11,7 @@ import { FirebaseService } from '../../services/firebase.service';
 @Component({
   selector: 'app-animal-page',
   standalone: true,
-  imports: [AsyncPipe, RouterModule, HttpClientModule],
-  providers: [AnimalsService, FirebaseService],
+  imports: [AsyncPipe, RouterModule],
   templateUrl: './animal-page.component.html',
   styleUrl: './animal-page.component.scss',
 })
