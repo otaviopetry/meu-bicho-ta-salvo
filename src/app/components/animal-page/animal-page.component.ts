@@ -7,7 +7,7 @@ import { AsyncPipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { FirebaseService } from '../../services/firebase.service';
-import {  OpengraphService } from '../../services/opengraph.service';
+import { OpengraphService } from '../../services/opengraph.service';
 
 @Component({
   selector: 'app-animal-page',
