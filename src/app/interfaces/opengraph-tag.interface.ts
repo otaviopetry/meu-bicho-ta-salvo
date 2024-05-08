@@ -1,4 +1,4 @@
-export type OGProperty = 'og:title' | 'og:image' | 'og:description';
+export type OGProperty = 'og:title' | 'og:image' | 'og:description' | 'og:url';
 
 export interface IOpenGraphTag {
   property: OGProperty;

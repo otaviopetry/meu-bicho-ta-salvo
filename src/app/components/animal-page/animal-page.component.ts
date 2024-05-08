@@ -35,6 +35,7 @@ export class AnimalPageComponent {
         tap(animal => {
           if (animal) {
             this.opengraphService.setTags([
+              { property: 'og:url', content: 'https://meu-bicho-ta-salvo.netlify.app/' },
               { property: 'og:title', content: 'Meu Bicho Tá Salvo - POA' },
               { property: 'og:image', content: animal.imageURLs[0] },
               { property: 'og:description',
