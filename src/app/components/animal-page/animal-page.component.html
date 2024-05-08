@@ -76,8 +76,9 @@
 @if (showModal) {
 <div
   class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
+  (click)="closeModal()"
 >
-  <div class="bg-white p-4">
+  <div class="modal-content bg-white p-4" (click)="$event.stopPropagation()">
     <img
       [src]="currentImageUrl"
       alt="Current Image"
