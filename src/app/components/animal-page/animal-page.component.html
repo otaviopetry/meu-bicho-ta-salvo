@@ -2,13 +2,17 @@
 <div class="container mx-auto py-4">
   <div class="mb-8">
     <!-- Photo Stripe -->
-    <div class="flex space-x-4 overflow-x-auto">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto"
+    >
       @for (imageURL of animal.imageURLs; track imageURL) {
-      <img
-        [src]="imageURL"
-        alt="Placeholder Image"
-        class="w-64 h-48 object-cover rounded-lg shadow-lg"
-      />
+      <div class="max-w-xs">
+        <img
+          [src]="imageURL"
+          alt="Animal Image"
+          class="w-full h-48 object-cover rounded-lg shadow-lg"
+        />
+      </div>
       }
     </div>
   </div>
@@ -31,16 +35,20 @@
     </div>
 
     <!-- Contact Information -->
+    @if (animal.contactInformation.length) {
     <div class="mt-4">
       <h3 class="text-lg font-bold mb-2">Informações de Contato</h3>
       <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
     </div>
+    }
 
     <!-- Other Details -->
+    @if (animal.characteristics.length) {
     <div class="mt-4">
       <h3 class="text-lg font-bold mb-2">Outros Detalhes</h3>
       <p>{{ capitalizeFirstWord(animal.characteristics) }}</p>
     </div>
+    }
 
     <!-- Button to Go Back -->
     <div class="mt-6">

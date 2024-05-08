@@ -8,7 +8,7 @@ import { FirebaseService } from './firebase.service';
   providedIn: 'root',
 })
 export class AnimalsService {
-  private animalsCache = new ReplaySubject<IAnimal[]>(1); // Caches the last fetched value
+  private animalsCache = new ReplaySubject<IAnimal[]>(1);
 
   constructor(private firestoreService: FirebaseService) {
     this.loadInitialData();
@@ -19,10 +19,8 @@ export class AnimalsService {
       .getAnimals()
       .then((animals) => {
         this.animalsCache.next(animals as IAnimal[]);
-        console.log('===> animals', animals);
       })
       .catch((error) => {
-        console.error('Error fetching animals from Firestore:', error);
         this.animalsCache.next([]);
       });
   }

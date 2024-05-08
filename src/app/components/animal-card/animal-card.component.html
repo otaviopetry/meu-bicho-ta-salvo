@@ -2,10 +2,9 @@
   class="animal-card max-w-sm rounded overflow-hidden shadow-lg mx-auto mb-5"
 >
   <img
-    class="w-full"
+    class="w-full h-auto object-cover"
     [src]="animal.imageURLs[0]"
     alt="Animal resgatado"
-    style="height: 200px; object-fit: cover"
     loading="lazy"
   />
 
@@ -14,18 +13,22 @@
       <span class="font-bold">Porte:</span>
       {{ getSizeWord(animal.size) }}
     </p>
+    @if (animal.hair.length) {
     <p>
       <span class="font-bold">Pelagem:</span>
       {{ animal.hair }}
     </p>
+    }
     <p>
       <span class="font-bold">Cores dominantes:</span>
       {{ animal.color }}
     </p>
+    @if (animal.whereWasFound?.length) {
     <p>
       <span class="font-bold">Onde foi encontrado:</span>
       {{ animal.whereWasFound }}
     </p>
+    }
     <p>
       <span class="font-bold">Onde está abrigado:</span>
       {{ animal.whereItIs }}
