@@ -4,6 +4,7 @@ import { AnimalGalleryComponent } from './components/animal-gallery/animal-galle
 import { AnimalsService } from './services/animals.service';
 import { FirebaseService } from './services/firebase.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @Component({
   selector: 'app-root',
