@@ -24,13 +24,15 @@ export class AnimalGalleryComponent implements OnInit {
   public initialAnimals: IAnimal[] = [];
   public animals: IAnimal[] = [];
 
-  public sizeOptions: AnimalSize[] = ['pp', 'p', 'm', 'g', 'gg'];
+  public sizeOptions: AnimalSize[] = ['p', 'm', 'g'];
   public sexOptions: AnimalSex[] = ['fêmea', 'macho', 'não se sabe'];
   public colorOptions: string[] = [];
+  public locationOptions: string[] = [];
 
   public selectedSize: string = '0';
   public selectedSex: string = '0';
   public selectedColor: string = '0';
+  public selectedLocation: string = '0';
 
   public loading = false;
 
@@ -51,19 +53,29 @@ export class AnimalGalleryComponent implements OnInit {
           this.initialAnimals = animals;
           this.animals = animals;
           this.colorOptions = this.getColorOptions();
+          this.locationOptions = this.getLocationOptions();
           this.loading = false;
         },
       });
   }
 
-  private getColorOptions() {
-    return this.animals.reduce((acc: string[], animal) => {
-      if (!acc.includes(animal.color)) {
-        acc.push(animal.color);
-      }
+  private getColorOptions(): string[] {
+    const colorSet = new Set<string>();
 
-      return acc;
-    }, []);
+    for (const animal of this.animals) {
+      colorSet.add(animal.color);
+    }
+    return Array.from(colorSet);
+  }
+
+  private getLocationOptions(): string[] {
+    const locationSet = new Set<string>();
+
+    for (const animal of this.animals) {
+      locationSet.add(animal.whereItIs);
+    }
+
+    return Array.from(locationSet);
   }
 
   public capitalizeFirstWord(phrase: string) {
@@ -74,14 +86,17 @@ export class AnimalGalleryComponent implements OnInit {
     const shouldFilterSize = this.selectedSize !== '0';
     const shouldFilterSex = this.selectedSex !== '0';
     const shouldFilterColor = this.selectedColor !== '0';
+    const shouldFilterLocation = this.selectedLocation !== '0';
 
     this.animals = this.initialAnimals.filter((animal) => {
       const sizeMatch = !shouldFilterSize || animal.size === this.selectedSize;
       const colorMatch =
         !shouldFilterColor || animal.color === this.selectedColor;
       const sexMatch = !shouldFilterSex || animal.sex === this.selectedSex;
+      const locationMatch =
+        !shouldFilterLocation || animal.whereItIs === this.selectedLocation;
 
-      return sizeMatch && colorMatch && sexMatch;
+      return sizeMatch && colorMatch && sexMatch && locationMatch;
     });
   }
 
@@ -89,6 +104,7 @@ export class AnimalGalleryComponent implements OnInit {
     this.selectedSize = '0';
     this.selectedSex = '0';
     this.selectedColor = '0';
+    this.selectedLocation = '0';
     this.animals = this.initialAnimals;
   }
 
