@@ -13,25 +13,19 @@
       <span class="font-bold">Porte:</span>
       {{ getSizeWord(animal.size) }}
     </p>
-    @if (animal.hair.length) {
-    <p>
-      <span class="font-bold">Pelagem:</span>
-      {{ animal.hair }}
-    </p>
-    }
     <p>
       <span class="font-bold">Cores dominantes:</span>
-      {{ animal.color }}
+      {{ capitalizePhrase(animal.color) }}
     </p>
     @if (animal.whereWasFound?.length) {
     <p>
       <span class="font-bold">Onde foi encontrado:</span>
-      {{ animal.whereWasFound }}
+      {{ capitalizePhrase(animal.whereWasFound ?? "") }}
     </p>
     }
     <p>
       <span class="font-bold">Onde está abrigado:</span>
-      {{ animal.whereItIs }}
+      {{ capitalizePhrase(animal.whereItIs) }}
     </p>
   </div>
 </div>

@@ -72,7 +72,9 @@ export class AnimalGalleryComponent implements OnInit {
     const locationSet = new Set<string>();
 
     for (const animal of this.animals) {
-      locationSet.add(animal.whereItIs);
+      if (animal.whereItIs.length > 0) {
+        locationSet.add(animal.whereItIs);
+      }
     }
 
     return Array.from(locationSet);

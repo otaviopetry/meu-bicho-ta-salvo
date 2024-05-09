@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AnimalSize, IAnimal } from '../../interfaces/animal.interface';
-import { getSizeWord } from '../../utils/label-functions';
+import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 
 @Component({
   selector: 'app-animal-card',
@@ -14,5 +14,9 @@ export class AnimalCardComponent {
 
   public getSizeWord(sizeOption: AnimalSize) {
     return getSizeWord(sizeOption);
+  }
+
+  public capitalizePhrase(phrase: string) {
+    return capitalizeFirstWord(phrase);
   }
 }
