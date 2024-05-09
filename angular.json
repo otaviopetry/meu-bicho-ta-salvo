@@ -28,7 +28,14 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/_redirects"
+              "src/_redirects",
+              "src/manifest.webmanifest",
+              "src/manifest.webmanifest",
+              {
+                "glob": "custom-service-worker.js",
+                "input": "./src/",
+                "output": "./"
+              }
             ],
             "styles": [
               "src/styles.scss"
@@ -49,7 +56,8 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "serviceWorker": "ngsw-config.json"
             },
             "development": {
               "optimization": false,
@@ -88,7 +96,9 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "src/styles.scss"
