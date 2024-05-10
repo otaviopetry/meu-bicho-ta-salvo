@@ -38,6 +38,7 @@ export class AnimalGalleryComponent implements OnInit {
   public sizeOptions: AnimalSize[] = ['p', 'm', 'g', 'não se sabe'];
   public sexOptions: AnimalSex[] = ['fêmea', 'macho', 'não se sabe'];
   public colorOptions: string[] = [
+    'bege',
     'branco',
     'branco e bege',
     'branco e caramelo',
