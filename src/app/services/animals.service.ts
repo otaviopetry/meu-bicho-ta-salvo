@@ -1,30 +1,122 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, concatMap, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  concatMap,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { IAnimal } from '../interfaces/animal.interface';
-import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnimalsService {
+  private allAnimals: IAnimal[] = [];
   private animalsCache = new ReplaySubject<IAnimal[]>(1);
+  private nextPageToken?: string = '';
+  public hasMorePages = true;
 
-  constructor(private firestoreService: FirebaseService) {
-    this.loadInitialData();
+  public loading = false;
+  public loading$ = new BehaviorSubject<boolean>(false);
+
+  private itemsPerPage = 35;
+  private currentFilters: HttpParams = new HttpParams();
+
+  public locations$ = new BehaviorSubject<string[]>([]);
+
+  constructor(private http: HttpClient) {
+    //
   }
 
-  private loadInitialData() {
+  public loadInitialData() {
     // this.animalsCache.next(this.getStaticData());
 
-    this.firestoreService
-      .getAnimals()
-      .then((animals) => {
-        this.animalsCache.next(animals as IAnimal[]);
+    this.getAnimalsFromDatabase()
+      .then((response) => {
+        this.allAnimals = response.animals;
       })
       .catch((error) => {
+        console.error('Error fetching initial data:', error);
         this.animalsCache.next([]);
       });
+  }
+
+  public async getAnimalsFromDatabase(
+    filters: {
+      sex?: string;
+      size?: string;
+      whereItIs?: string;
+      color?: string;
+      startAfter?: string;
+    } = {}
+  ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
+    this.loading$.next(true);
+
+    let queryParams = new HttpParams().set('limit', `${this.itemsPerPage}`);
+
+    if (filters.sex) queryParams = queryParams.append('sex', filters.sex);
+    if (filters.size) queryParams = queryParams.append('size', filters.size);
+    if (filters.whereItIs)
+      queryParams = queryParams.append('whereItIs', filters.whereItIs);
+    if (filters.color) queryParams = queryParams.append('color', filters.color);
+    if (filters.startAfter)
+      queryParams = queryParams.append('startAfter', filters.startAfter);
+
+    this.currentFilters = queryParams;
+
+    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${queryParams.toString()}`;
+
+    try {
+      const response = await this.http
+        .get<{ animals: IAnimal[]; nextPageToken: string }>(apiEndpoint)
+        .toPromise();
+      this.loading$.next(false);
+
+      if (!response || !response.animals) {
+        throw new Error('No animals found or end of data reached');
+      }
+
+      if (response.animals.length === 0) {
+        this.animalsCache.next([]);
+      }
+
+      this.nextPageToken = response.nextPageToken;
+      this.animalsCache.next(response.animals);
+      this.nextPageToken = response.nextPageToken;
+
+      return response;
+    } catch (error) {
+      this.loading$.next(false);
+      console.error('Failed to fetch animals:', error);
+      throw new Error('Failed to fetch animals');
+    }
+  }
+
+  public loadNextPage(): void {
+    if (this.nextPageToken && this.hasMorePages) {
+      this.getAnimalsFromDatabase({
+        ...this.currentFilters,
+        startAfter: this.nextPageToken,
+      })
+        .then((response) => {
+          if (response.animals.length > 0) {
+            this.allAnimals = [...this.allAnimals, ...response.animals];
+            this.animalsCache.next(this.allAnimals);
+            this.nextPageToken = response.nextPageToken;
+          }
+
+          if (response.animals.length < this.itemsPerPage) {
+            this.hasMorePages = false;
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to load next page:', error);
+        });
+    }
   }
 
   public getAnimals(): Observable<IAnimal[]> {
@@ -32,9 +124,21 @@ export class AnimalsService {
   }
 
   public getAnimalById(id: string): Observable<IAnimal | undefined> {
-    return this.getAnimals().pipe(
-      switchMap((animals) => of(animals.find((animal) => animal.id === id)))
+    return this.http.get<IAnimal>(
+      `https://bicho-salvo-api-production.up.railway.app/animal/${id}`
     );
+  }
+
+  public loadLocations() {
+    return this.http
+      .get<{ locations: string[] }>(
+        `https://bicho-salvo-api-production.up.railway.app/locations`
+      )
+      .subscribe({
+        next: (response) => {
+          this.locations$.next(response.locations);
+        },
+      });
   }
 
   private getStaticData(): IAnimal[] {

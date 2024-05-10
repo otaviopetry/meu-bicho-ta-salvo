@@ -59,7 +59,7 @@
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
       >
         <option value="0">Qualquer abrigo</option>
-        @for (locationOption of locationOptions; track $index) {
+        @for (locationOption of (locationOptions$ | async); track $index) {
         <option value="{{ locationOption }}">
           {{ capitalizeFirstWord(locationOption) }}
         </option>
@@ -97,7 +97,7 @@
   </div>
   }
 </div>
-@if (loading) {
+@if (loading$ | async) {
 <div class="loader-overlay">
   <div class="loader"></div>
 </div>
