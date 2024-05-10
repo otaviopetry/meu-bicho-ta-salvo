@@ -53,6 +53,8 @@ export class AnimalPageComponent {
         })
       );
     });
+
+    window.scrollTo(0, 0);
   }
 
   public getSizeWord(sizeOption: AnimalSize) {
@@ -63,8 +65,9 @@ export class AnimalPageComponent {
     return capitalizeFirstWord(phrase);
   }
 
-  public navigateToHome() {
-    this.router.navigate(['animais']);
+  public navigateBack() {
+    // go back using the window object
+    window.history.back();
   }
 
   openModal(index: number, imageURLs: string[]): void {

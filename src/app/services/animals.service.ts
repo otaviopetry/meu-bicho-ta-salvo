@@ -124,8 +124,8 @@ export class AnimalsService {
   }
 
   public getAnimalById(id: string): Observable<IAnimal | undefined> {
-    return this.getAnimals().pipe(
-      switchMap((animals) => of(animals.find((animal) => animal.id === id)))
+    return this.http.get<IAnimal>(
+      `https://bicho-salvo-api-production.up.railway.app/animal/${id}`
     );
   }
 
