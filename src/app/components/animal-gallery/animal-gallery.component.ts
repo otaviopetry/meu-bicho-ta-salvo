@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import {
   AnimalSex,
   AnimalSize,
@@ -44,18 +44,15 @@ export class AnimalGalleryComponent implements OnInit {
   }
 
   private getAnimals() {
-    this.animalsService
-      .getAnimals()
-      .pipe(take(1))
-      .subscribe({
-        next: (animals) => {
-          this.initialAnimals = animals;
-          this.animals = animals;
-          this.colorOptions = this.getColorOptions();
-          this.locationOptions = this.getLocationOptions();
-          this.loading = false;
-        },
-      });
+    this.animalsService.getAnimals().subscribe({
+      next: (animals) => {
+        this.initialAnimals = animals;
+        this.animals = animals;
+        this.colorOptions = this.getColorOptions();
+        this.locationOptions = this.getLocationOptions();
+        this.loading = false;
+      },
+    });
   }
 
   private getColorOptions(): string[] {
@@ -115,5 +112,18 @@ export class AnimalGalleryComponent implements OnInit {
 
   public getSizeWord(sizeOption: AnimalSize) {
     return getSizeWord(sizeOption);
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(): void {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      !this.loading &&
+      this.animalsService.hasMorePages
+    ) {
+      this.loading = true;
+      this.animalsService.loadNextPage();
+      this.loading = false;
+    }
   }
 }

@@ -7,7 +7,14 @@ import { IAnimal } from '../interfaces/animal.interface';
   providedIn: 'root',
 })
 export class AnimalsService {
+  private allAnimals: IAnimal[] = [];
   private animalsCache = new ReplaySubject<IAnimal[]>(1);
+  private nextPageToken?: string = '';
+  public hasMorePages = true;
+
+  public loading = false;
+
+  private itemsPerPage = 15;
 
   constructor(private http: HttpClient) {
     //
@@ -17,22 +24,60 @@ export class AnimalsService {
     // this.animalsCache.next(this.getStaticData());
 
     this.getAnimalsFromDatabase()
-      .then((animals) => {
-        this.animalsCache.next(animals as IAnimal[]);
+      .then((response) => {
+        this.allAnimals = response.animals;
+        this.animalsCache.next(this.allAnimals);
+        this.nextPageToken = response.nextPageToken;
       })
       .catch((error) => {
+        console.error('Error fetching initial data:', error);
         this.animalsCache.next([]);
       });
   }
 
-  async getAnimalsFromDatabase(): Promise<IAnimal[] | undefined> {
+  public async getAnimalsFromDatabase(startAfter?: string) {
+    // const apiEndpoint =
+    // `https://bicho-salvo-api-production.up.railway.app/animals?limit=${limit}` +
+    // (startAfter ? `&startAfter=${startAfter}` : '');
     const apiEndpoint =
-      'https://bicho-salvo-api-production.up.railway.app/animals';
+      `http://localhost:3000/animals?limit=${this.itemsPerPage}` +
+      (startAfter ? `&startAfter=${startAfter}` : '');
 
     try {
-      return this.http.get<IAnimal[]>(`${apiEndpoint}`).toPromise();
+      const response = await this.http
+        .get<{ animals: IAnimal[]; nextPageToken: string }>(apiEndpoint)
+        .toPromise();
+
+      if (!response || !response.animals || !response.nextPageToken) {
+        throw new Error('Invalid response from API');
+      }
+
+      this.nextPageToken = response.nextPageToken;
+
+      return response;
     } catch (error) {
+      console.error('Failed to fetch animals:', error);
       throw new Error('Failed to fetch animals');
+    }
+  }
+
+  public loadNextPage(): void {
+    if (this.nextPageToken && this.hasMorePages) {
+      this.getAnimalsFromDatabase(this.nextPageToken)
+        .then((response) => {
+          if (response.animals.length > 0) {
+            this.allAnimals = [...this.allAnimals, ...response.animals];
+            this.animalsCache.next(this.allAnimals);
+            this.nextPageToken = response.nextPageToken;
+          }
+
+          if (response.animals.length < this.itemsPerPage) {
+            this.hasMorePages = false;
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to load next page:', error);
+        });
     }
   }
 
