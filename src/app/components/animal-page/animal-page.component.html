@@ -3,10 +3,13 @@
   <div class="mb-8">
     <!-- Photo Stripe -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto"
+      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-auto"
     >
       @for (imageURL of animal.imageURLs; track imageURL) {
-      <div class="max-w-xs" (click)="openModal($index, animal.imageURLs)">
+      <div
+        class="max-w-xs mx-auto"
+        (click)="openModal($index, animal.imageURLs)"
+      >
         <img
           [src]="imageURL"
           alt="Animal Image"
@@ -20,30 +23,23 @@
   <div class="bg-white rounded-lg shadow-lg p-6">
     <h2 class="text-2xl font-bold mb-4">Detalhes do Animal</h2>
 
-    <!-- Unified Grid Layout for All Details -->
-    <div class="grid grid-cols-2 gap-4">
-      <!-- Size Information -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <h3 class="font-bold mb-2">Tamanho:</h3>
         <p>{{ getSizeWord(animal.size) }}</p>
       </div>
 
-      <!-- Sex Information -->
       <div>
         <h3 class="font-bold mb-2">Sexo:</h3>
         <p>{{ capitalizeFirstWord(animal.sex) }}</p>
       </div>
 
-      <!-- Contact Information -->
       @if (animal.contactInformation.length) {
       <div>
         <h3 class="font-bold mb-2">Informações de Contato</h3>
         <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
       </div>
-      }
-
-      <!-- Other Details -->
-      @if (animal.characteristics.length) {
+      } @if (animal.characteristics.length) {
       <div>
         <h3 class="font-bold mb-2">Outros Detalhes</h3>
         <p>{{ capitalizeFirstWord(animal.characteristics) }}</p>
