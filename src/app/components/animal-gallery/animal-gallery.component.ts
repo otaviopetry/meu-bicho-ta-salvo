@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
 export class AnimalGalleryComponent implements OnInit {
   public animals: IAnimal[] = [];
 
-  public sizeOptions: AnimalSize[] = ['p', 'm', 'g'];
+  public sizeOptions: AnimalSize[] = ['p', 'm', 'g', 'não se sabe'];
   public sexOptions: AnimalSex[] = ['fêmea', 'macho', 'não se sabe'];
   public colorOptions: string[] = [
     'preto',

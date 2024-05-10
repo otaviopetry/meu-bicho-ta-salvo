@@ -1,4 +1,4 @@
-export type AnimalSize = 'pp' | 'p' | 'm' | 'g' | 'gg';
+export type AnimalSize = 'pp' | 'p' | 'm' | 'g' | 'gg' | 'não se sabe';
 export type AnimalSex = 'macho' | 'fêmea' | 'não se sabe';
 
 export interface IAnimal {

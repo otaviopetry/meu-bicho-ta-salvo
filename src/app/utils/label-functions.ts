@@ -7,6 +7,7 @@ export function getSizeWord(sizeOption: AnimalSize) {
     ['m']: 'Médio',
     ['g']: 'Grande',
     ['gg']: 'Enorme',
+    ['não se sabe']: 'Não se sabe',
   }[sizeOption];
 }
 
