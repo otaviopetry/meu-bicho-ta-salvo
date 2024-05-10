@@ -11,7 +11,6 @@ import { take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
-import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-animal-gallery',

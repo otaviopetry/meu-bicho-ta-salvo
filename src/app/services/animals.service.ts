@@ -2,7 +2,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, concatMap, of, switchMap, tap } from 'rxjs';
 import { IAnimal } from '../interfaces/animal.interface';
-import { FirebaseService } from './firebase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +9,31 @@ import { FirebaseService } from './firebase.service';
 export class AnimalsService {
   private animalsCache = new ReplaySubject<IAnimal[]>(1);
 
-  constructor(private firestoreService: FirebaseService) {
-    this.loadInitialData();
+  constructor(private http: HttpClient) {
+    //
   }
 
-  private loadInitialData() {
+  public loadInitialData() {
     // this.animalsCache.next(this.getStaticData());
 
-    this.firestoreService
-      .getAnimals()
+    this.getAnimalsFromDatabase()
       .then((animals) => {
         this.animalsCache.next(animals as IAnimal[]);
       })
       .catch((error) => {
         this.animalsCache.next([]);
       });
+  }
+
+  async getAnimalsFromDatabase(): Promise<IAnimal[] | undefined> {
+    const apiEndpoint =
+      'https://bicho-salvo-api-production.up.railway.app/animals';
+
+    try {
+      return this.http.get<IAnimal[]>(`${apiEndpoint}`).toPromise();
+    } catch (error) {
+      throw new Error('Failed to fetch animals');
+    }
   }
 
   public getAnimals(): Observable<IAnimal[]> {
