@@ -46,7 +46,7 @@ export class AnimalPageComponent {
                 property: 'og:description',
                 content: `${this.capitalizeFirstWord(
                   animal.species
-                )}, porte ${this.getSizeWord(animal.size).toLowerCase()}`,
+                )}, porte ${this.getSizeWord(animal.size)?.toLowerCase()}`,
               },
             ]);
           }

@@ -18,5 +18,6 @@ export class AppComponent {
 
   ngOnInit() {
     this.animalsService.loadInitialData();
+    this.animalsService.loadLocations();
   }
 }
