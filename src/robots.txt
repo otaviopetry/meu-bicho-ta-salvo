@@ -1,0 +1,4 @@
+# Allow root
+User-agent: *
+Allow: /$
+Disallow: /

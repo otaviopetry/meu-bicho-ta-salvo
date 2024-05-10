@@ -35,6 +35,11 @@
                 "glob": "custom-service-worker.js",
                 "input": "./src/",
                 "output": "./"
+              },
+              {
+                "glob": "robots.txt",
+                "input": "src/",
+                "output": "/"
               }
             ],
             "styles": [
