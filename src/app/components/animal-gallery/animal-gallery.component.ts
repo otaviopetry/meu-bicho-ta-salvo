@@ -68,27 +68,6 @@ export class AnimalGalleryComponent implements OnInit {
     });
   }
 
-  private getColorOptions(): string[] {
-    const colorSet = new Set<string>();
-
-    for (const animal of this.animals) {
-      colorSet.add(animal.color);
-    }
-    return Array.from(colorSet);
-  }
-
-  private getLocationOptions(): string[] {
-    const locationSet = new Set<string>();
-
-    for (const animal of this.animals) {
-      if (animal.whereItIs.length > 0) {
-        locationSet.add(animal.whereItIs);
-      }
-    }
-
-    return Array.from(locationSet);
-  }
-
   public capitalizeFirstWord(phrase: string) {
     return capitalizeFirstWord(phrase);
   }
@@ -102,6 +81,8 @@ export class AnimalGalleryComponent implements OnInit {
       color: this.selectedColor !== '0' ? this.selectedColor : undefined,
     };
 
+    this.animalsService.resetPagination();
+
     this.animalsService.getAnimalsFromDatabase(filters).catch((error) => {
       console.error('Error fetching filtered animals:', error);
     });
@@ -112,7 +93,7 @@ export class AnimalGalleryComponent implements OnInit {
     this.selectedSex = '0';
     this.selectedColor = '0';
     this.selectedLocation = '0';
-    this.animals = this.initialAnimals;
+    this.animalsService.resetFilters();
   }
 
   public navigateToAnimal(id: string) {

@@ -56,19 +56,29 @@ export class AnimalsService {
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
     this.loading$.next(true);
 
-    let queryParams = new HttpParams().set('limit', `${this.itemsPerPage}`);
+    let newParams = new HttpParams();
 
-    if (filters.sex) queryParams = queryParams.append('sex', filters.sex);
-    if (filters.size) queryParams = queryParams.append('size', filters.size);
+    this.currentFilters.keys().forEach((key) => {
+      if (key !== 'startAfter') {
+        this.currentFilters.getAll(key)?.forEach((value) => {
+          newParams = newParams.append(key, value);
+        });
+      }
+    });
+
+    if (filters.sex) newParams = newParams.append('sex', filters.sex);
+    if (filters.size) newParams = newParams.append('size', filters.size);
     if (filters.whereItIs)
-      queryParams = queryParams.append('whereItIs', filters.whereItIs);
-    if (filters.color) queryParams = queryParams.append('color', filters.color);
+      newParams = newParams.append('whereItIs', filters.whereItIs);
+    if (filters.color) newParams = newParams.append('color', filters.color);
     if (filters.startAfter)
-      queryParams = queryParams.append('startAfter', filters.startAfter);
+      newParams = newParams.append('startAfter', filters.startAfter);
 
-    this.currentFilters = queryParams;
+    this.currentFilters = newParams;
 
-    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${queryParams.toString()}`;
+    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${newParams.toString()}&limit=${
+      this.itemsPerPage
+    }`;
 
     try {
       const response = await this.http
@@ -98,8 +108,9 @@ export class AnimalsService {
 
   public loadNextPage(): void {
     if (this.nextPageToken && this.hasMorePages) {
+      console.log('===>', this.currentFilters);
+
       this.getAnimalsFromDatabase({
-        ...this.currentFilters,
         startAfter: this.nextPageToken,
       })
         .then((response) => {
@@ -139,6 +150,18 @@ export class AnimalsService {
           this.locations$.next(response.locations);
         },
       });
+  }
+
+  public resetPagination(): void {
+    this.nextPageToken = undefined;
+    this.hasMorePages = true;
+  }
+
+  public resetFilters(): void {
+    this.currentFilters = new HttpParams();
+    this.loadInitialData();
+    this.nextPageToken = undefined;
+    this.hasMorePages = true;
   }
 
   private getStaticData(): IAnimal[] {
