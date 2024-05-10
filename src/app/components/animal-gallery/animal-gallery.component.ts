@@ -102,6 +102,7 @@ export class AnimalGalleryComponent implements OnInit {
       color: this.selectedColor !== '0' ? this.selectedColor : undefined,
     };
 
+    this.animalsService.resetPagination();
     this.animalsService.getAnimalsFromDatabase(filters).catch((error) => {
       console.error('Error fetching filtered animals:', error);
     });
@@ -113,6 +114,8 @@ export class AnimalGalleryComponent implements OnInit {
     this.selectedColor = '0';
     this.selectedLocation = '0';
     this.animals = this.initialAnimals;
+    this.animalsService.resetFilters();
+    this.animalsService.loadInitialData();
   }
 
   public navigateToAnimal(id: string) {

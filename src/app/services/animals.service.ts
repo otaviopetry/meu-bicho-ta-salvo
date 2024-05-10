@@ -141,6 +141,17 @@ export class AnimalsService {
       });
   }
 
+  public resetPagination(): void {
+    this.nextPageToken = undefined;
+    this.hasMorePages = true;
+  }
+
+  public resetFilters(): void {
+    this.currentFilters = new HttpParams();
+    this.nextPageToken = undefined;
+    this.hasMorePages = true;
+  }
+
   private getStaticData(): IAnimal[] {
     return [
       {
