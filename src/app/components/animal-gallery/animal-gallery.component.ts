@@ -38,12 +38,31 @@ export class AnimalGalleryComponent implements OnInit {
   public sizeOptions: AnimalSize[] = ['p', 'm', 'g', 'não se sabe'];
   public sexOptions: AnimalSex[] = ['fêmea', 'macho', 'não se sabe'];
   public colorOptions: string[] = [
-    'preto',
     'branco',
-    'caramelo',
+    'branco e bege',
+    'branco e caramelo',
+    'branco e marrom',
+    'branco e preto',
+    'branco e cinza',
+    'branco, caramelo/marrom e preto',
+    'caramelo e preto',
+    'caramelo e cinza',
+    'cinza',
+    'cinza e preto',
+    'marrom',
+    'marrom e preto',
+    'tigrado',
+    'preto',
+    'preto e branco',
     'laranja',
-    'colorido',
-    'outros',
+    'laranja com branco',
+    'frajola',
+    'tricolor',
+    'tigrado com branco',
+    'cinza com branco',
+    'escaminha/tartaruguinha',
+    'tipo "siamês"',
+    'outras cores',
   ];
   public locationOptions$ = this.animalsService.locations$.asObservable();
 
