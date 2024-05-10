@@ -33,7 +33,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './animal-gallery.component.scss',
 })
 export class AnimalGalleryComponent implements OnInit {
-  public initialAnimals: IAnimal[] = [];
   public animals: IAnimal[] = [];
 
   public sizeOptions: AnimalSize[] = ['p', 'm', 'g'];
@@ -69,7 +68,6 @@ export class AnimalGalleryComponent implements OnInit {
   private getAnimals() {
     this.animalsService.getAnimals().subscribe({
       next: (animals) => {
-        this.initialAnimals = animals;
         this.animals = animals;
         this.loading = false;
       },
@@ -121,7 +119,6 @@ export class AnimalGalleryComponent implements OnInit {
     this.selectedSex = '0';
     this.selectedColor = '0';
     this.selectedLocation = '0';
-    this.animals = this.initialAnimals;
     this.animalsService.resetFilters();
     this.animalsService.loadInitialData();
   }
@@ -157,7 +154,6 @@ export class AnimalGalleryComponent implements OnInit {
       document.body.scrollTop > window.innerHeight ||
       document.documentElement.scrollTop > window.innerHeight
     ) {
-      console.log('===> yayayaya');
       this.scrollToTopBtn.nativeElement.style.display = 'block';
     } else {
       this.scrollToTopBtn.nativeElement.style.display = 'none';

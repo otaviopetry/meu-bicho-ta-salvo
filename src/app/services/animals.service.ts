@@ -11,6 +11,14 @@ import {
 } from 'rxjs';
 import { IAnimal } from '../interfaces/animal.interface';
 
+export interface AnimalFilters {
+  sex?: string;
+  size?: string;
+  whereItIs?: string;
+  color?: string;
+  startAfter?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -46,29 +54,15 @@ export class AnimalsService {
   }
 
   public async getAnimalsFromDatabase(
-    filters: {
-      sex?: string;
-      size?: string;
-      whereItIs?: string;
-      color?: string;
-      startAfter?: string;
-    } = {}
+    filters: AnimalFilters = {},
+    isLoadingNextPage?: boolean
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
     this.loading$.next(true);
+    this.currentFilters = this.createQueryParams(filters);
 
-    let queryParams = new HttpParams().set('limit', `${this.itemsPerPage}`);
-
-    if (filters.sex) queryParams = queryParams.append('sex', filters.sex);
-    if (filters.size) queryParams = queryParams.append('size', filters.size);
-    if (filters.whereItIs)
-      queryParams = queryParams.append('whereItIs', filters.whereItIs);
-    if (filters.color) queryParams = queryParams.append('color', filters.color);
-    if (filters.startAfter)
-      queryParams = queryParams.append('startAfter', filters.startAfter);
-
-    this.currentFilters = queryParams;
-
-    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${queryParams.toString()}`;
+    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${this.currentFilters.toString()}&limit=${
+      this.itemsPerPage
+    }`;
 
     try {
       const response = await this.http
@@ -80,13 +74,17 @@ export class AnimalsService {
         throw new Error('No animals found or end of data reached');
       }
 
-      if (response.animals.length === 0) {
+      if (response.nextPageToken) {
+        this.nextPageToken = response.nextPageToken;
+      }
+
+      if (response.animals.length === 0 && !isLoadingNextPage) {
         this.animalsCache.next([]);
       }
 
-      this.nextPageToken = response.nextPageToken;
-      this.animalsCache.next(response.animals);
-      this.nextPageToken = response.nextPageToken;
+      if (response.animals.length > 0) {
+        this.animalsCache.next(response.animals);
+      }
 
       return response;
     } catch (error) {
@@ -98,20 +96,20 @@ export class AnimalsService {
 
   public loadNextPage(): void {
     if (this.nextPageToken && this.hasMorePages) {
-      this.getAnimalsFromDatabase({
-        ...this.currentFilters,
-        startAfter: this.nextPageToken,
-      })
+      const nextPageFilters: any = {};
+      this.currentFilters.keys().forEach((key) => {
+        nextPageFilters[key] = this.currentFilters.get(key);
+      });
+      nextPageFilters.startAfter = this.nextPageToken;
+
+      this.getAnimalsFromDatabase(nextPageFilters, true)
         .then((response) => {
           if (response.animals.length > 0) {
             this.allAnimals = [...this.allAnimals, ...response.animals];
             this.animalsCache.next(this.allAnimals);
-            this.nextPageToken = response.nextPageToken;
           }
 
-          if (response.animals.length < this.itemsPerPage) {
-            this.hasMorePages = false;
-          }
+          this.hasMorePages = response.animals.length >= this.itemsPerPage;
         })
         .catch((error) => {
           console.error('Failed to load next page:', error);
@@ -150,6 +148,18 @@ export class AnimalsService {
     this.currentFilters = new HttpParams();
     this.nextPageToken = undefined;
     this.hasMorePages = true;
+  }
+
+  private createQueryParams(filters: AnimalFilters): HttpParams {
+    let params = new HttpParams();
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        params = params.append(key, value);
+      }
+    });
+
+    return params;
   }
 
   private getStaticData(): IAnimal[] {
