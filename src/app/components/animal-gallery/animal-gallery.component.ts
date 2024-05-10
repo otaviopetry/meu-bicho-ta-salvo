@@ -1,4 +1,10 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import {
   AnimalSex,
   AnimalSize,
@@ -49,6 +55,8 @@ export class AnimalGalleryComponent implements OnInit {
 
   public loading = false;
   public loading$ = this.animalsService.loading$.asObservable();
+
+  @ViewChild('scrollToTopBtn') scrollToTopBtn!: ElementRef<HTMLButtonElement>;
 
   constructor(private animalsService: AnimalsService, private router: Router) {
     this.loading = true;
@@ -126,6 +134,10 @@ export class AnimalGalleryComponent implements OnInit {
     return getSizeWord(sizeOption);
   }
 
+  public scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   @HostListener('window:scroll', ['$event'])
   onScroll(): void {
     if (
@@ -139,6 +151,16 @@ export class AnimalGalleryComponent implements OnInit {
       setTimeout(() => {
         this.loading = false;
       }, 600);
+    }
+
+    if (
+      document.body.scrollTop > window.innerHeight ||
+      document.documentElement.scrollTop > window.innerHeight
+    ) {
+      console.log('===> yayayaya');
+      this.scrollToTopBtn.nativeElement.style.display = 'block';
+    } else {
+      this.scrollToTopBtn.nativeElement.style.display = 'none';
     }
   }
 }
