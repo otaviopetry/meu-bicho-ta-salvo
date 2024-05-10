@@ -47,6 +47,7 @@ export class AnimalGalleryComponent implements OnInit {
     'branco, caramelo/marrom e preto',
     'caramelo e preto',
     'caramelo e cinza',
+    'caramelo',
     'cinza',
     'cinza e preto',
     'marrom',
