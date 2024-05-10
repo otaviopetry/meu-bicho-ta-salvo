@@ -1,0 +1,35 @@
+.social-icons {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  margin-bottom: 2.5rem;
+
+  a {
+    margin-left: 10px;
+  }
+
+  svg {
+    max-width: 25px;
+    width: 25px;
+    height: auto;
+    fill: white;
+  }
+}
+
+header {
+  position: relative;
+}
+
+.header-menu {
+  width: 100%;
+  text-align: center;
+  margin-top: 2rem;
+
+  svg {
+    fill: white;
+    width: 25px;
+    height: auto;
+  }
+}

@@ -1,23 +1,40 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AnimalsService } from './services/animals.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule],
   providers: [AnimalsService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  constructor(private animalsService: AnimalsService) {
+  constructor(private animalsService: AnimalsService, private router: Router) {
     //
   }
 
   ngOnInit() {
     this.animalsService.loadInitialData();
     this.animalsService.loadLocations();
+  }
+
+  public navigateHome() {
+    this.router.navigate(['/']);
+  }
+
+  public isHome() {
+    return this.router.url.endsWith('animais');
+  }
+
+  public getHeaderPadding() {
+    if (this.isHome()) {
+      return 'pb-24';
+    }
+
+    return 'pb-16';
   }
 }
