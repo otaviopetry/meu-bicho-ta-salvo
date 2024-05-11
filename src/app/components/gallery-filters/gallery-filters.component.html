@@ -2,6 +2,7 @@
   class="bg-white rounded drop-shadow -mt-20 p-4 mb-6 w-full mx-auto text-center"
 >
   <div class="flex flex-wrap items-center justify-center gap-2 w-full">
+    @if (userType === 'tutor') {
     <!-- Species Dropdown -->
     <div class="flex-1 min-w-[140px]">
       <select
@@ -66,6 +67,7 @@
         }
       </select>
     </div>
+    } @else {
     <!-- Location (Abrigo) Dropdown -->
     <div class="flex-1 min-w-[140px]">
       <select
@@ -82,6 +84,7 @@
         }
       </select>
     </div>
+    }
   </div>
   <div class="flex-auto items-center justify-center mt-3">
     <button

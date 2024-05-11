@@ -3,6 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AnimalsService } from './services/animals.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { UserType } from './types/user-type.type';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  public userType: UserType = 'tutor';
+
   constructor(private animalsService: AnimalsService, private router: Router) {
     //
   }
@@ -36,5 +39,10 @@ export class AppComponent {
     }
 
     return 'pb-16';
+  }
+
+  public changeUserType(userType: UserType) {
+    this.animalsService.changeUserType(userType);
+    this.userType = userType;
   }
 }

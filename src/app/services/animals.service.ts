@@ -10,6 +10,7 @@ import {
   tap,
 } from 'rxjs';
 import { IAnimal } from '../interfaces/animal.interface';
+import { UserType } from '../types/user-type.type';
 
 export interface AnimalFilters {
   species?: string;
@@ -37,6 +38,7 @@ export class AnimalsService {
   public selectedFilters: AnimalFilters = {};
 
   public locations$ = new BehaviorSubject<string[]>([]);
+  public userType$ = new BehaviorSubject<UserType>('tutor');
 
   constructor(private http: HttpClient) {
     //
@@ -59,6 +61,13 @@ export class AnimalsService {
     filters: AnimalFilters = {},
     isLoadingNextPage?: boolean
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
+    // this.animalsCache.next(this.getStaticData());
+
+    // return Promise.resolve({
+    //   animals: this.getStaticData(),
+    //   nextPageToken: '',
+    // });
+
     this.loading$.next(true);
     this.currentFilters = this.createQueryParams(filters);
     this.selectedFilters = { ...filters };
@@ -149,8 +158,14 @@ export class AnimalsService {
 
   public resetFilters(): void {
     this.currentFilters = new HttpParams();
+    this.selectedFilters = {};
     this.nextPageToken = undefined;
     this.hasMorePages = true;
+  }
+
+  public changeUserType(userType: UserType) {
+    this.userType$.next(userType);
+    this.resetFilters();
   }
 
   private createQueryParams(filters: AnimalFilters): HttpParams {

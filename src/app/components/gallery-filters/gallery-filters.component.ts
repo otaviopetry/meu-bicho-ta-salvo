@@ -10,6 +10,8 @@ import {
   SPECIES_OPTIONS,
 } from '../../constants/constants';
 import { AnimalSize } from '../../interfaces/animal.interface';
+import { Subscription } from 'rxjs';
+import { UserType } from '../../types/user-type.type';
 
 @Component({
   selector: 'app-gallery-filters',
@@ -31,30 +33,27 @@ export class GalleryFiltersComponent {
   public selectedColor: string = '0';
   public selectedLocation: string = '0';
 
+  public userType: UserType = 'tutor';
+
+  private subscriptions: Subscription[] = [];
+
   constructor(private animalsService: AnimalsService) {
     //
   }
 
   ngOnInit() {
-    if (this.animalsService.selectedFilters['species']) {
-      this.selectedSpecies = this.animalsService.selectedFilters['species'];
-    }
+    this.populateFilters();
+    this.subscriptions.push(
+      this.animalsService.userType$.subscribe((userType) => {
+        this.userType = userType;
+        this.resetFilter();
+      })
+    );
+  }
 
-    if (this.animalsService.selectedFilters['size']) {
-      this.selectedSize = this.animalsService.selectedFilters['size'];
-    }
-
-    if (this.animalsService.selectedFilters['sex']) {
-      this.selectedSex = this.animalsService.selectedFilters['sex'];
-    }
-
-    if (this.animalsService.selectedFilters['color']) {
-      this.selectedColor = this.animalsService.selectedFilters['color'];
-    }
-
-    if (this.animalsService.selectedFilters['whereItIs']) {
-      this.selectedLocation = this.animalsService.selectedFilters['whereItIs'];
-    }
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   public capitalizeFirstWord(phrase: string) {
@@ -89,5 +88,27 @@ export class GalleryFiltersComponent {
     this.selectedLocation = '0';
     this.animalsService.resetFilters();
     this.animalsService.loadInitialData();
+  }
+
+  private populateFilters() {
+    if (this.animalsService.selectedFilters['species']) {
+      this.selectedSpecies = this.animalsService.selectedFilters['species'];
+    }
+
+    if (this.animalsService.selectedFilters['size']) {
+      this.selectedSize = this.animalsService.selectedFilters['size'];
+    }
+
+    if (this.animalsService.selectedFilters['sex']) {
+      this.selectedSex = this.animalsService.selectedFilters['sex'];
+    }
+
+    if (this.animalsService.selectedFilters['color']) {
+      this.selectedColor = this.animalsService.selectedFilters['color'];
+    }
+
+    if (this.animalsService.selectedFilters['whereItIs']) {
+      this.selectedLocation = this.animalsService.selectedFilters['whereItIs'];
+    }
   }
 }
