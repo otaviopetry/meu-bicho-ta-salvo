@@ -46,7 +46,7 @@ export class GalleryFiltersComponent {
     this.subscriptions.push(
       this.animalsService.userType$.subscribe((userType) => {
         this.userType = userType;
-        this.resetFilter();
+        this.resetFiltersWithoutLoadingData();
       })
     );
   }
@@ -80,13 +80,17 @@ export class GalleryFiltersComponent {
     });
   }
 
-  public resetFilter() {
+  public resetFiltersWithoutLoadingData() {
     this.selectedSpecies = '0';
     this.selectedSize = '0';
     this.selectedSex = '0';
     this.selectedColor = '0';
     this.selectedLocation = '0';
     this.animalsService.resetFilters();
+  }
+
+  public resetFilterAndLoadInitialData() {
+    this.resetFiltersWithoutLoadingData();
     this.animalsService.loadInitialData();
   }
 

@@ -179,7 +179,6 @@ export class AnimalsService {
 
   public changeUserType(userType: UserType) {
     this.userType$.next(userType);
-    // this.resetFilters();
   }
 
   private createQueryParams(filters: AnimalFilters): HttpParams {
