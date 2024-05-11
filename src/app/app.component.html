@@ -43,6 +43,12 @@
     >
       Pets resgatados da enchente procuram seus tutores
     </p>
+    <p
+      class="text-lg font-thin text-center text-gray-300 max-w-lg mx-auto mb-8"
+    >
+      <strong>Animais cadastrados:</strong>
+      {{ (animalCount$ | async) || "..." }}
+    </p>
     <div class="user-type-selector text-gray-300">
       <button
         (click)="changeUserType('tutor')"

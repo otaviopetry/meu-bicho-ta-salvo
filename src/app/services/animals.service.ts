@@ -4,6 +4,7 @@ import {
   BehaviorSubject,
   Observable,
   ReplaySubject,
+  Subject,
   concatMap,
   of,
   switchMap,
@@ -39,6 +40,7 @@ export class AnimalsService {
 
   public locations$ = new BehaviorSubject<string[]>([]);
   public userType$ = new BehaviorSubject<UserType>('tutor');
+  public animalCount$ = new Subject<number>();
 
   constructor(private http: HttpClient) {
     //
@@ -151,6 +153,18 @@ export class AnimalsService {
       });
   }
 
+  public loadAnimalCount() {
+    return this.http
+      .get<{ count: number }>(
+        'https://bicho-salvo-api-production.up.railway.app/animal-count'
+      )
+      .subscribe({
+        next: (response) => {
+          this.animalCount$.next(response.count);
+        },
+      });
+  }
+
   public resetPagination(): void {
     this.nextPageToken = undefined;
     this.hasMorePages = true;
@@ -165,7 +179,7 @@ export class AnimalsService {
 
   public changeUserType(userType: UserType) {
     this.userType$.next(userType);
-    this.resetFilters();
+    // this.resetFilters();
   }
 
   private createQueryParams(filters: AnimalFilters): HttpParams {

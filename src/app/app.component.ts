@@ -15,6 +15,7 @@ import { UserType } from './types/user-type.type';
 })
 export class AppComponent {
   public userType: UserType = 'tutor';
+  public animalCount$ = this.animalsService.animalCount$.asObservable();
 
   constructor(private animalsService: AnimalsService, private router: Router) {
     //
@@ -23,6 +24,7 @@ export class AppComponent {
   ngOnInit() {
     this.animalsService.loadInitialData();
     this.animalsService.loadLocations();
+    this.animalsService.loadAnimalCount();
   }
 
   public navigateHome() {
