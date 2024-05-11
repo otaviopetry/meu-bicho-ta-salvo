@@ -66,7 +66,6 @@ export class AnimalPageComponent {
   }
 
   public navigateBack() {
-    // go back using the window object
     window.history.back();
   }
 

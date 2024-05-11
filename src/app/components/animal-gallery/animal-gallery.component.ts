@@ -18,6 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
+import { GalleryFiltersComponent } from '../gallery-filters/gallery-filters.component';
 
 @Component({
   selector: 'app-animal-gallery',
@@ -28,51 +29,13 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     RouterModule,
     CommonModule,
+    GalleryFiltersComponent,
   ],
   templateUrl: './animal-gallery.component.html',
   styleUrl: './animal-gallery.component.scss',
 })
 export class AnimalGalleryComponent implements OnInit {
   public animals: IAnimal[] = [];
-
-  public sizeOptions: AnimalSize[] = ['p', 'm', 'g', 'não se sabe'];
-  public sexOptions: AnimalSex[] = ['fêmea', 'macho', 'não se sabe'];
-  public colorOptions: string[] = [
-    'bege',
-    'branco',
-    'branco e bege',
-    'branco e caramelo',
-    'branco e marrom',
-    'branco e preto',
-    'branco e cinza',
-    'branco, caramelo/marrom e preto',
-    'caramelo e preto',
-    'caramelo e cinza',
-    'caramelo',
-    'cinza',
-    'cinza e preto',
-    'marrom',
-    'marrom e preto',
-    'tigrado',
-    'preto',
-    'preto e branco',
-    'laranja',
-    'laranja com branco',
-    'frajola',
-    'tricolor',
-    'tigrado com branco',
-    'cinza com branco',
-    'escaminha/tartaruguinha',
-    'tipo "siamês"',
-    'outras cores',
-  ];
-  public locationOptions$ = this.animalsService.locations$.asObservable();
-
-  public selectedSize: string = '0';
-  public selectedSex: string = '0';
-  public selectedColor: string = '0';
-  public selectedLocation: string = '0';
-
   public loading = false;
   public loading$ = this.animalsService.loading$.asObservable();
 
@@ -93,63 +56,6 @@ export class AnimalGalleryComponent implements OnInit {
         this.loading = false;
       },
     });
-  }
-
-  private getColorOptions(): string[] {
-    const colorSet = new Set<string>();
-
-    for (const animal of this.animals) {
-      colorSet.add(animal.color);
-    }
-    return Array.from(colorSet);
-  }
-
-  private getLocationOptions(): string[] {
-    const locationSet = new Set<string>();
-
-    for (const animal of this.animals) {
-      if (animal.whereItIs.length > 0) {
-        locationSet.add(animal.whereItIs);
-      }
-    }
-
-    return Array.from(locationSet);
-  }
-
-  public capitalizeFirstWord(phrase: string) {
-    return capitalizeFirstWord(phrase);
-  }
-
-  public filterAnimals(): void {
-    const filters = {
-      sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
-      size: this.selectedSize !== '0' ? this.selectedSize : undefined,
-      whereItIs:
-        this.selectedLocation !== '0' ? this.selectedLocation : undefined,
-      color: this.selectedColor !== '0' ? this.selectedColor : undefined,
-    };
-
-    this.animalsService.resetPagination();
-    this.animalsService.getAnimalsFromDatabase(filters).catch((error) => {
-      console.error('Error fetching filtered animals:', error);
-    });
-  }
-
-  public resetFilter() {
-    this.selectedSize = '0';
-    this.selectedSex = '0';
-    this.selectedColor = '0';
-    this.selectedLocation = '0';
-    this.animalsService.resetFilters();
-    this.animalsService.loadInitialData();
-  }
-
-  public navigateToAnimal(id: string) {
-    this.router.navigate(['/animais', id]);
-  }
-
-  public getSizeWord(sizeOption: AnimalSize) {
-    return getSizeWord(sizeOption);
   }
 
   public scrollToTop() {
