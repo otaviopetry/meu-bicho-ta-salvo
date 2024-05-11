@@ -1,6 +1,6 @@
 <app-gallery-filters></app-gallery-filters>
 
-<div class="masonry-grid md:columns-2 lg:columns-3 w-full">
+<div class="masonry-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full">
   @for (animal of animals; track animal.id) {
   <a [routerLink]="[animal.id]">
     <app-animal-card [animal]="animal"></app-animal-card>

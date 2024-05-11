@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AnimalSize, IAnimal } from '../../interfaces/animal.interface';
 import { AnimalsService } from '../../services/animals.service';
@@ -23,6 +23,8 @@ export class AnimalPageComponent {
   currentImageUrl: string = '';
 
   animalId = '';
+
+  @ViewChild('scrollTarget') scrollTarget!: ElementRef<HTMLDivElement>;
 
   constructor(
     private route: ActivatedRoute,
@@ -53,12 +55,19 @@ export class AnimalPageComponent {
                 )}, porte ${this.getSizeWord(animal.size)?.toLowerCase()}`,
               },
             ]);
+
+            setTimeout(() => {
+              if (this.scrollTarget && this.scrollTarget.nativeElement) {
+                this.scrollTarget.nativeElement.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                });
+              }
+            }, 200);
           }
         })
       );
     });
-
-    window.scrollTo(0, 0);
   }
 
   public getSizeWord(sizeOption: AnimalSize) {
