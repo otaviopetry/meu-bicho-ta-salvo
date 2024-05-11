@@ -42,12 +42,18 @@
       } @if (animal.contactInformation.length) {
       <div>
         <h3 class="font-bold mb-2">Informações de Contato</h3>
-        <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
+        <p
+          class="animal-data__text-value"
+          [innerHTML]="animal.contactInformation | linkify"
+        ></p>
       </div>
       } @if (animal.whereItIs.length > 1) {
       <div>
         <h3 class="font-bold mb-2">Onde está abrigado?</h3>
-        <p>{{ capitalizeFirstWord(animal.whereItIs) }}</p>
+        <p
+          class="animal-data__text-value"
+          [innerHTML]="animal.whereItIs | linkify"
+        ></p>
       </div>
       } @if (animal.whereWasFound && animal.whereWasFound.length > 1) {
       <div>

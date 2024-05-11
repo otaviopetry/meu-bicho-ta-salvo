@@ -6,11 +6,12 @@ import { Observable, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { OpengraphService } from '../../services/opengraph.service';
+import { LinkifyPipe } from '../../pipes/linkify.pipe';
 
 @Component({
   selector: 'app-animal-page',
   standalone: true,
-  imports: [AsyncPipe, RouterModule],
+  imports: [AsyncPipe, RouterModule, LinkifyPipe],
   templateUrl: './animal-page.component.html',
   styleUrl: './animal-page.component.scss',
 })
@@ -34,7 +35,6 @@ export class AnimalPageComponent {
 
       this.animal$ = this.animalsService.getAnimalById(animalId).pipe(
         tap((animal) => {
-          console.log('===> animal', animal);
           if (animal) {
             this.opengraphService.setTags([
               {
@@ -94,7 +94,6 @@ export class AnimalPageComponent {
   }
 
   formatTextareaText(text: string) {
-    console.log('===> text', text);
     return this.capitalizeFirstWord(text.replace(/\n/g, '<br>'));
   }
 }

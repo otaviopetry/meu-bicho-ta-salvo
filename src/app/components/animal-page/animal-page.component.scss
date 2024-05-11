@@ -34,3 +34,9 @@ img {
     margin-bottom: 1rem;
   }
 }
+
+::ng-deep {
+  .animal-data-link {
+    color: #3b82f6;
+  }
+}
