@@ -38,3 +38,19 @@ header {
   cursor: pointer;
 }
 
+.user-type-selector {
+  button {
+    border: 1px solid white;
+    border-radius: .75rem;
+    padding: .5rem;
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+
+    &.active {
+      background-color: white;
+      color: #111827;
+    }
+  }
+}

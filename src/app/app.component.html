@@ -38,9 +38,25 @@
       Meu Bicho Tá Salvo
     </h1>
     <p class="text-center text-lg text-white mb-8">Porto Alegre e região</p>
-    <p class="text-2xl font-thin text-center text-gray-300 max-w-lg mx-auto">
-      Pets resgatados da enchente procuram seus donos
+    <p
+      class="text-2xl font-thin text-center text-gray-300 max-w-lg mx-auto mb-8"
+    >
+      Pets resgatados da enchente procuram seus tutores
     </p>
+    <div class="user-type-selector text-gray-300">
+      <button
+        (click)="changeUserType('tutor')"
+        [ngClass]="{ active: userType === 'tutor' }"
+      >
+        Estou procurando meu pet
+      </button>
+      <button
+        (click)="changeUserType('shelter')"
+        [ngClass]="{ active: userType === 'shelter' }"
+      >
+        Sou abrigo/LT
+      </button>
+    </div>
   </div>
 </div>
 
