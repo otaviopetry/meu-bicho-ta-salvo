@@ -33,7 +33,7 @@ export class AnimalsService {
   public loading = false;
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  private itemsPerPage = 35;
+  public itemsPerPage = 35;
   private currentFilters: HttpParams = new HttpParams();
   public selectedFilters: AnimalFilters = {};
 
