@@ -10,13 +10,15 @@
 
   <div class="p-4">
     <p>
-      <span class="font-bold">Porte:</span>
-      {{ getSizeWord(animal.size) }}
-    </p>
-    <p>
+      <span class="font-bold size-field">Porte: </span>
+      <span class="mr-5">{{ getSizeWord(animal.size) }}</span>
       <span class="font-bold">Sexo:</span>
       {{ capitalizePhrase(animal.sex) }}
     </p>
+    <!-- <p>
+      <span class="font-bold">Sexo:</span>
+      {{ capitalizePhrase(animal.sex) }}
+    </p> -->
     <p>
       <span class="font-bold">Cores dominantes:</span>
       {{ capitalizePhrase(animal.color) }}
