@@ -22,6 +22,8 @@ export class AnimalPageComponent {
   currentImageIndex: number = 0;
   currentImageUrl: string = '';
 
+  animalId = '';
+
   constructor(
     private route: ActivatedRoute,
     private animalsService: AnimalsService,
@@ -32,6 +34,7 @@ export class AnimalPageComponent {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const animalId = params['id'];
+      this.animalId = animalId;
 
       this.animal$ = this.animalsService.getAnimalById(animalId).pipe(
         tap((animal) => {

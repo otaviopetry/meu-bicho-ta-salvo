@@ -34,6 +34,11 @@
         <p>{{ capitalizeFirstWord(animal.sex) }}</p>
       </div>
 
+      <div>
+        <h3 class="font-bold mb-2">Cor:</h3>
+        <p>{{ capitalizeFirstWord(animal.color) }}</p>
+      </div>
+
       @if (animal.characteristics.length) {
       <div>
         <h3 class="font-bold mb-2">Outros Detalhes</h3>
@@ -61,6 +66,10 @@
         <p>{{ capitalizeFirstWord(animal.whereWasFound) }}</p>
       </div>
       }
+      <div>
+        <h3 class="font-bold mb-2">Indentificador do animal no nosso site:</h3>
+        <p>{{ animalId }}</p>
+      </div>
     </div>
 
     <!-- Button to Go Back -->

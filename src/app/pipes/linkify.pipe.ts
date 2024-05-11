@@ -10,7 +10,6 @@ export class LinkifyPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(text: string): any {
-    console.log('===> text');
     if (!text) return text;
 
     const urlRegex = /(https?:\/\/[^\s]+)/g;
