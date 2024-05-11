@@ -34,6 +34,7 @@ export class AnimalPageComponent {
 
       this.animal$ = this.animalsService.getAnimalById(animalId).pipe(
         tap((animal) => {
+          console.log('===> animal', animal);
           if (animal) {
             this.opengraphService.setTags([
               {
@@ -90,5 +91,10 @@ export class AnimalPageComponent {
 
   closeModal(): void {
     this.showModal = false;
+  }
+
+  formatTextareaText(text: string) {
+    console.log('===> text', text);
+    return this.capitalizeFirstWord(text.replace(/\n/g, '<br>'));
   }
 }

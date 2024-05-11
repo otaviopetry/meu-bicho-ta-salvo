@@ -28,3 +28,9 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.animal-data {
+  > div {
+    margin-bottom: 1rem;
+  }
+}

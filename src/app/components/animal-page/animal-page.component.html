@@ -23,7 +23,7 @@
   <div class="bg-white rounded-lg shadow-lg p-6">
     <h2 class="text-2xl font-bold mb-4">Detalhes do Animal</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="animal-data">
       <div>
         <h3 class="font-bold mb-2">Tamanho:</h3>
         <p>{{ getSizeWord(animal.size) }}</p>
@@ -34,15 +34,15 @@
         <p>{{ capitalizeFirstWord(animal.sex) }}</p>
       </div>
 
-      @if (animal.contactInformation.length) {
+      @if (animal.characteristics.length) {
+      <div>
+        <h3 class="font-bold mb-2">Outros Detalhes</h3>
+        <p [innerHTML]="formatTextareaText(animal.characteristics)"></p>
+      </div>
+      } @if (animal.contactInformation.length) {
       <div>
         <h3 class="font-bold mb-2">Informações de Contato</h3>
         <p>{{ capitalizeFirstWord(animal.contactInformation) }}</p>
-      </div>
-      } @if (animal.characteristics.length) {
-      <div>
-        <h3 class="font-bold mb-2">Outros Detalhes</h3>
-        <p>{{ capitalizeFirstWord(animal.characteristics) }}</p>
       </div>
       } @if (animal.whereItIs.length > 1) {
       <div>
