@@ -40,3 +40,8 @@ export const SIZE_OPTIONS: readonly AnimalSize[] = Object.freeze([
   'g',
   'não se sabe',
 ]);
+export const SPECIES_OPTIONS: readonly string[] = [
+  'cachorro',
+  'gato',
+  'outros',
+];

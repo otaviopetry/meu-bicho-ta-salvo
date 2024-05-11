@@ -12,6 +12,7 @@ import {
 import { IAnimal } from '../interfaces/animal.interface';
 
 export interface AnimalFilters {
+  species?: string;
   sex?: string;
   size?: string;
   whereItIs?: string;
@@ -33,6 +34,7 @@ export class AnimalsService {
 
   private itemsPerPage = 35;
   private currentFilters: HttpParams = new HttpParams();
+  public selectedFilters: AnimalFilters = {};
 
   public locations$ = new BehaviorSubject<string[]>([]);
 
@@ -59,6 +61,7 @@ export class AnimalsService {
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
     this.loading$.next(true);
     this.currentFilters = this.createQueryParams(filters);
+    this.selectedFilters = { ...filters };
 
     const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${this.currentFilters.toString()}&limit=${
       this.itemsPerPage
