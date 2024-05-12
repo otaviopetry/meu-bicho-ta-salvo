@@ -10,7 +10,8 @@
         name="species"
         [(ngModel)]="selectedSpecies"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
+        multiple="true"
+        >
         <option value="0">Todos animais</option>
         @for (speciesOption of speciesOptions; track speciesOption) {
         <option value="{{ speciesOption }}">
@@ -26,7 +27,8 @@
         name="size"
         [(ngModel)]="selectedSize"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
+        multiple="true"
+        >
         <option value="0">Qualquer tamanho</option>
         @for (sizeOption of sizeOptions; track $index) {
         <option value="{{ sizeOption }}">
@@ -42,7 +44,8 @@
         name="sex"
         [(ngModel)]="selectedSex"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
+        multiple="true"
+        >
         <option value="0">Qualquer sexo</option>
         @for (sexOption of sexOptions; track $index) {
         <option value="{{ sexOption }}">
@@ -58,7 +61,8 @@
         name="color"
         [(ngModel)]="selectedColor"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
+        multiple="true"
+        >
         <option value="0">Qualquer cor</option>
         @for (colorOption of colorOptions; track $index) {
         <option value="{{ colorOption }}">
