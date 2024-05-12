@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { AnimalSize, IAnimal } from '../../interfaces/animal.interface';
 import { AnimalsService } from '../../services/animals.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { OpengraphService } from '../../services/opengraph.service';
@@ -26,6 +26,8 @@ export class AnimalPageComponent {
 
   @ViewChild('scrollTarget') scrollTarget!: ElementRef<HTMLDivElement>;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private animalsService: AnimalsService,
@@ -34,40 +36,47 @@ export class AnimalPageComponent {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const animalId = params['id'];
-      this.animalId = animalId;
+    this.subscriptions.push(
+      this.route.params.subscribe((params) => {
+        const animalId = params['id'];
+        this.animalId = animalId;
 
-      this.animal$ = this.animalsService.getAnimalById(animalId).pipe(
-        tap((animal) => {
-          if (animal) {
-            this.opengraphService.setTags([
-              {
-                property: 'og:url',
-                content: 'https://meu-bicho-ta-salvo.netlify.app/',
-              },
-              { property: 'og:title', content: 'Meu Bicho Tá Salvo - POA' },
-              { property: 'og:image', content: animal.imageURLs[0] },
-              {
-                property: 'og:description',
-                content: `${this.capitalizeFirstWord(
-                  animal.species
-                )}, porte ${this.getSizeWord(animal.size)?.toLowerCase()}`,
-              },
-            ]);
+        this.animal$ = this.animalsService.getAnimalById(animalId).pipe(
+          tap((animal) => {
+            if (animal) {
+              this.opengraphService.setTags([
+                {
+                  property: 'og:url',
+                  content: 'https://meu-bicho-ta-salvo.netlify.app/',
+                },
+                { property: 'og:title', content: 'Meu Bicho Tá Salvo - POA' },
+                { property: 'og:image', content: animal.imageURLs[0] },
+                {
+                  property: 'og:description',
+                  content: `${this.capitalizeFirstWord(
+                    animal.species
+                  )}, porte ${this.getSizeWord(animal.size)?.toLowerCase()}`,
+                },
+              ]);
 
-            setTimeout(() => {
-              if (this.scrollTarget && this.scrollTarget.nativeElement) {
-                this.scrollTarget.nativeElement.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                });
-              }
-            }, 200);
-          }
-        })
-      );
-    });
+              setTimeout(() => {
+                if (this.scrollTarget && this.scrollTarget.nativeElement) {
+                  this.scrollTarget.nativeElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  });
+                }
+              }, 200);
+            }
+          })
+        );
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   public getSizeWord(sizeOption: AnimalSize) {
