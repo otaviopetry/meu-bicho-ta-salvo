@@ -59,6 +59,7 @@
       <strong>Animais cadastrados:</strong>
       {{ (animalCount$ | async) || "..." }}
     </p>
+    @if (isHome()) {
     <div class="user-type-selector text-gray-300">
       <button
         (click)="changeUserType('tutor')"
@@ -73,6 +74,7 @@
         Sou abrigo/LT
       </button>
     </div>
+    }
   </div>
 </div>
 
