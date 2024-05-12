@@ -18,7 +18,7 @@ export interface AnimalFilters {
   sex?: string;
   size?: string;
   whereItIs?: string;
-  color?: string;
+  color?: { [color: string]: boolean };
   startAfter?: string;
 }
 
@@ -74,7 +74,10 @@ export class AnimalsService {
     this.currentFilters = this.createQueryParams(filters);
     this.selectedFilters = { ...filters };
 
-    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${this.currentFilters.toString()}&limit=${
+    // const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${this.currentFilters.toString()}&limit=${
+    //   this.itemsPerPage
+    // }`;
+    const apiEndpoint = `http://localhost:3000/animals?${this.currentFilters.toString()}&limit=${
       this.itemsPerPage
     }`;
 
@@ -186,7 +189,15 @@ export class AnimalsService {
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
-        params = params.append(key, value);
+        if (key === 'color' && typeof value === 'object') {
+          Object.keys(value).forEach((color) => {
+            if (value[color]) {
+              params = params.append('color', color);
+            }
+          });
+        } else if (typeof value !== 'object') {
+          params = params.append(key, value);
+        }
       }
     });
 

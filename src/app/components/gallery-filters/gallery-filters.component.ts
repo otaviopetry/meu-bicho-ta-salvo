@@ -30,8 +30,10 @@ export class GalleryFiltersComponent {
   public selectedSpecies: string = '0';
   public selectedSize: string = '0';
   public selectedSex: string = '0';
-  public selectedColor: string = '0';
+  public selectedColors: { [color: string]: boolean } = {};
   public selectedLocation: string = '0';
+
+  showDropdown = false;
 
   public userType: UserType = 'tutor';
 
@@ -56,6 +58,10 @@ export class GalleryFiltersComponent {
     this.subscriptions = [];
   }
 
+  public toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
   public capitalizeFirstWord(phrase: string) {
     return capitalizeFirstWord(phrase);
   }
@@ -71,9 +77,12 @@ export class GalleryFiltersComponent {
       size: this.selectedSize !== '0' ? this.selectedSize : undefined,
       whereItIs:
         this.selectedLocation !== '0' ? this.selectedLocation : undefined,
-      color: this.selectedColor !== '0' ? this.selectedColor : undefined,
+      color: Object.entries(this.selectedColors).length
+        ? this.selectedColors
+        : undefined,
     };
 
+    this.showDropdown = false;
     this.animalsService.resetPagination();
     this.animalsService.getAnimalsFromDatabase(filters).catch((error) => {
       console.error('Error fetching filtered animals:', error);
@@ -84,7 +93,7 @@ export class GalleryFiltersComponent {
     this.selectedSpecies = '0';
     this.selectedSize = '0';
     this.selectedSex = '0';
-    this.selectedColor = '0';
+    this.selectedColors = {};
     this.selectedLocation = '0';
     this.animalsService.resetFilters();
   }
@@ -108,7 +117,7 @@ export class GalleryFiltersComponent {
     }
 
     if (this.animalsService.selectedFilters['color']) {
-      this.selectedColor = this.animalsService.selectedFilters['color'];
+      this.selectedColors = this.animalsService.selectedFilters['color'];
     }
 
     if (this.animalsService.selectedFilters['whereItIs']) {
