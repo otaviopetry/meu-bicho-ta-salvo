@@ -82,6 +82,17 @@
     </div>
     }
   </div>
+  <div class="text-center w-full mt-2">
+    @if (isHome()) {
+    <button class="text-gray-300" (click)="navigateToHowToUse()">
+      Como usar o site (vídeo)
+    </button>
+    } @else {
+    <button class="text-gray-300" (click)="navigateHome()">
+      Voltar para o início
+    </button>
+    }
+  </div>
 </div>
 
 <div class="container mx-auto px-4 py-8">

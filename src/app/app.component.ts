@@ -48,4 +48,8 @@ export class AppComponent {
     this.animalsService.changeUserType(userType);
     this.userType = userType;
   }
+
+  public navigateToHowToUse() {
+    this.router.navigate(['/como-utilizar']);
+  }
 }
