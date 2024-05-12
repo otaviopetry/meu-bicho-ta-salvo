@@ -1,17 +1,11 @@
-<div
-  class="bg-white rounded drop-shadow -mt-20 p-4 mb-6 w-full mx-auto text-center"
->
+<div class="bg-white rounded drop-shadow -mt-20 p-4 mb-6 w-full mx-auto text-center">
   <div class="flex flex-wrap items-center justify-center gap-2 w-full">
     @if (userType === 'tutor') {
     <!-- Species Dropdown -->
     <div class="flex-1 min-w-[140px]">
-      <select
-        id="species"
-        name="species"
-        [(ngModel)]="selectedSpecies"
+      <select id="species" name="species" [(ngModel)]="selectedSpecies"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        multiple="true"
-        >
+        multiple="true">
         <option value="0">Todos animais</option>
         @for (speciesOption of speciesOptions; track speciesOption) {
         <option value="{{ speciesOption }}">
@@ -22,13 +16,9 @@
     </div>
     <!-- Size Dropdown -->
     <div class="flex-1 min-w-[140px]">
-      <select
-        id="size"
-        name="size"
-        [(ngModel)]="selectedSize"
+      <select id="size" name="size" [(ngModel)]="selectedSize"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        multiple="true"
-        >
+        multiple="true">
         <option value="0">Qualquer tamanho</option>
         @for (sizeOption of sizeOptions; track $index) {
         <option value="{{ sizeOption }}">
@@ -39,13 +29,9 @@
     </div>
     <!-- Sex Dropdown -->
     <div class="flex-1 min-w-[140px]">
-      <select
-        id="sex"
-        name="sex"
-        [(ngModel)]="selectedSex"
+      <select id="sex" name="sex" [(ngModel)]="selectedSex"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        multiple="true"
-        >
+        multiple="true">
         <option value="0">Qualquer sexo</option>
         @for (sexOption of sexOptions; track $index) {
         <option value="{{ sexOption }}">
@@ -56,13 +42,9 @@
     </div>
     <!-- Color Dropdown -->
     <div class="flex-1 min-w-[140px]">
-      <select
-        id="color"
-        name="color"
-        [(ngModel)]="selectedColor"
+      <select id="color" name="color" [(ngModel)]="selectedColor"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-        multiple="true"
-        >
+        multiple="true">
         <option value="0">Qualquer cor</option>
         @for (colorOption of colorOptions; track $index) {
         <option value="{{ colorOption }}">
@@ -74,12 +56,8 @@
     } @else {
     <!-- Location (Abrigo) Dropdown -->
     <div class="flex-1 min-w-[140px]">
-      <select
-        id="location"
-        name="location"
-        [(ngModel)]="selectedLocation"
-        class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
+      <select id="location" name="location" [(ngModel)]="selectedLocation"
+        class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
         <option value="0">Qualquer abrigo</option>
         @for (locationOption of (locationOptions$ | async); track $index) {
         <option value="{{ locationOption }}">
@@ -91,16 +69,12 @@
     }
   </div>
   <div class="flex-auto items-center justify-center mt-3">
-    <button
-      class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 whitespace-nowrap"
-      (click)="filterAnimals()"
-    >
+    <button class="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 whitespace-nowrap"
+      (click)="filterAnimals()">
       Filtrar
     </button>
-    <button
-      class="bg-gray-500 text-white ml-2 px-4 py-2 rounded-md hover:bg-gray-600"
-      (click)="resetFilterAndLoadInitialData()"
-    >
+    <button class="bg-gray-500 text-white ml-2 px-4 py-2 rounded-md hover:bg-gray-600"
+      (click)="resetFilterAndLoadInitialData()">
       Limpar filtros
     </button>
   </div>
