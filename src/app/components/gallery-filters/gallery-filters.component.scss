@@ -1,0 +1,10 @@
+.selected-colors {
+  font-style: italic;
+  margin-top: 5px;
+
+  &__color:not(:last-child) {
+    &:after {
+      content: '; ';
+    }
+  }
+}

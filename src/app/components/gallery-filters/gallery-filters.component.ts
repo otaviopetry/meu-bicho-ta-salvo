@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnimalsService } from '../../services/animals.service';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
@@ -39,6 +39,9 @@ export class GalleryFiltersComponent {
 
   private subscriptions: Subscription[] = [];
 
+  @ViewChild('menuContainer', { static: true })
+  menuContainer!: ElementRef<HTMLDivElement>;
+
   constructor(private animalsService: AnimalsService) {
     //
   }
@@ -62,12 +65,24 @@ export class GalleryFiltersComponent {
     this.showDropdown = !this.showDropdown;
   }
 
+  public closeColorMenu() {
+    this.showDropdown = false;
+    this.menuContainer.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
   public capitalizeFirstWord(phrase: string) {
     return capitalizeFirstWord(phrase);
   }
 
   public getSizeWord(sizeOption: AnimalSize) {
     return getSizeWord(sizeOption);
+  }
+
+  public getSelectedColors() {
+    return Object.keys(this.selectedColors);
   }
 
   public filterAnimals(): void {

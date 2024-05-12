@@ -1,4 +1,5 @@
 <div
+  #menuContainer
   class="bg-white rounded drop-shadow -mt-20 p-4 mb-6 w-full mx-auto text-center"
 >
   <div class="flex flex-wrap items-center justify-center gap-2 w-full">
@@ -52,19 +53,27 @@
       </select>
     </div>
     <!-- Color Dropdown -->
-    <div class="flex-1 min-w-[280px] relative">
+    <div class="w-full relative">
       <button
         class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
         (click)="toggleDropdown()"
       >
-        Selecionar cores
+        {{ getSelectedColors().length > 0 ? "" : "Selecione as cores" }}
+        @if (getSelectedColors().length > 0) {
+        <div class="selected-colors">
+          <strong>Cores selecionadas: </strong>
+          @for (selectedColor of getSelectedColors(); track selectedColor) {
+          <span class="selected-colors__color">{{ selectedColor }}</span>
+          }
+        </div>
+        }
       </button>
       <div
         *ngIf="showDropdown"
         class="absolute z-10 w-full bg-white border border-gray-300 rounded-md"
       >
-        @for (colorOption of colorOptions; track colorOption) {}
-        <div *ngFor="let colorOption of colorOptions" class="p-2 text-left">
+        @for (colorOption of colorOptions; track colorOption) {
+        <div class="p-2 text-left">
           <input
             type="checkbox"
             id="color-{{ colorOption }}"
@@ -76,6 +85,8 @@
             {{ capitalizeFirstWord(colorOption) }}
           </label>
         </div>
+        }
+        <button class="mb-5" (click)="closeColorMenu()">Fechar menu</button>
       </div>
     </div>
 
