@@ -70,10 +70,10 @@
       </button>
       <div
         *ngIf="showDropdown"
-        class="absolute z-10 w-full bg-white border border-gray-300 rounded-md"
+        class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
       >
         @for (colorOption of colorOptions; track colorOption) {
-        <div class="p-2 text-left">
+        <div class="flex-item p-2 text-left">
           <input
             type="checkbox"
             id="color-{{ colorOption }}"
@@ -86,7 +86,12 @@
           </label>
         </div>
         }
-        <button class="mb-5" (click)="closeColorMenu()">Fechar menu</button>
+        <button
+          class="flex-item button-close mb-5 w-full"
+          (click)="closeColorMenu()"
+        >
+          Fechar menu
+        </button>
       </div>
     </div>
 

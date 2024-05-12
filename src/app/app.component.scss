@@ -43,9 +43,19 @@ header {
     border: 1px solid white;
     border-radius: .75rem;
     padding: .5rem;
+    margin-bottom: 1rem;
+    width: 100%;
 
-    &:not(:last-child) {
-      margin-right: 1rem;
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    @media (min-width: 520px) {
+      width: auto;
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
     }
 
     &.active {

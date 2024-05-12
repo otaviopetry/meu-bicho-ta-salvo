@@ -8,3 +8,28 @@
     }
   }
 }
+
+.dropdown-flex {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px;
+}
+
+.flex-item {
+  box-sizing: border-box;
+  padding: 4px;
+  width: 100%;
+}
+
+.button-close {
+  flex-basis: 100%;;
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (min-width: 600px) {
+  .flex-item {
+    width: 50%;
+  }
+}
+
