@@ -39,6 +39,7 @@ export class AnimalsService {
   public selectedFilters: AnimalFilters = {};
 
   public locations$ = new BehaviorSubject<string[]>([]);
+  public temporaryHomeLocations$ = new BehaviorSubject<string[]>([]);
   public userType$ = new BehaviorSubject<UserType>('tutor');
   public animalCount$ = new Subject<number>();
 
@@ -149,6 +150,18 @@ export class AnimalsService {
       .subscribe({
         next: (response) => {
           this.locations$.next(response.locations);
+        },
+      });
+  }
+
+  public loadTemporaryHomeLocations() {
+    return this.http
+      .get<{ locations: string[] }>(
+        `https://bicho-salvo-api-production.up.railway.app/temporary-homes`
+      )
+      .subscribe({
+        next: (response) => {
+          this.temporaryHomeLocations$.next(response.locations);
         },
       });
   }

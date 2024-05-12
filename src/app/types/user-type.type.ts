@@ -1,1 +1,1 @@
-export type UserType = 'tutor' | 'shelter';
+export type UserType = 'tutor' | 'shelter' | 'temporary-home';

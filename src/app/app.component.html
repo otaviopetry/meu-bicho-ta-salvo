@@ -71,7 +71,13 @@
         (click)="changeUserType('shelter')"
         [ngClass]="{ active: userType === 'shelter' }"
       >
-        Sou abrigo/LT
+        Sou abrigo
+      </button>
+      <button
+        (click)="changeUserType('temporary-home')"
+        [ngClass]="{ active: userType === 'temporary-home' }"
+      >
+        Sou LT
       </button>
     </div>
     }

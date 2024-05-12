@@ -24,6 +24,7 @@ export class AppComponent {
   ngOnInit() {
     this.animalsService.loadInitialData();
     this.animalsService.loadLocations();
+    this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
   }
 

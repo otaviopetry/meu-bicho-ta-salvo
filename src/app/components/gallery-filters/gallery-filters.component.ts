@@ -23,6 +23,8 @@ import { UserType } from '../../types/user-type.type';
 export class GalleryFiltersComponent {
   public speciesOptions = SPECIES_OPTIONS;
   public locationOptions$ = this.animalsService.locations$.asObservable();
+  public temporaryHomeOptions$ =
+    this.animalsService.temporaryHomeLocations$.asObservable();
   public colorOptions = COLOR_OPTIONS;
   public sizeOptions = SIZE_OPTIONS;
   public sexOptions = SEX_OPTIONS;

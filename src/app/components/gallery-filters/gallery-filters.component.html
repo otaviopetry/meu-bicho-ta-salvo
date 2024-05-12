@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    } @else {
+    } @else if(userType === 'shelter') {
     <!-- Location Dropdown -->
     <div class="flex-1 min-w-[140px]">
       <select
@@ -104,8 +104,26 @@
         [(ngModel)]="selectedLocation"
         class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
       >
-        <option value="0">Qualquer abrigo</option>
-        @for (locationOption of (locationOptions$ | async); track $index) {
+        <option value="0">Selecione um abrigo</option>
+        @for (locationOption of (locationOptions$ | async)?.sort(); track
+        $index) {
+        <option value="{{ locationOption }}">
+          {{ capitalizeFirstWord(locationOption) }}
+        </option>
+        }
+      </select>
+    </div>
+    } @else if(userType === 'temporary-home') {
+    <div class="flex-1 min-w-[140px]">
+      <select
+        id="home-location"
+        name="home-location"
+        [(ngModel)]="selectedLocation"
+        class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      >
+        <option value="0">Selecione um LT</option>
+        @for (locationOption of (temporaryHomeOptions$ | async)?.sort(); track
+        $index) {
         <option value="{{ locationOption }}">
           {{ capitalizeFirstWord(locationOption) }}
         </option>
