@@ -74,10 +74,7 @@ export class AnimalsService {
     this.currentFilters = this.createQueryParams(filters);
     this.selectedFilters = { ...filters };
 
-    // const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${this.currentFilters.toString()}&limit=${
-    //   this.itemsPerPage
-    // }`;
-    const apiEndpoint = `http://localhost:3000/animals?${this.currentFilters.toString()}&limit=${
+    const apiEndpoint = `https://bicho-salvo-api-production.up.railway.app/animals?${this.currentFilters.toString()}&limit=${
       this.itemsPerPage
     }`;
 
