@@ -29,7 +29,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.animalsService.loadInitialData();
     this.animalsService.loadLocations();
     this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
@@ -38,6 +37,8 @@ export class AppComponent {
         if (params['abrigo']) {
           this.changeUserType('shelter');
           this.animalsService.handleShelterDirectAccess(params['abrigo']);
+        } else {
+          this.animalsService.loadInitialData();
         }
       })
     );
