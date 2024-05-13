@@ -97,22 +97,28 @@
 
     } @else if(userType === 'shelter') {
     <!-- Location Dropdown -->
-    <div class="flex-1 min-w-[140px]">
-      <select
-        id="location"
-        name="location"
-        [(ngModel)]="selectedLocation"
-        class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
-        <option value="0">Selecione um abrigo</option>
-        @for (locationOption of (locationOptions$ | async)?.sort(); track
-        $index) {
-        <option value="{{ locationOption }}">
-          {{ capitalizeFirstWord(locationOption) }}
-        </option>
-        }
-      </select>
-    </div>
+    <form class="w-full" [formGroup]="shelterForm">
+      <div class="flex-1 min-w-[140px]">
+        <input
+          type="text"
+          id="shelter-location"
+          name="shelter"
+          formControlName="shelter"
+          placeholder="Digite o nome do abrigo"
+          class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        />
+      </div>
+      @if (showLocationSuggestions) {
+      <div class="shelter-suggestions">
+        <ul>
+          @for (locationSuggestion of filteredLocations; track
+          locationSuggestion) {
+          <li>{{ locationSuggestion }}</li>
+          }
+        </ul>
+      </div>
+      }
+    </form>
     } @else if(userType === 'temporary-home') {
     <div class="flex-1 min-w-[140px]">
       <select
