@@ -12,6 +12,7 @@ import {
 import { AnimalSize } from '../../interfaces/animal.interface';
 import { Subscription } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-gallery-filters',
@@ -44,7 +45,10 @@ export class GalleryFiltersComponent {
   @ViewChild('menuContainer', { static: true })
   menuContainer!: ElementRef<HTMLDivElement>;
 
-  constructor(private animalsService: AnimalsService) {
+  constructor(
+    private animalsService: AnimalsService,
+    private route: ActivatedRoute
+  ) {
     //
   }
 
@@ -54,6 +58,13 @@ export class GalleryFiltersComponent {
         this.userType = userType;
         this.populateFilters();
         this.selectedLocation = '0';
+      })
+    );
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        if (params['abrigo']) {
+          this.selectedLocation = params['abrigo'];
+        }
       })
     );
   }
