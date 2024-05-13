@@ -65,7 +65,7 @@ export class AnimalGalleryComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll(): void {
     if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 400 &&
       !this.loading &&
       this.animalsService.hasMorePages &&
       this.animals.length > this.animalsService.itemsPerPage - 1
