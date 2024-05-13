@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { AnimalsService } from './services/animals.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { UserType } from './types/user-type.type';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,13 @@ export class AppComponent {
   public userType: UserType = 'tutor';
   public animalCount$ = this.animalsService.animalCount$.asObservable();
 
-  constructor(private animalsService: AnimalsService, private router: Router) {
+  private subscriptions: Subscription[] = [];
+
+  constructor(
+    private animalsService: AnimalsService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     //
   }
 
@@ -26,6 +33,19 @@ export class AppComponent {
     this.animalsService.loadLocations();
     this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        if (params['abrigo']) {
+          this.changeUserType('shelter');
+          this.animalsService.handleShelterDirectAccess(params['abrigo']);
+        }
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   public navigateHome() {

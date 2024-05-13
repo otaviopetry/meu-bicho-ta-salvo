@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { AnimalsService } from '../../services/animals.service';
+import { AnimalFilters, AnimalsService } from '../../services/animals.service';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -49,11 +49,11 @@ export class GalleryFiltersComponent {
   }
 
   ngOnInit() {
-    this.populateFilters();
     this.subscriptions.push(
       this.animalsService.userType$.subscribe((userType) => {
         this.userType = userType;
-        this.resetFiltersWithoutLoadingData();
+        this.populateFilters();
+        this.selectedLocation = '0';
       })
     );
   }
@@ -88,20 +88,26 @@ export class GalleryFiltersComponent {
   }
 
   public filterAnimals(): void {
-    const filters = {
-      species: this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
-      sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
-      size: this.selectedSize !== '0' ? this.selectedSize : undefined,
-      whereItIs:
-        this.selectedLocation !== '0' ? this.selectedLocation : undefined,
-      color: Object.entries(this.selectedColors).length
-        ? this.selectedColors
-        : undefined,
-    };
+    let localFilters: AnimalFilters = {};
 
     this.showDropdown = false;
     this.animalsService.resetPagination();
-    this.animalsService.getAnimalsFromDatabase(filters).catch((error) => {
+
+    if (this.selectedLocation !== '0') {
+      localFilters['whereItIs'] = this.selectedLocation;
+    } else {
+      localFilters = {
+        species:
+          this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
+        sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
+        size: this.selectedSize !== '0' ? this.selectedSize : undefined,
+        color: Object.entries(this.selectedColors).length
+          ? this.selectedColors
+          : undefined,
+      };
+    }
+
+    this.animalsService.getAnimalsFromDatabase(localFilters).catch((error) => {
       console.error('Error fetching filtered animals:', error);
     });
   }
