@@ -43,6 +43,8 @@ export class AnimalsService {
   public userType$ = new BehaviorSubject<UserType>('tutor');
   public animalCount$ = new Subject<number>();
 
+  public filterAnimals$ = new Subject<void>();
+
   constructor(private http: HttpClient) {
     //
   }
@@ -112,6 +114,7 @@ export class AnimalsService {
   public loadNextPage(): void {
     if (this.nextPageToken && this.hasMorePages) {
       const nextPageFilters: any = {};
+
       this.currentFilters.keys().forEach((key) => {
         nextPageFilters[key] = this.currentFilters.get(key);
       });
@@ -121,7 +124,7 @@ export class AnimalsService {
         .then((response) => {
           if (response.animals.length > 0) {
             this.allAnimals = [...this.allAnimals, ...response.animals];
-            this.animalsCache.next(this.allAnimals);
+            this.animalsCache.next(response.animals);
           }
 
           this.hasMorePages = response.animals.length >= this.itemsPerPage;
@@ -188,6 +191,10 @@ export class AnimalsService {
     this.selectedFilters = {};
     this.nextPageToken = undefined;
     this.hasMorePages = true;
+  }
+
+  public resetAnimals() {
+    this.allAnimals = [];
   }
 
   public changeUserType(userType: UserType) {

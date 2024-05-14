@@ -103,6 +103,8 @@ export class GalleryFiltersComponent {
 
     this.showDropdown = false;
     this.animalsService.resetPagination();
+    this.animalsService.resetAnimals();
+    this.animalsService.filterAnimals$.next();
 
     if (this.selectedLocation !== '0') {
       localFilters['whereItIs'] = this.selectedLocation;
