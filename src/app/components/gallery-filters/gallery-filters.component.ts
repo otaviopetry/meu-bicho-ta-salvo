@@ -2,7 +2,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnimalFilters, AnimalsService } from '../../services/animals.service';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+} from '@angular/forms';
 import {
   COLOR_OPTIONS,
   SEX_OPTIONS,
@@ -13,11 +19,12 @@ import { AnimalSize } from '../../interfaces/animal.interface';
 import { Subscription } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
+import { ColorInputComponent } from './color-input/color-input.component';
 
 @Component({
   selector: 'app-gallery-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ColorInputComponent],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
 })
@@ -26,9 +33,10 @@ export class GalleryFiltersComponent {
   public locationOptions$ = this.animalsService.locations$.asObservable();
   public temporaryHomeOptions$ =
     this.animalsService.temporaryHomeLocations$.asObservable();
-  public colorOptions = COLOR_OPTIONS;
+
   public sizeOptions = SIZE_OPTIONS;
   public sexOptions = SEX_OPTIONS;
+  public colorOptions = COLOR_OPTIONS;
 
   public selectedSpecies: string = '0';
   public selectedSize: string = '0';
@@ -36,7 +44,7 @@ export class GalleryFiltersComponent {
   public selectedColors: { [color: string]: boolean } = {};
   public selectedLocation: string = '0';
 
-  showDropdown = false;
+  public filtersForm!: FormGroup;
 
   public userType: UserType = 'tutor';
 
@@ -47,7 +55,8 @@ export class GalleryFiltersComponent {
 
   constructor(
     private animalsService: AnimalsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
   ) {
     //
   }
@@ -67,6 +76,7 @@ export class GalleryFiltersComponent {
         }
       })
     );
+    this.buildForm();
   }
 
   ngOnDestroy() {
@@ -74,12 +84,21 @@ export class GalleryFiltersComponent {
     this.subscriptions = [];
   }
 
-  public toggleDropdown() {
-    this.showDropdown = !this.showDropdown;
+  buildForm(): void {
+    this.filtersForm = this.formBuilder.group({
+      species: [[]],
+      size: [[]],
+      sex: [[]],
+      color: this.formBuilder.array([]),
+    });
+    this.colorOptions.forEach(() => this.colors.push(new FormControl(false)));
+  }
+
+  get colors(): FormArray {
+    return this.filtersForm.get('color') as FormArray;
   }
 
   public closeColorMenu() {
-    this.showDropdown = false;
     this.menuContainer.nativeElement.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
@@ -94,17 +113,14 @@ export class GalleryFiltersComponent {
     return getSizeWord(sizeOption);
   }
 
-  public getSelectedColors() {
-    return Object.keys(this.selectedColors);
-  }
-
   public filterAnimals(): void {
     let localFilters: AnimalFilters = {};
 
-    this.showDropdown = false;
     this.animalsService.resetPagination();
     this.animalsService.resetAnimals();
     this.animalsService.filterAnimals$.next();
+
+    const selectedColors = this.getSelectedColors();
 
     if (this.selectedLocation !== '0') {
       localFilters['whereItIs'] = this.selectedLocation;
@@ -114,9 +130,7 @@ export class GalleryFiltersComponent {
           this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
         sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
         size: this.selectedSize !== '0' ? this.selectedSize : undefined,
-        color: Object.entries(this.selectedColors).length
-          ? this.selectedColors
-          : undefined,
+        color: selectedColors.length ? selectedColors : undefined,
       };
     }
 
@@ -125,11 +139,19 @@ export class GalleryFiltersComponent {
     });
   }
 
+  public getSelectedColors() {
+    return this.filtersForm.value.color
+      .map((checked: boolean, i: number) =>
+        checked ? this.colorOptions[i] : null
+      )
+      .filter((value: string | null) => value !== null);
+  }
+
   public resetFiltersWithoutLoadingData() {
     this.selectedSpecies = '0';
     this.selectedSize = '0';
     this.selectedSex = '0';
-    this.selectedColors = {};
+    this.filtersForm.reset();
     this.selectedLocation = '0';
     this.animalsService.resetFilters();
   }

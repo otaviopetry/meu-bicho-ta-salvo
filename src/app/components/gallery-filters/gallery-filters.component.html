@@ -53,47 +53,11 @@
       </select>
     </div>
     <!-- Color Dropdown -->
-    <div class="w-full relative">
-      <button
-        class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
-        (click)="toggleDropdown()"
-      >
-        {{ getSelectedColors().length > 0 ? "" : "Selecione as cores" }}
-        @if (getSelectedColors().length > 0) {
-        <div class="selected-colors">
-          <strong>Cores selecionadas: </strong>
-          @for (selectedColor of getSelectedColors(); track selectedColor) {
-          <span class="selected-colors__color">{{ selectedColor }}</span>
-          }
-        </div>
-        }
-      </button>
-      <div
-        *ngIf="showDropdown"
-        class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
-      >
-        @for (colorOption of colorOptions; track colorOption) {
-        <div class="flex-item p-2 text-left">
-          <input
-            type="checkbox"
-            id="color-{{ colorOption }}"
-            name="color"
-            [(ngModel)]="selectedColors[colorOption]"
-            class="mr-2"
-          />
-          <label for="color-{{ colorOption }}">
-            {{ capitalizeFirstWord(colorOption) }}
-          </label>
-        </div>
-        }
-        <button
-          class="flex-item button-close mb-5 w-full"
-          (click)="closeColorMenu()"
-        >
-          Fechar menu
-        </button>
-      </div>
-    </div>
+    <app-color-input
+      [formGroup]="filtersForm"
+      [colorOptions]="colorOptions"
+      class="w-full relative"
+    ></app-color-input>
 
     } @else if(userType === 'shelter') {
     <!-- Location Dropdown -->
