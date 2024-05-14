@@ -114,42 +114,44 @@ export class GalleryFiltersComponent {
   }
 
   public filterAnimals(): void {
-    const selectedColors = this.filtersForm.value.color
+    let localFilters: AnimalFilters = {};
+
+    this.animalsService.resetPagination();
+    this.animalsService.resetAnimals();
+    this.animalsService.filterAnimals$.next();
+
+    const selectedColors = this.getSelectedColors();
+
+    if (this.selectedLocation !== '0') {
+      localFilters['whereItIs'] = this.selectedLocation;
+    } else {
+      localFilters = {
+        species:
+          this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
+        sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
+        size: this.selectedSize !== '0' ? this.selectedSize : undefined,
+        color: selectedColors.length ? selectedColors : undefined,
+      };
+    }
+
+    this.animalsService.getAnimalsFromDatabase(localFilters).catch((error) => {
+      console.error('Error fetching filtered animals:', error);
+    });
+  }
+
+  public getSelectedColors() {
+    return this.filtersForm.value.color
       .map((checked: boolean, i: number) =>
         checked ? this.colorOptions[i] : null
       )
       .filter((value: string | null) => value !== null);
-    console.log('===> submit filters', selectedColors);
-    // let localFilters: AnimalFilters = {};
-
-    // this.animalsService.resetPagination();
-    // this.animalsService.resetAnimals();
-    // this.animalsService.filterAnimals$.next();
-
-    // if (this.selectedLocation !== '0') {
-    //   localFilters['whereItIs'] = this.selectedLocation;
-    // } else {
-    //   localFilters = {
-    //     species:
-    //       this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
-    //     sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
-    //     size: this.selectedSize !== '0' ? this.selectedSize : undefined,
-    //     color: Object.entries(this.selectedColors).length
-    //       ? this.selectedColors
-    //       : undefined,
-    //   };
-    // }
-
-    // this.animalsService.getAnimalsFromDatabase(localFilters).catch((error) => {
-    //   console.error('Error fetching filtered animals:', error);
-    // });
   }
 
   public resetFiltersWithoutLoadingData() {
     this.selectedSpecies = '0';
     this.selectedSize = '0';
     this.selectedSex = '0';
-    this.selectedColors = {};
+    this.filtersForm.reset();
     this.selectedLocation = '0';
     this.animalsService.resetFilters();
   }

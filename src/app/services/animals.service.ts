@@ -44,14 +44,13 @@ export class AnimalsService {
   public animalCount$ = new Subject<number>();
 
   public filterAnimals$ = new Subject<void>();
+  public resetFilters$ = new Subject<void>();
 
   constructor(private http: HttpClient) {
     //
   }
 
   public loadInitialData() {
-    // this.animalsCache.next(this.getStaticData());
-
     this.getAnimalsFromDatabase()
       .then((response) => {
         this.allAnimals = response.animals;
@@ -66,13 +65,6 @@ export class AnimalsService {
     filters: AnimalFilters = {},
     isLoadingNextPage?: boolean
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
-    // this.animalsCache.next(this.getStaticData());
-
-    // return Promise.resolve({
-    //   animals: this.getStaticData(),
-    //   nextPageToken: '',
-    // });
-
     this.loading$.next(true);
     this.currentFilters = this.createQueryParams(filters);
     this.selectedFilters = { ...filters };
@@ -187,10 +179,12 @@ export class AnimalsService {
   }
 
   public resetFilters(): void {
+    this.resetFilters$.next();
     this.currentFilters = new HttpParams();
     this.selectedFilters = {};
     this.nextPageToken = undefined;
     this.hasMorePages = true;
+    this.loadInitialData();
   }
 
   public resetAnimals() {
@@ -206,13 +200,11 @@ export class AnimalsService {
 
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
-        if (key === 'color' && typeof value === 'object') {
-          Object.keys(value).forEach((color) => {
-            if (value[color]) {
-              params = params.append('color', color);
-            }
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            params = params.append(key, item);
           });
-        } else if (typeof value !== 'object') {
+        } else {
           params = params.append(key, value);
         }
       }

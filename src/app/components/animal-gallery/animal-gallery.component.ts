@@ -52,6 +52,9 @@ export class AnimalGalleryComponent implements OnInit {
     this.subscriptions.push(
       this.animalsService.filterAnimals$.subscribe(() => {
         this.animals = [];
+      }),
+      this.animalsService.resetFilters$.subscribe(() => {
+        this.animals = [];
       })
     );
   }
