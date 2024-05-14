@@ -50,8 +50,6 @@ export class AnimalsService {
   }
 
   public loadInitialData() {
-    // this.animalsCache.next(this.getStaticData());
-
     this.getAnimalsFromDatabase()
       .then((response) => {
         this.allAnimals = response.animals;
@@ -66,13 +64,6 @@ export class AnimalsService {
     filters: AnimalFilters = {},
     isLoadingNextPage?: boolean
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
-    // this.animalsCache.next(this.getStaticData());
-
-    // return Promise.resolve({
-    //   animals: this.getStaticData(),
-    //   nextPageToken: '',
-    // });
-
     this.loading$.next(true);
     this.currentFilters = this.createQueryParams(filters);
     this.selectedFilters = { ...filters };

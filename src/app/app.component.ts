@@ -32,16 +32,16 @@ export class AppComponent {
     this.animalsService.loadLocations();
     this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
-    // this.subscriptions.push(
-    //   this.route.queryParams.subscribe((params) => {
-    //     if (params['abrigo']) {
-    //       this.changeUserType('shelter');
-    //       this.animalsService.handleShelterDirectAccess(params['abrigo']);
-    //     } else {
-    //       this.animalsService.loadInitialData();
-    //     }
-    //   })
-    // );
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((params) => {
+        if (params['abrigo']) {
+          this.changeUserType('shelter');
+          this.animalsService.handleShelterDirectAccess(params['abrigo']);
+        } else {
+          this.animalsService.loadInitialData();
+        }
+      })
+    );
   }
 
   ngOnDestroy() {

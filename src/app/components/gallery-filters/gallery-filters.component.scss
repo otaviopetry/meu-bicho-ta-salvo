@@ -33,7 +33,23 @@
   }
 }
 
+form {
+  position: relative;
+}
+
 .shelter-suggestions {
-  background-color: white;
+  background-color: #FFFFFF;
+  border: 1px solid #ccc;
+  border-radius: 5px;
   position: absolute;
+  width: 100%;
+  text-align: left;
+  color: #333;
+  padding: 1rem 0.5rem;
+
+  ul {
+    li {
+      cursor: pointer;
+    }
+  }
 }

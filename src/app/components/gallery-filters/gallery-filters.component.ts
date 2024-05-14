@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { AnimalFilters, AnimalsService } from '../../services/animals.service';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
@@ -15,7 +15,13 @@ import {
   SPECIES_OPTIONS,
 } from '../../constants/constants';
 import { AnimalSize } from '../../interfaces/animal.interface';
-import { Subscription, debounceTime, distinctUntilChanged, filter } from 'rxjs';
+import {
+  Subscription,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  tap,
+} from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
 
@@ -44,6 +50,7 @@ export class GalleryFiltersComponent {
   public locationOptions: string[] = [];
   public filteredLocations: string[] = [];
   public showLocationSuggestions = false;
+  public filledLocationWithSuggestion = false;
 
   showDropdown = false;
 
@@ -91,6 +98,13 @@ export class GalleryFiltersComponent {
     this.subscriptions = [];
   }
 
+  public selectSuggestion(location: string) {
+    this.selectedLocation = location;
+    this.shelterForm.get('shelter')?.setValue(location);
+    this.showLocationSuggestions = false;
+    this.filledLocationWithSuggestion = true;
+  }
+
   public listenLocationChanges() {
     const shelterControl = this.shelterForm.get('shelter')?.valueChanges;
 
@@ -100,18 +114,47 @@ export class GalleryFiltersComponent {
           .pipe(
             debounceTime(300),
             distinctUntilChanged(),
-            filter((value) => value.length > 0)
+            tap({
+              next: (value) => {
+                if (!value.length) {
+                  this.showLocationSuggestions = false;
+                  this.filteredLocations = [];
+                }
+              },
+            }),
+            filter((value) => value.length > 1)
           )
           .subscribe((value) => {
             this.filteredLocations = this.locationOptions.filter((location) =>
               location.toLowerCase().includes(value.toLowerCase())
             );
-            console.log('===>', value);
-            console.log('===>', this.filteredLocations);
+
+            const currentValue = this.shelterForm.get('shelter')?.value;
+
+            if (value !== this.selectedLocation) {
+              this.filledLocationWithSuggestion = false;
+            }
 
             this.showLocationSuggestions = this.filteredLocations.length > 0;
+
+            if (value.trim() === this.filteredLocations[0]) {
+              this.filledLocationWithSuggestion = true;
+            }
           })
       );
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      this.onEscPressed();
+    }
+  }
+
+  private onEscPressed() {
+    if (this.showLocationSuggestions) {
+      this.showLocationSuggestions = false;
     }
   }
 
