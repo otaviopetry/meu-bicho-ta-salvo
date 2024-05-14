@@ -13,7 +13,7 @@ import {
 import { AnimalCardComponent } from '../animal-card/animal-card.component';
 import { FormsModule } from '@angular/forms';
 import { AnimalsService } from '../../services/animals.service';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
@@ -41,18 +41,25 @@ export class AnimalGalleryComponent implements OnInit {
 
   @ViewChild('scrollToTopBtn') scrollToTopBtn!: ElementRef<HTMLButtonElement>;
 
+  private subscriptions: Subscription[] = [];
+
   constructor(private animalsService: AnimalsService, private router: Router) {
     this.loading = true;
   }
 
   ngOnInit() {
     this.getAnimals();
+    this.subscriptions.push(
+      this.animalsService.filterAnimals$.subscribe(() => {
+        this.animals = [];
+      })
+    );
   }
 
   private getAnimals() {
     this.animalsService.getAnimals().subscribe({
       next: (animals) => {
-        this.animals = animals;
+        this.animals = [...this.animals, ...animals];
         this.loading = false;
       },
     });
@@ -65,7 +72,7 @@ export class AnimalGalleryComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll(): void {
     if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 400 &&
       !this.loading &&
       this.animalsService.hasMorePages &&
       this.animals.length > this.animalsService.itemsPerPage - 1
