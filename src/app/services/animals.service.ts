@@ -27,7 +27,7 @@ export interface AnimalFilters {
 })
 export class AnimalsService {
   private allAnimals: IAnimal[] = [];
-  private animalsCache = new ReplaySubject<IAnimal[]>(1);
+  private animalsCache = new Subject<IAnimal[]>();
   private nextPageToken?: string = '';
   public hasMorePages = true;
 
@@ -66,13 +66,6 @@ export class AnimalsService {
     filters: AnimalFilters = {},
     isLoadingNextPage?: boolean
   ): Promise<{ animals: IAnimal[]; nextPageToken: string }> {
-    // this.animalsCache.next(this.getStaticData());
-
-    // return Promise.resolve({
-    //   animals: this.getStaticData(),
-    //   nextPageToken: '',
-    // });
-
     this.loading$.next(true);
     this.currentFilters = this.createQueryParams(filters);
     this.selectedFilters = { ...filters };
@@ -120,18 +113,7 @@ export class AnimalsService {
       });
       nextPageFilters.startAfter = this.nextPageToken;
 
-      this.getAnimalsFromDatabase(nextPageFilters, true)
-        .then((response) => {
-          if (response.animals.length > 0) {
-            this.allAnimals = [...this.allAnimals, ...response.animals];
-            this.animalsCache.next(response.animals);
-          }
-
-          this.hasMorePages = response.animals.length >= this.itemsPerPage;
-        })
-        .catch((error) => {
-          console.error('Failed to load next page:', error);
-        });
+      this.getAnimalsFromDatabase(nextPageFilters, true);
     }
   }
 
