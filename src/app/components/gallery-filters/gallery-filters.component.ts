@@ -141,7 +141,7 @@ export class GalleryFiltersComponent {
               next: (value) => {
                 this.filledLocationWithSuggestion = false;
 
-                if (!value.length) {
+                if (value && !value.length) {
                   this.showLocationSuggestions = false;
                   this.filteredLocations = [];
 
@@ -151,7 +151,7 @@ export class GalleryFiltersComponent {
                 this.selectedLocation = value;
               },
             }),
-            filter((value) => value.length > 1)
+            filter((value) => value?.length > 1)
           )
           .subscribe((value) => {
             this.filteredLocations = this.locationOptions.filter((location) =>
@@ -297,6 +297,8 @@ export class GalleryFiltersComponent {
     this.selectedSize = '0';
     this.selectedSex = '0';
     this.filtersForm.reset();
+    this.shelterForm.reset();
+    this.showLocationSuggestions = false;
     this.selectedLocation = '';
     this.animalsService.resetFilters();
     this.onFilterAnimals();
