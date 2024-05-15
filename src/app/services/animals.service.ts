@@ -53,7 +53,7 @@ export class AnimalsService {
   public loadInitialData() {
     this.getAnimalsFromDatabase()
       .then((response) => {
-        this.allAnimals = response.animals;
+        this.allAnimals = [...response.animals];
       })
       .catch((error) => {
         console.error('Error fetching initial data:', error);
