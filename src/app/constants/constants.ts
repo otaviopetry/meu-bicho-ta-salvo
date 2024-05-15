@@ -32,7 +32,6 @@ export const COLOR_OPTIONS = Object.freeze([
 export const SEX_OPTIONS: readonly AnimalSex[] = Object.freeze([
   'fêmea',
   'macho',
-  'não se sabe',
 ]);
 export const SIZE_OPTIONS: readonly AnimalSize[] = Object.freeze([
   'p',
