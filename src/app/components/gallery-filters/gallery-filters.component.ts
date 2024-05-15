@@ -130,6 +130,8 @@ export class GalleryFiltersComponent {
             distinctUntilChanged(),
             tap({
               next: (value) => {
+                this.filledLocationWithSuggestion = false;
+
                 if (!value.length) {
                   this.showLocationSuggestions = false;
                   this.filteredLocations = [];
