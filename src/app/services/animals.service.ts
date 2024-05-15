@@ -27,7 +27,7 @@ export interface AnimalFilters {
 })
 export class AnimalsService {
   private allAnimals: IAnimal[] = [];
-  private animalsCache = new Subject<IAnimal[]>();
+  private animalsCache = new BehaviorSubject<IAnimal[]>([]);
   private nextPageToken?: string = '';
   public hasMorePages = true;
 
