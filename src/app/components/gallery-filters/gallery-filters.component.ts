@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { AnimalFilters, AnimalsService } from '../../services/animals.service';
 import { capitalizeFirstWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import {
   COLOR_OPTIONS,
@@ -15,7 +16,13 @@ import {
   SIZE_OPTIONS,
   SPECIES_OPTIONS,
 } from '../../constants/constants';
-import { Subscription } from 'rxjs';
+import {
+  Subscription,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  tap,
+} from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
 import { ColorInputComponent } from './color-input/color-input.component';
@@ -29,6 +36,7 @@ import { SpeciesInputComponent } from './species-input/species-input.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     ColorInputComponent,
     SexInputComponent,
     SizeInputComponent,
@@ -51,7 +59,13 @@ export class GalleryFiltersComponent {
   public selectedSize: string = '0';
   public selectedSex: string = '0';
   public selectedColors: { [color: string]: boolean } = {};
-  public selectedLocation: string = '0';
+
+  public selectedLocation: string = '';
+  public shelterForm!: FormGroup;
+  public locationOptions: string[] = [];
+  public filteredLocations: string[] = [];
+  public showLocationSuggestions = false;
+  public filledLocationWithSuggestion = false;
 
   public filtersForm!: FormGroup;
 
@@ -75,22 +89,87 @@ export class GalleryFiltersComponent {
       this.animalsService.userType$.subscribe((userType) => {
         this.userType = userType;
         this.populateFilters();
-        this.selectedLocation = '0';
-      })
-    );
-    this.subscriptions.push(
+        this.selectedLocation = '';
+      }),
       this.route.queryParams.subscribe((params) => {
         if (params['abrigo']) {
           this.selectedLocation = params['abrigo'];
         }
+      }),
+      this.animalsService.locations$.subscribe((locations) => {
+        this.locationOptions = locations;
       })
     );
+    this.shelterForm = this.formBuilder.group({
+      shelter: [''],
+    });
     this.buildForm();
+    this.listenLocationChanges();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.subscriptions = [];
+  }
+
+  public selectSuggestion(location: string) {
+    this.selectedLocation = location;
+    this.shelterForm.get('shelter')?.setValue(location);
+    this.showLocationSuggestions = false;
+    this.filledLocationWithSuggestion = true;
+  }
+
+  public listenLocationChanges() {
+    const shelterControl = this.shelterForm.get('shelter')?.valueChanges;
+
+    if (shelterControl) {
+      this.subscriptions.push(
+        shelterControl
+          .pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            tap({
+              next: (value) => {
+                if (!value.length) {
+                  this.showLocationSuggestions = false;
+                  this.filteredLocations = [];
+                }
+              },
+            }),
+            filter((value) => value.length > 1)
+          )
+          .subscribe((value) => {
+            this.filteredLocations = this.locationOptions.filter((location) =>
+              location.toLowerCase().includes(value.toLowerCase())
+            );
+
+            const currentValue = this.shelterForm.get('shelter')?.value;
+
+            if (value !== this.selectedLocation) {
+              this.filledLocationWithSuggestion = false;
+            }
+
+            this.showLocationSuggestions = this.filteredLocations.length > 0;
+
+            if (value.trim() === this.filteredLocations[0]) {
+              this.filledLocationWithSuggestion = true;
+            }
+          })
+      );
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+      this.onEscPressed();
+    }
+  }
+
+  private onEscPressed() {
+    if (this.showLocationSuggestions) {
+      this.showLocationSuggestions = false;
+    }
   }
 
   buildForm(): void {
@@ -148,7 +227,7 @@ export class GalleryFiltersComponent {
     const selectedSizes = this.getSelectedSizes();
     const selectedSpecies = this.getSelectedSpecies();
 
-    if (this.selectedLocation !== '0') {
+    if (this.selectedLocation !== '') {
       localFilters['whereItIs'] = this.selectedLocation;
     } else {
       localFilters = {
@@ -202,7 +281,7 @@ export class GalleryFiltersComponent {
     this.selectedSize = '0';
     this.selectedSex = '0';
     this.filtersForm.reset();
-    this.selectedLocation = '0';
+    this.selectedLocation = '';
     this.animalsService.resetFilters();
     this.onFilterAnimals();
   }
