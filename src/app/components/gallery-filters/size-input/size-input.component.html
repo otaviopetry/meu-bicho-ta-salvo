@@ -3,12 +3,12 @@
     class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
     (click)="toggleDropdown()"
   >
-    {{ getSelectedSexes().length > 0 ? "" : "Selecione o sexo" }}
-    @if (getSelectedSexes().length > 0) {
-    <div class="selected-sexes">
+    {{ getSelectedSizes().length > 0 ? "" : "Selecione o tamanho" }}
+    @if (getSelectedSizes().length > 0) {
+    <div class="selected-sizes">
       <strong>Opções selecionadas: </strong>
-      @for (selectedSex of getSelectedSexes(); track selectedSex) {
-      <span class="selected-sexes__sex">{{ selectedSex }}</span>
+      @for (selectedSize of getSelectedSizes(); track selectedSize) {
+      <span class="selected-sizes__size">{{ getSizeWord(selectedSize) }}</span>
       }
     </div>
     }
@@ -16,22 +16,25 @@
   @if (showDropdown) {
   <div
     class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
-    formArrayName="sex"
+    formArrayName="size"
   >
-    @for (sexOption of sexOptions; track sexOption) {
+    @for (sizeOption of sizeOptions; track sizeOption) {
     <div class="flex-item p-2 text-left">
       <input
-        id="sex-{{ sexOption }}"
+        id="size-{{ sizeOption }}"
         type="checkbox"
         [formControlName]="$index"
         class="mr-2"
       />
-      <label for="sex-{{ sexOption }}">
-        {{ capitalizeFirstWord(sexOption) }}
+      <label for="size-{{ sizeOption }}">
+        {{ getSizeWord(sizeOption) }}
       </label>
     </div>
     }
-    <button class="flex-item button-close mb-5 w-full" (click)="closeSexMenu()">
+    <button
+      class="flex-item button-close mb-5 w-full"
+      (click)="closeSizeMenu()"
+    >
       Fechar menu
     </button>
   </div>

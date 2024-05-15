@@ -21,11 +21,18 @@ import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
 import { ColorInputComponent } from './color-input/color-input.component';
 import { SexInputComponent } from './sex-input/sex-input.component';
+import { SizeInputComponent } from './size-input/size-input.component';
 
 @Component({
   selector: 'app-gallery-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule, ColorInputComponent, SexInputComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ColorInputComponent,
+    SexInputComponent,
+    SizeInputComponent,
+  ],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
 })
@@ -88,10 +95,11 @@ export class GalleryFiltersComponent {
   buildForm(): void {
     this.filtersForm = this.formBuilder.group({
       species: [[]],
-      size: [[]],
+      size: this.formBuilder.array([]),
       sex: this.formBuilder.array([]),
       color: this.formBuilder.array([]),
     });
+    this.sizeOptions.forEach(() => this.sizes.push(new FormControl(false)));
     this.colorOptions.forEach(() => this.colors.push(new FormControl(false)));
     this.sexOptions.forEach(() => this.sexes.push(new FormControl(false)));
   }
@@ -102,6 +110,10 @@ export class GalleryFiltersComponent {
 
   get sexes(): FormArray {
     return this.filtersForm.get('sex') as FormArray;
+  }
+
+  get sizes(): FormArray {
+    return this.filtersForm.get('size') as FormArray;
   }
 
   public closeColorMenu() {
@@ -128,6 +140,7 @@ export class GalleryFiltersComponent {
 
     const selectedColors = this.getSelectedColors();
     const selectedSexes = this.getSelectedSexes();
+    const selectedSizes = this.getSelectedSizes();
     console.log('===>', { selectedColors, selectedSexes });
 
     if (this.selectedLocation !== '0') {
@@ -136,8 +149,8 @@ export class GalleryFiltersComponent {
       localFilters = {
         species:
           this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
-        sex: selectedSexes ? selectedSexes : undefined,
-        size: this.selectedSize !== '0' ? this.selectedSize : undefined,
+        sex: selectedSexes.length ? selectedSexes : undefined,
+        size: selectedSizes.length ? selectedSizes : undefined,
         color: selectedColors.length ? selectedColors : undefined,
       };
     }
@@ -159,6 +172,14 @@ export class GalleryFiltersComponent {
     return this.filtersForm.value.sex
       .map((checked: boolean, i: number) =>
         checked ? this.sexOptions[i] : null
+      )
+      .filter((value: string | null) => value !== null);
+  }
+
+  public getSelectedSizes() {
+    return this.filtersForm.value.size
+      .map((checked: boolean, i: number) =>
+        checked ? this.sizeOptions[i] : null
       )
       .filter((value: string | null) => value !== null);
   }

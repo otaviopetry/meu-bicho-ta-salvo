@@ -21,21 +21,11 @@
       </select>
     </div>
     <!-- Size Dropdown -->
-    <div class="flex-1 min-w-[140px]">
-      <select
-        id="size"
-        name="size"
-        [(ngModel)]="selectedSize"
-        class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
-        <option value="0">Qualquer tamanho</option>
-        @for (sizeOption of sizeOptions; track $index) {
-        <option value="{{ sizeOption }}">
-          {{ getSizeWord(sizeOption) }}
-        </option>
-        }
-      </select>
-    </div>
+    <app-size-input
+      [formGroup]="filtersForm"
+      [sizeOptions]="sizeOptions"
+      class="flex-1 min-w-[140px] relative"
+    ></app-size-input>
     <!-- Sex Dropdown -->
     <app-sex-input
       [formGroup]="filtersForm"
