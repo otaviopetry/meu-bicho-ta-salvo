@@ -48,24 +48,21 @@ export class AnimalGalleryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAnimals();
     this.subscriptions.push(
       this.animalsService.filterAnimals$.subscribe(() => {
         this.animals = [];
       }),
       this.animalsService.resetFilters$.subscribe(() => {
         this.animals = [];
+      }),
+      this.animalsService.getAnimals().subscribe({
+        next: (animals) => {
+          this.animals = [...this.animals, ...animals];
+          this.loading = false;
+          console.log('===> animals', this.animals.length);
+        },
       })
     );
-  }
-
-  private getAnimals() {
-    this.animalsService.getAnimals().subscribe({
-      next: (animals) => {
-        this.animals = [...this.animals, ...animals];
-        this.loading = false;
-      },
-    });
   }
 
   public scrollToTop() {

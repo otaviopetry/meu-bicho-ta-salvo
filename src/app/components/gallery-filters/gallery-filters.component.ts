@@ -20,11 +20,12 @@ import { Subscription } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
 import { ColorInputComponent } from './color-input/color-input.component';
+import { SexInputComponent } from './sex-input/sex-input.component';
 
 @Component({
   selector: 'app-gallery-filters',
   standalone: true,
-  imports: [CommonModule, FormsModule, ColorInputComponent],
+  imports: [CommonModule, FormsModule, ColorInputComponent, SexInputComponent],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
 })
@@ -88,14 +89,19 @@ export class GalleryFiltersComponent {
     this.filtersForm = this.formBuilder.group({
       species: [[]],
       size: [[]],
-      sex: [[]],
+      sex: this.formBuilder.array([]),
       color: this.formBuilder.array([]),
     });
     this.colorOptions.forEach(() => this.colors.push(new FormControl(false)));
+    this.sexOptions.forEach(() => this.sexes.push(new FormControl(false)));
   }
 
   get colors(): FormArray {
     return this.filtersForm.get('color') as FormArray;
+  }
+
+  get sexes(): FormArray {
+    return this.filtersForm.get('sex') as FormArray;
   }
 
   public closeColorMenu() {
@@ -121,6 +127,8 @@ export class GalleryFiltersComponent {
     this.animalsService.filterAnimals$.next();
 
     const selectedColors = this.getSelectedColors();
+    const selectedSexes = this.getSelectedSexes();
+    console.log('===>', { selectedColors, selectedSexes });
 
     if (this.selectedLocation !== '0') {
       localFilters['whereItIs'] = this.selectedLocation;
@@ -128,7 +136,7 @@ export class GalleryFiltersComponent {
       localFilters = {
         species:
           this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
-        sex: this.selectedSex !== '0' ? this.selectedSex : undefined,
+        sex: selectedSexes ? selectedSexes : undefined,
         size: this.selectedSize !== '0' ? this.selectedSize : undefined,
         color: selectedColors.length ? selectedColors : undefined,
       };
@@ -143,6 +151,14 @@ export class GalleryFiltersComponent {
     return this.filtersForm.value.color
       .map((checked: boolean, i: number) =>
         checked ? this.colorOptions[i] : null
+      )
+      .filter((value: string | null) => value !== null);
+  }
+
+  public getSelectedSexes() {
+    return this.filtersForm.value.sex
+      .map((checked: boolean, i: number) =>
+        checked ? this.sexOptions[i] : null
       )
       .filter((value: string | null) => value !== null);
   }
