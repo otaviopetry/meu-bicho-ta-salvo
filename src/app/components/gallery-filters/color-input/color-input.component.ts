@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { COLOR_OPTIONS } from '../../../constants/constants';
 import { capitalizeFirstWord } from '../../../utils/label-functions';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -16,11 +24,24 @@ export class ColorInputComponent {
 
   @Input() formGroup!: FormGroup;
   @Input() colorOptions: readonly string[] = [];
-  @Output() closeMenu: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private animalsService: AnimalsService) {
+  @ViewChild('dropdown') dropdown!: ElementRef;
+
+  constructor(
+    private animalsService: AnimalsService,
+    private renderer: Renderer2
+  ) {
     this.animalsService.filterAnimals$.subscribe(() => {
       this.showDropdown = false;
+    });
+    this.renderer.listen('window', 'click', (event: Event) => {
+      if (
+        this.dropdown &&
+        this.dropdown.nativeElement &&
+        !this.dropdown.nativeElement.contains(event.target)
+      ) {
+        this.showDropdown = false;
+      }
     });
   }
 
@@ -30,7 +51,6 @@ export class ColorInputComponent {
 
   public closeColorMenu() {
     this.showDropdown = false;
-    this.closeMenu.emit();
   }
 
   public capitalizeFirstWord(phrase: string) {
