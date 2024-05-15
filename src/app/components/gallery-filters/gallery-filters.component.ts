@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnimalFilters, AnimalsService } from '../../services/animals.service';
-import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
+import { capitalizeFirstWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -15,13 +15,13 @@ import {
   SIZE_OPTIONS,
   SPECIES_OPTIONS,
 } from '../../constants/constants';
-import { AnimalSize } from '../../interfaces/animal.interface';
 import { Subscription } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
 import { ColorInputComponent } from './color-input/color-input.component';
 import { SexInputComponent } from './sex-input/sex-input.component';
 import { SizeInputComponent } from './size-input/size-input.component';
+import { SpeciesInputComponent } from './species-input/species-input.component';
 
 @Component({
   selector: 'app-gallery-filters',
@@ -32,6 +32,7 @@ import { SizeInputComponent } from './size-input/size-input.component';
     ColorInputComponent,
     SexInputComponent,
     SizeInputComponent,
+    SpeciesInputComponent,
   ],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
@@ -94,14 +95,22 @@ export class GalleryFiltersComponent {
 
   buildForm(): void {
     this.filtersForm = this.formBuilder.group({
-      species: [[]],
+      species: this.formBuilder.array([]),
       size: this.formBuilder.array([]),
       sex: this.formBuilder.array([]),
       color: this.formBuilder.array([]),
     });
+
+    this.speciesOptions.forEach(() =>
+      this.species.push(new FormControl(false))
+    );
     this.sizeOptions.forEach(() => this.sizes.push(new FormControl(false)));
     this.colorOptions.forEach(() => this.colors.push(new FormControl(false)));
     this.sexOptions.forEach(() => this.sexes.push(new FormControl(false)));
+  }
+
+  get species(): FormArray {
+    return this.filtersForm.get('species') as FormArray;
   }
 
   get colors(): FormArray {
@@ -127,10 +136,6 @@ export class GalleryFiltersComponent {
     return capitalizeFirstWord(phrase);
   }
 
-  public getSizeWord(sizeOption: AnimalSize) {
-    return getSizeWord(sizeOption);
-  }
-
   public filterAnimals(): void {
     let localFilters: AnimalFilters = {};
 
@@ -141,14 +146,13 @@ export class GalleryFiltersComponent {
     const selectedColors = this.getSelectedColors();
     const selectedSexes = this.getSelectedSexes();
     const selectedSizes = this.getSelectedSizes();
-    console.log('===>', { selectedColors, selectedSexes });
+    const selectedSpecies = this.getSelectedSpecies();
 
     if (this.selectedLocation !== '0') {
       localFilters['whereItIs'] = this.selectedLocation;
     } else {
       localFilters = {
-        species:
-          this.selectedSpecies !== '0' ? this.selectedSpecies : undefined,
+        species: selectedSpecies.length ? selectedSpecies : undefined,
         sex: selectedSexes.length ? selectedSexes : undefined,
         size: selectedSizes.length ? selectedSizes : undefined,
         color: selectedColors.length ? selectedColors : undefined,
@@ -160,10 +164,10 @@ export class GalleryFiltersComponent {
     });
   }
 
-  public getSelectedColors() {
-    return this.filtersForm.value.color
+  public getSelectedSpecies() {
+    return this.filtersForm.value.species
       .map((checked: boolean, i: number) =>
-        checked ? this.colorOptions[i] : null
+        checked ? this.speciesOptions[i] : null
       )
       .filter((value: string | null) => value !== null);
   }
@@ -180,6 +184,14 @@ export class GalleryFiltersComponent {
     return this.filtersForm.value.size
       .map((checked: boolean, i: number) =>
         checked ? this.sizeOptions[i] : null
+      )
+      .filter((value: string | null) => value !== null);
+  }
+
+  public getSelectedColors() {
+    return this.filtersForm.value.color
+      .map((checked: boolean, i: number) =>
+        checked ? this.colorOptions[i] : null
       )
       .filter((value: string | null) => value !== null);
   }

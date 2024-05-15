@@ -3,12 +3,14 @@
     class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
     (click)="toggleDropdown()"
   >
-    {{ getSelectedSizes().length > 0 ? "" : "Selecione o tamanho" }}
-    @if (getSelectedSizes().length > 0) {
-    <div class="selected-sizes">
+    {{ getSelectedSpecies().length > 0 ? "" : "Tipo de animal" }}
+    @if (getSelectedSpecies().length > 0) {
+    <div class="selected-species">
       <strong>Opções selecionadas: </strong>
-      @for (selectedSize of getSelectedSizes(); track selectedSize) {
-      <span class="selected-sizes__size">{{ getSizeWord(selectedSize) }}</span>
+      @for (selectedSpecies of getSelectedSpecies(); track selectedSpecies) {
+      <span class="selected-species__species">{{
+        capitalizeFirstWord(selectedSpecies)
+      }}</span>
       }
     </div>
     }
@@ -16,24 +18,24 @@
   @if (showDropdown) {
   <div
     class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
-    formArrayName="size"
+    formArrayName="species"
   >
-    @for (sizeOption of sizeOptions; track sizeOption) {
+    @for (speciesOption of speciesOptions; track speciesOption) {
     <div class="flex-item p-2 text-left">
       <input
-        id="size-{{ sizeOption }}"
+        id="species-{{ speciesOption }}"
         type="checkbox"
         [formControlName]="$index"
         class="mr-2"
       />
-      <label for="size-{{ sizeOption }}">
-        {{ getSizeWord(sizeOption) }}
+      <label for="species-{{ speciesOption }}">
+        {{ capitalizeFirstWord(speciesOption) }}
       </label>
     </div>
     }
     <button
       class="flex-item button-close mb-5 w-full"
-      (click)="closeSizeMenu()"
+      (click)="closeSpeciesMenu()"
     >
       Fechar menu
     </button>

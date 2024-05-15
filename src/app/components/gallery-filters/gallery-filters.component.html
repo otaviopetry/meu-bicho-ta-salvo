@@ -5,38 +5,28 @@
   <div class="flex flex-wrap items-center justify-center gap-2 w-full">
     @if (userType === 'tutor') {
     <!-- Species Dropdown -->
-    <div class="flex-1 min-w-[140px]">
-      <select
-        id="species"
-        name="species"
-        [(ngModel)]="selectedSpecies"
-        class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
-        <option value="0">Todos animais</option>
-        @for (speciesOption of speciesOptions; track speciesOption) {
-        <option value="{{ speciesOption }}">
-          {{ capitalizeFirstWord(speciesOption) }}
-        </option>
-        }
-      </select>
-    </div>
+    <app-species-input
+      [formGroup]="filtersForm"
+      [speciesOptions]="speciesOptions"
+      class="flex-1 min-w-[140px] relative gallery-filter"
+    ></app-species-input>
     <!-- Size Dropdown -->
     <app-size-input
       [formGroup]="filtersForm"
       [sizeOptions]="sizeOptions"
-      class="flex-1 min-w-[140px] relative"
+      class="flex-1 min-w-[140px] relative gallery-filter"
     ></app-size-input>
     <!-- Sex Dropdown -->
     <app-sex-input
       [formGroup]="filtersForm"
       [sexOptions]="sexOptions"
-      class="flex-1 min-w-[140px] relative"
+      class="flex-1 min-w-[140px] relative gallery-filter"
     ></app-sex-input>
     <!-- Color Dropdown -->
     <app-color-input
       [formGroup]="filtersForm"
       [colorOptions]="colorOptions"
-      class="w-full relative"
+      class="w-full relative gallery-filter"
     ></app-color-input>
 
     } @else if(userType === 'shelter') {
