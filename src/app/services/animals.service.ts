@@ -14,11 +14,11 @@ import { IAnimal } from '../interfaces/animal.interface';
 import { UserType } from '../types/user-type.type';
 
 export interface AnimalFilters {
-  species?: string;
-  sex?: string;
-  size?: string;
+  species?: string[];
+  sex?: string[];
+  size?: string[];
   whereItIs?: string;
-  color?: { [color: string]: boolean };
+  color?: string[];
   startAfter?: string;
 }
 
@@ -34,7 +34,7 @@ export class AnimalsService {
   public loading = false;
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  public itemsPerPage = 9;
+  public itemsPerPage = 35;
   private currentFilters: HttpParams = new HttpParams();
   public selectedFilters: AnimalFilters = {};
 

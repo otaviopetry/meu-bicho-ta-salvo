@@ -84,6 +84,12 @@ export class AnimalGalleryComponent implements OnInit {
       }, 600);
     }
 
+    if (this.scrollToTopBtn && this.scrollToTopBtn.nativeElement) {
+      this.handleScrollToTopBtnVisibility();
+    }
+  }
+
+  private handleScrollToTopBtnVisibility(): void {
     if (
       document.body.scrollTop > window.innerHeight ||
       document.documentElement.scrollTop > window.innerHeight

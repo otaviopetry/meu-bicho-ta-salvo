@@ -88,7 +88,6 @@ export class GalleryFiltersComponent {
     this.subscriptions.push(
       this.animalsService.userType$.subscribe((userType) => {
         this.userType = userType;
-        this.populateFilters();
         this.selectedLocation = '';
       }),
       this.route.queryParams.subscribe((params) => {
@@ -100,9 +99,7 @@ export class GalleryFiltersComponent {
         this.locationOptions = locations;
       })
     );
-    this.shelterForm = this.formBuilder.group({
-      shelter: [''],
-    });
+    this.buildShelterForm();
     this.buildForm();
     this.listenLocationChanges();
   }
@@ -117,6 +114,18 @@ export class GalleryFiltersComponent {
     this.shelterForm.get('shelter')?.setValue(location);
     this.showLocationSuggestions = false;
     this.filledLocationWithSuggestion = true;
+  }
+
+  private buildShelterForm() {
+    this.shelterForm = this.formBuilder.group({
+      shelter: [''],
+    });
+
+    if (this.animalsService.selectedFilters.whereItIs?.length) {
+      this.shelterForm
+        .get('shelter')
+        ?.setValue(this.animalsService.selectedFilters.whereItIs);
+    }
   }
 
   public listenLocationChanges() {
@@ -192,6 +201,7 @@ export class GalleryFiltersComponent {
     this.sizeOptions.forEach(() => this.sizes.push(new FormControl(false)));
     this.colorOptions.forEach(() => this.colors.push(new FormControl(false)));
     this.sexOptions.forEach(() => this.sexes.push(new FormControl(false)));
+    this.populateFilters();
   }
 
   get species(): FormArray {
@@ -298,24 +308,38 @@ export class GalleryFiltersComponent {
   }
 
   private populateFilters() {
-    if (this.animalsService.selectedFilters['species']) {
-      this.selectedSpecies = this.animalsService.selectedFilters['species'];
+    const filters = { ...this.animalsService.selectedFilters };
+
+    if (filters.species?.length) {
+      this.speciesOptions.forEach((option, index) => {
+        if (filters.species?.includes(option)) {
+          this.species.at(index).setValue(true);
+        }
+      });
     }
 
-    if (this.animalsService.selectedFilters['size']) {
-      this.selectedSize = this.animalsService.selectedFilters['size'];
+    if (filters.size?.length) {
+      this.sizeOptions.forEach((option, index) => {
+        if (filters.size?.includes(option)) {
+          this.sizes.at(index).setValue(true);
+        }
+      });
     }
 
-    if (this.animalsService.selectedFilters['sex']) {
-      this.selectedSex = this.animalsService.selectedFilters['sex'];
+    if (filters.sex?.length) {
+      this.sexOptions.forEach((option, index) => {
+        if (filters.sex?.includes(option)) {
+          this.sexes.at(index).setValue(true);
+        }
+      });
     }
 
-    if (this.animalsService.selectedFilters['color']) {
-      this.selectedColors = this.animalsService.selectedFilters['color'];
-    }
-
-    if (this.animalsService.selectedFilters['whereItIs']) {
-      this.selectedLocation = this.animalsService.selectedFilters['whereItIs'];
+    if (filters.color?.length) {
+      this.colorOptions.forEach((option, index) => {
+        if (filters.color?.includes(option)) {
+          this.colors.at(index).setValue(true);
+        }
+      });
     }
   }
 }
