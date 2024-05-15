@@ -14,11 +14,11 @@ import { IAnimal } from '../interfaces/animal.interface';
 import { UserType } from '../types/user-type.type';
 
 export interface AnimalFilters {
-  species?: string;
-  sex?: string;
-  size?: string;
+  species?: string[];
+  sex?: string[];
+  size?: string[];
   whereItIs?: string;
-  color?: { [color: string]: boolean };
+  color?: string[];
   startAfter?: string;
 }
 
@@ -53,7 +53,7 @@ export class AnimalsService {
   public loadInitialData() {
     this.getAnimalsFromDatabase()
       .then((response) => {
-        this.allAnimals = response.animals;
+        this.allAnimals = [...response.animals];
       })
       .catch((error) => {
         console.error('Error fetching initial data:', error);
@@ -92,7 +92,8 @@ export class AnimalsService {
       }
 
       if (response.animals.length > 0) {
-        this.animalsCache.next(response.animals);
+        this.allAnimals = [...this.allAnimals, ...response.animals];
+        this.animalsCache.next(this.allAnimals);
       }
 
       return response;

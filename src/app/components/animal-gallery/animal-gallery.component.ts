@@ -57,7 +57,7 @@ export class AnimalGalleryComponent implements OnInit {
       }),
       this.animalsService.getAnimals().subscribe({
         next: (animals) => {
-          this.animals = [...this.animals, ...animals];
+          this.animals = animals;
           this.loading = false;
         },
       })
@@ -84,6 +84,12 @@ export class AnimalGalleryComponent implements OnInit {
       }, 600);
     }
 
+    if (this.scrollToTopBtn && this.scrollToTopBtn.nativeElement) {
+      this.handleScrollToTopBtnVisibility();
+    }
+  }
+
+  private handleScrollToTopBtnVisibility(): void {
     if (
       document.body.scrollTop > window.innerHeight ||
       document.documentElement.scrollTop > window.innerHeight
