@@ -48,24 +48,20 @@ export class AnimalGalleryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAnimals();
     this.subscriptions.push(
       this.animalsService.filterAnimals$.subscribe(() => {
         this.animals = [];
       }),
       this.animalsService.resetFilters$.subscribe(() => {
         this.animals = [];
+      }),
+      this.animalsService.getAnimals().subscribe({
+        next: (animals) => {
+          this.animals = [...this.animals, ...animals];
+          this.loading = false;
+        },
       })
     );
-  }
-
-  private getAnimals() {
-    this.animalsService.getAnimals().subscribe({
-      next: (animals) => {
-        this.animals = [...this.animals, ...animals];
-        this.loading = false;
-      },
-    });
   }
 
   public scrollToTop() {
@@ -78,7 +74,7 @@ export class AnimalGalleryComponent implements OnInit {
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 400 &&
       !this.loading &&
       this.animalsService.hasMorePages &&
-      this.animals.length > this.animalsService.itemsPerPage - 1
+      this.animals.length > this.animalsService.itemsPerPage
     ) {
       this.loading = true;
       this.animalsService.loadNextPage();

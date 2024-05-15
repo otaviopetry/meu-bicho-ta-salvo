@@ -1,29 +1,30 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
   Input,
-  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { COLOR_OPTIONS } from '../../../constants/constants';
-import { capitalizeFirstWord } from '../../../utils/label-functions';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  capitalizeFirstWord,
+  getSizeWord,
+} from '../../../utils/label-functions';
+import { AnimalSize } from '../../../interfaces/animal.interface';
 import { AnimalsService } from '../../../services/animals.service';
 
 @Component({
-  selector: 'app-color-input',
+  selector: 'app-size-input',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './color-input.component.html',
-  styleUrl: './color-input.component.scss',
+  templateUrl: './size-input.component.html',
+  styleUrl: './size-input.component.scss',
 })
-export class ColorInputComponent {
-  public showDropdown = false;
+export class SizeInputComponent {
+  @Input() formGroup: FormGroup = new FormGroup({});
+  @Input() sizeOptions: readonly AnimalSize[] = [];
 
-  @Input() formGroup!: FormGroup;
-  @Input() colorOptions: readonly string[] = [];
+  public showDropdown = false;
 
   @ViewChild('dropdown') dropdown!: ElementRef;
 
@@ -49,19 +50,23 @@ export class ColorInputComponent {
     this.showDropdown = !this.showDropdown;
   }
 
-  public closeColorMenu() {
-    this.showDropdown = false;
+  public getSelectedSizes() {
+    return this.formGroup.value.size
+      .map((checked: boolean, i: number) =>
+        checked ? this.sizeOptions[i] : null
+      )
+      .filter((value: string | null) => value !== null);
   }
 
   public capitalizeFirstWord(phrase: string) {
     return capitalizeFirstWord(phrase);
   }
 
-  public getSelectedColors() {
-    return this.formGroup.value.color
-      .map((checked: boolean, i: number) =>
-        checked ? this.colorOptions[i] : null
-      )
-      .filter((value: string | null) => value !== null);
+  public closeSizeMenu() {
+    this.showDropdown = false;
+  }
+
+  public getSizeWord(sizeOption: AnimalSize) {
+    return getSizeWord(sizeOption);
   }
 }

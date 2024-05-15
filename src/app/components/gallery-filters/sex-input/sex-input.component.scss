@@ -1,11 +1,11 @@
-.selected-colors {
+.selected-sexes {
   font-style: italic;
   margin-top: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 
-  &__color:not(:last-child) {
+  &__sex:not(:last-child) {
     &:after {
       content: '; ';
     }
@@ -28,10 +28,4 @@
   flex-basis: 100%;;
   width: 100%;
   margin-top: 10px;
-}
-
-@media (min-width: 600px) {
-  .flex-item {
-    width: 50%;
-  }
 }

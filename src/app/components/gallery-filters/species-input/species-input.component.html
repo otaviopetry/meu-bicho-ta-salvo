@@ -3,12 +3,14 @@
     class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
     (click)="toggleDropdown()"
   >
-    {{ getSelectedColors().length > 0 ? "" : "Todas as cores" }}
-    @if (getSelectedColors().length > 0) {
-    <div class="selected-colors">
-      <strong>Cores selecionadas: </strong>
-      @for (selectedColor of getSelectedColors(); track selectedColor) {
-      <span class="selected-colors__color">{{ selectedColor }}</span>
+    {{ getSelectedSpecies().length > 0 ? "" : "Tipo de animal" }}
+    @if (getSelectedSpecies().length > 0) {
+    <div class="selected-species">
+      <strong>Opções selecionadas: </strong>
+      @for (selectedSpecies of getSelectedSpecies(); track selectedSpecies) {
+      <span class="selected-species__species">{{
+        capitalizeFirstWord(selectedSpecies)
+      }}</span>
       }
     </div>
     }
@@ -16,24 +18,24 @@
   @if (showDropdown) {
   <div
     class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
-    formArrayName="color"
+    formArrayName="species"
   >
-    @for (colorOption of colorOptions; track colorOption) {
+    @for (speciesOption of speciesOptions; track speciesOption) {
     <div class="flex-item p-2 text-left">
       <input
-        id="color-{{ colorOption }}"
+        id="species-{{ speciesOption }}"
         type="checkbox"
         [formControlName]="$index"
         class="mr-2"
       />
-      <label for="color-{{ colorOption }}">
-        {{ capitalizeFirstWord(colorOption) }}
+      <label for="species-{{ speciesOption }}">
+        {{ capitalizeFirstWord(speciesOption) }}
       </label>
     </div>
     }
     <button
       class="flex-item button-close mb-5 w-full"
-      (click)="closeColorMenu()"
+      (click)="closeSpeciesMenu()"
     >
       Fechar menu
     </button>

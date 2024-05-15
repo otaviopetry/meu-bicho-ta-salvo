@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './how-to-use.component.scss',
 })
 export class HowToUseComponent {
-  videoUrl = 'https://meubichotasalvo.s3.amazonaws.com/como-utilizar.mp4';
+  //
 }

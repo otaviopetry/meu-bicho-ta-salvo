@@ -1,29 +1,26 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
   Input,
-  Output,
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { COLOR_OPTIONS } from '../../../constants/constants';
-import { capitalizeFirstWord } from '../../../utils/label-functions';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { capitalizeFirstWord } from '../../../utils/label-functions';
 import { AnimalsService } from '../../../services/animals.service';
 
 @Component({
-  selector: 'app-color-input',
+  selector: 'app-species-input',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './color-input.component.html',
-  styleUrl: './color-input.component.scss',
+  templateUrl: './species-input.component.html',
+  styleUrl: './species-input.component.scss',
 })
-export class ColorInputComponent {
-  public showDropdown = false;
+export class SpeciesInputComponent {
+  @Input() formGroup: FormGroup = new FormGroup({});
+  @Input() speciesOptions: readonly string[] = [];
 
-  @Input() formGroup!: FormGroup;
-  @Input() colorOptions: readonly string[] = [];
+  public showDropdown = false;
 
   @ViewChild('dropdown') dropdown!: ElementRef;
 
@@ -49,19 +46,19 @@ export class ColorInputComponent {
     this.showDropdown = !this.showDropdown;
   }
 
-  public closeColorMenu() {
-    this.showDropdown = false;
+  public getSelectedSpecies() {
+    return this.formGroup.value.species
+      .map((checked: boolean, i: number) =>
+        checked ? this.speciesOptions[i] : null
+      )
+      .filter((value: string | null) => value !== null);
   }
 
   public capitalizeFirstWord(phrase: string) {
     return capitalizeFirstWord(phrase);
   }
 
-  public getSelectedColors() {
-    return this.formGroup.value.color
-      .map((checked: boolean, i: number) =>
-        checked ? this.colorOptions[i] : null
-      )
-      .filter((value: string | null) => value !== null);
+  public closeSpeciesMenu() {
+    this.showDropdown = false;
   }
 }

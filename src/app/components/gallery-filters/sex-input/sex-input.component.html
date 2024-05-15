@@ -3,12 +3,12 @@
     class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
     (click)="toggleDropdown()"
   >
-    {{ getSelectedColors().length > 0 ? "" : "Todas as cores" }}
-    @if (getSelectedColors().length > 0) {
-    <div class="selected-colors">
-      <strong>Cores selecionadas: </strong>
-      @for (selectedColor of getSelectedColors(); track selectedColor) {
-      <span class="selected-colors__color">{{ selectedColor }}</span>
+    {{ getSelectedSexes().length > 0 ? "" : "Selecione o sexo" }}
+    @if (getSelectedSexes().length > 0) {
+    <div class="selected-sexes">
+      <strong>Opções selecionadas: </strong>
+      @for (selectedSex of getSelectedSexes(); track selectedSex) {
+      <span class="selected-sexes__sex">{{ selectedSex }}</span>
       }
     </div>
     }
@@ -16,25 +16,22 @@
   @if (showDropdown) {
   <div
     class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
-    formArrayName="color"
+    formArrayName="sex"
   >
-    @for (colorOption of colorOptions; track colorOption) {
+    @for (sexOption of sexOptions; track sexOption) {
     <div class="flex-item p-2 text-left">
       <input
-        id="color-{{ colorOption }}"
+        id="sex-{{ sexOption }}"
         type="checkbox"
         [formControlName]="$index"
         class="mr-2"
       />
-      <label for="color-{{ colorOption }}">
-        {{ capitalizeFirstWord(colorOption) }}
+      <label for="sex-{{ sexOption }}">
+        {{ capitalizeFirstWord(sexOption) }}
       </label>
     </div>
     }
-    <button
-      class="flex-item button-close mb-5 w-full"
-      (click)="closeColorMenu()"
-    >
+    <button class="flex-item button-close mb-5 w-full" (click)="closeSexMenu()">
       Fechar menu
     </button>
   </div>

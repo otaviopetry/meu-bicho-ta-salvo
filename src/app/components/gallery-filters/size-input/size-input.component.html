@@ -3,12 +3,12 @@
     class="w-full h-full px-3 py-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 flex justify-between items-center"
     (click)="toggleDropdown()"
   >
-    {{ getSelectedColors().length > 0 ? "" : "Todas as cores" }}
-    @if (getSelectedColors().length > 0) {
-    <div class="selected-colors">
-      <strong>Cores selecionadas: </strong>
-      @for (selectedColor of getSelectedColors(); track selectedColor) {
-      <span class="selected-colors__color">{{ selectedColor }}</span>
+    {{ getSelectedSizes().length > 0 ? "" : "Selecione o tamanho" }}
+    @if (getSelectedSizes().length > 0) {
+    <div class="selected-sizes">
+      <strong>Opções selecionadas: </strong>
+      @for (selectedSize of getSelectedSizes(); track selectedSize) {
+      <span class="selected-sizes__size">{{ getSizeWord(selectedSize) }}</span>
       }
     </div>
     }
@@ -16,24 +16,24 @@
   @if (showDropdown) {
   <div
     class="dropdown-flex absolute z-10 w-full bg-white border border-gray-300 rounded-md"
-    formArrayName="color"
+    formArrayName="size"
   >
-    @for (colorOption of colorOptions; track colorOption) {
+    @for (sizeOption of sizeOptions; track sizeOption) {
     <div class="flex-item p-2 text-left">
       <input
-        id="color-{{ colorOption }}"
+        id="size-{{ sizeOption }}"
         type="checkbox"
         [formControlName]="$index"
         class="mr-2"
       />
-      <label for="color-{{ colorOption }}">
-        {{ capitalizeFirstWord(colorOption) }}
+      <label for="size-{{ sizeOption }}">
+        {{ getSizeWord(sizeOption) }}
       </label>
     </div>
     }
     <button
       class="flex-item button-close mb-5 w-full"
-      (click)="closeColorMenu()"
+      (click)="closeSizeMenu()"
     >
       Fechar menu
     </button>
