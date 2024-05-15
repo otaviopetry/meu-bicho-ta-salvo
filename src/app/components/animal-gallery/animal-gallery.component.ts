@@ -57,7 +57,7 @@ export class AnimalGalleryComponent implements OnInit {
       }),
       this.animalsService.getAnimals().subscribe({
         next: (animals) => {
-          this.animals = [...this.animals, ...animals];
+          this.animals = animals;
           this.loading = false;
         },
       })

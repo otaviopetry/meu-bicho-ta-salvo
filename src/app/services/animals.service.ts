@@ -34,7 +34,7 @@ export class AnimalsService {
   public loading = false;
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  public itemsPerPage = 35;
+  public itemsPerPage = 9;
   private currentFilters: HttpParams = new HttpParams();
   public selectedFilters: AnimalFilters = {};
 
@@ -92,7 +92,8 @@ export class AnimalsService {
       }
 
       if (response.animals.length > 0) {
-        this.animalsCache.next(response.animals);
+        this.allAnimals = [...this.allAnimals, ...response.animals];
+        this.animalsCache.next(this.allAnimals);
       }
 
       return response;
