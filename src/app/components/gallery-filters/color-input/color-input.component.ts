@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { COLOR_OPTIONS } from '../../../constants/constants';
 import { capitalizeFirstWord } from '../../../utils/label-functions';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AnimalsService } from '../../../services/animals.service';
 
 @Component({
   selector: 'app-color-input',
@@ -16,6 +17,12 @@ export class ColorInputComponent {
   @Input() formGroup!: FormGroup;
   @Input() colorOptions: readonly string[] = [];
   @Output() closeMenu: EventEmitter<void> = new EventEmitter<void>();
+
+  constructor(private animalsService: AnimalsService) {
+    this.animalsService.filterAnimals$.subscribe(() => {
+      this.showDropdown = false;
+    });
+  }
 
   public toggleDropdown() {
     this.showDropdown = !this.showDropdown;

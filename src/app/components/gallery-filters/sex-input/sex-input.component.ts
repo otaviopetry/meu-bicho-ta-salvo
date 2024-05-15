@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { capitalizeFirstWord } from '../../../utils/label-functions';
+import { AnimalsService } from '../../../services/animals.service';
 
 @Component({
   selector: 'app-sex-input',
@@ -14,6 +15,12 @@ export class SexInputComponent {
   @Input() sexOptions: readonly string[] = [];
 
   public showDropdown = false;
+
+  constructor(private animalsService: AnimalsService) {
+    this.animalsService.filterAnimals$.subscribe(() => {
+      this.showDropdown = false;
+    });
+  }
 
   public toggleDropdown() {
     this.showDropdown = !this.showDropdown;

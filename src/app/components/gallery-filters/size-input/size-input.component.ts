@@ -5,6 +5,7 @@ import {
   getSizeWord,
 } from '../../../utils/label-functions';
 import { AnimalSize } from '../../../interfaces/animal.interface';
+import { AnimalsService } from '../../../services/animals.service';
 
 @Component({
   selector: 'app-size-input',
@@ -18,6 +19,12 @@ export class SizeInputComponent {
   @Input() sizeOptions: readonly AnimalSize[] = [];
 
   public showDropdown = false;
+
+  constructor(private animalsService: AnimalsService) {
+    this.animalsService.filterAnimals$.subscribe(() => {
+      this.showDropdown = false;
+    });
+  }
 
   public toggleDropdown() {
     this.showDropdown = !this.showDropdown;

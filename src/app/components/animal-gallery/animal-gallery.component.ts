@@ -59,7 +59,6 @@ export class AnimalGalleryComponent implements OnInit {
         next: (animals) => {
           this.animals = [...this.animals, ...animals];
           this.loading = false;
-          console.log('===> animals', this.animals.length);
         },
       })
     );

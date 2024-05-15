@@ -125,7 +125,7 @@ export class GalleryFiltersComponent {
     return this.filtersForm.get('size') as FormArray;
   }
 
-  public closeColorMenu() {
+  public onFilterAnimals() {
     this.menuContainer.nativeElement.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
@@ -162,6 +162,7 @@ export class GalleryFiltersComponent {
     this.animalsService.getAnimalsFromDatabase(localFilters).catch((error) => {
       console.error('Error fetching filtered animals:', error);
     });
+    this.onFilterAnimals();
   }
 
   public getSelectedSpecies() {
@@ -203,6 +204,7 @@ export class GalleryFiltersComponent {
     this.filtersForm.reset();
     this.selectedLocation = '0';
     this.animalsService.resetFilters();
+    this.onFilterAnimals();
   }
 
   public resetFilterAndLoadInitialData() {
