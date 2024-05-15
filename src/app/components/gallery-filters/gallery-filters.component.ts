@@ -133,7 +133,11 @@ export class GalleryFiltersComponent {
                 if (!value.length) {
                   this.showLocationSuggestions = false;
                   this.filteredLocations = [];
+
+                  return;
                 }
+
+                this.selectedLocation = value;
               },
             }),
             filter((value) => value.length > 1)
@@ -145,7 +149,7 @@ export class GalleryFiltersComponent {
 
             const currentValue = this.shelterForm.get('shelter')?.value;
 
-            if (value !== this.selectedLocation) {
+            if (value !== currentValue) {
               this.filledLocationWithSuggestion = false;
             }
 

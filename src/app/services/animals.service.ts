@@ -112,7 +112,9 @@ export class AnimalsService {
       });
       nextPageFilters.startAfter = this.nextPageToken;
 
-      this.getAnimalsFromDatabase(nextPageFilters, true);
+      this.getAnimalsFromDatabase(nextPageFilters, true).then((response) => {
+        this.hasMorePages = response.animals.length >= this.itemsPerPage;
+      });
     }
   }
 

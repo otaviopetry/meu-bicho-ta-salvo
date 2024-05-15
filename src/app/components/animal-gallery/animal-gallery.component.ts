@@ -74,7 +74,7 @@ export class AnimalGalleryComponent implements OnInit {
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 400 &&
       !this.loading &&
       this.animalsService.hasMorePages &&
-      this.animals.length > this.animalsService.itemsPerPage
+      this.animals.length > this.animalsService.itemsPerPage - 1
     ) {
       this.loading = true;
       this.animalsService.loadNextPage();
