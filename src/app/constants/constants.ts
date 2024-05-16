@@ -2,6 +2,7 @@ import { AnimalSex, AnimalSize } from '../interfaces/animal.interface';
 
 export const COLOR_OPTIONS = Object.freeze([
   'bege',
+  'bege e preto',
   'branco',
   'branco e bege',
   'branco e caramelo',
@@ -16,6 +17,7 @@ export const COLOR_OPTIONS = Object.freeze([
   'cinza e preto',
   'marrom',
   'marrom e preto',
+  'marrom e caramelo',
   'tigrado',
   'preto',
   'preto e branco',
