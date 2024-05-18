@@ -1,0 +1,20 @@
+::ng-deep {
+  .social-icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    &--desktop {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    svg {
+      fill: black;
+      width: 25px;
+      height: 25px;
+    }
+  }
+}

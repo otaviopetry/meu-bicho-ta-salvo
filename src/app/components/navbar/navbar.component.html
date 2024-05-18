@@ -1,0 +1,24 @@
+<div class="main-nav-container w-full sticky top-0 bg-white shadow-md z-50">
+  <nav
+    class="flex flex-col md:flex-row md:justify-center items-end md:items-center p-2"
+  >
+    <app-navbar-desktop></app-navbar-desktop>
+    <button
+      class="md:hidden flex items-center px-2 py-1 border rounded text-gray-500 border-gray-500 hover:text-black hover:border-black"
+      (click)="toggleMenu()"
+    >
+      <svg
+        class="fill-current h-4 w-4"
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>Menu</title>
+        <path d="M0 3h20v2H0V3zm0 5h20v2H0V8zm0 5h20v2H0v-2z" />
+      </svg>
+    </button>
+  </nav>
+  <app-navbar-mobile
+    (toggleMenuEvent)="toggleMenu()"
+    [menuOpen]="menuOpen"
+  ></app-navbar-mobile>
+</div>
