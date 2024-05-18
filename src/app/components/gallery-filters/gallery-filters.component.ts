@@ -29,6 +29,7 @@ import { ColorInputComponent } from './color-input/color-input.component';
 import { SexInputComponent } from './sex-input/sex-input.component';
 import { SizeInputComponent } from './size-input/size-input.component';
 import { SpeciesInputComponent } from './species-input/species-input.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-gallery-filters',
@@ -41,6 +42,7 @@ import { SpeciesInputComponent } from './species-input/species-input.component';
     SexInputComponent,
     SizeInputComponent,
     SpeciesInputComponent,
+    MatAutocompleteModule,
   ],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
@@ -96,7 +98,8 @@ export class GalleryFiltersComponent {
         }
       }),
       this.animalsService.locations$.subscribe((locations) => {
-        this.locationOptions = locations;
+        this.locationOptions = [...locations].sort();
+        this.filteredLocations = [...this.locationOptions];
       })
     );
     this.buildShelterForm();
