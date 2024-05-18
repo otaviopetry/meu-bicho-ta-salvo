@@ -40,10 +40,16 @@
           formControlName="shelter"
           placeholder="Digite o nome do abrigo"
           class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          (click)="showLocationSuggestions = false"
+          [matAutocomplete]="auto"
         />
       </div>
-      @if (showLocationSuggestions && !filledLocationWithSuggestion) {
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of filteredLocations; track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-autocomplete>
+
+      <!-- @if (showLocationSuggestions && !filledLocationWithSuggestion) {
       <div class="shelter-suggestions flex-1 min-w-[140px]">
         <ul>
           @for (locationSuggestion of filteredLocations; track
@@ -54,7 +60,7 @@
           }
         </ul>
       </div>
-      }
+      } -->
     </form>
     } @else if(userType === 'temporary-home') {
     <div class="flex-1 min-w-[140px]">
