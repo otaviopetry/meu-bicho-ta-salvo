@@ -5,12 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { UserType } from './types/user-type.type';
 import { Subscription } from 'rxjs';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, CommonModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule, NavbarComponent],
   providers: [AnimalsService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -60,7 +60,7 @@ export class AppComponent {
 
   public getHeaderPadding() {
     if (this.isHome()) {
-      return 'pb-24';
+      return 'pb-20';
     }
 
     return 'pb-16';
