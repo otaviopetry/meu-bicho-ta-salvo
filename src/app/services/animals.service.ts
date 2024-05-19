@@ -51,14 +51,12 @@ export class AnimalsService {
   }
 
   public loadInitialData() {
-    this.getAnimalsFromDatabase()
-      .then((response) => {
-        this.allAnimals = [...response.animals];
-      })
-      .catch((error) => {
-        console.error('Error fetching initial data:', error);
-        this.animalsCache.next([]);
-      });
+    this.allAnimals = [];
+
+    this.getAnimalsFromDatabase().catch((error) => {
+      console.error('Error fetching initial data:', error);
+      this.animalsCache.next([]);
+    });
   }
 
   public async getAnimalsFromDatabase(
