@@ -43,13 +43,13 @@
     </mat-form-field>
     } @else if(userType === 'shelter') {
     <app-shelter-input
-      class="w-full"
+      class="col-span-1 sm:col-span-2 lg:col-span-4 lg:mx-5"
       [shelterForm]="shelterForm"
       [shelterOptions]="shelterOptions$ | async"
     ></app-shelter-input>
     } @else if(userType === 'temporary-home') {
     <app-shelter-input
-      class="w-full"
+      class="col-span-1 sm:col-span-2 lg:col-span-4 lg:mx-5"
       [shelterForm]="shelterForm"
       [shelterOptions]="temporaryHomeOptions$ | async"
     ></app-shelter-input>
