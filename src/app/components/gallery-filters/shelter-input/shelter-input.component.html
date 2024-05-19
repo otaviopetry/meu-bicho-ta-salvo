@@ -1,18 +1,18 @@
 <form class="w-full" [formGroup]="shelterForm">
-  <div class="flex-1 min-w-[140px]">
+  <mat-form-field class="w-full">
+    <mat-label>Selecione um {{ shelterType }}</mat-label>
     <input
       type="text"
-      id="shelter-location"
-      name="shelter"
-      formControlName="shelter"
-      placeholder="Digite o nome do abrigo"
-      class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+      [placeholder]="shelterType"
+      aria-label="Selecione uma opção"
+      matInput
+      [formControlName]="'shelter'"
       [matAutocomplete]="shelter"
     />
-  </div>
-  <mat-autocomplete #shelter="matAutocomplete">
-    @for (option of filteredShelters | async; track option) {
-    <mat-option [value]="option">{{ option }}</mat-option>
-    }
-  </mat-autocomplete>
+    <mat-autocomplete #shelter="matAutocomplete">
+      @for (option of filteredShelters | async; track option) {
+      <mat-option [value]="option">{{ option }}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
 </form>

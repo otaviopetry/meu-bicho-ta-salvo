@@ -4,17 +4,26 @@ import { AnimalsService } from '../../../services/animals.service';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Observable, map, of, startWith } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-shelter-input',
   standalone: true,
-  imports: [MatAutocompleteModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './shelter-input.component.html',
   styleUrl: './shelter-input.component.scss',
 })
 export class ShelterInputComponent {
   @Input() public shelterForm: FormGroup = new FormGroup({});
   @Input() public shelterOptions: string[] | null = [];
+  @Input() public shelterType: string = '';
 
   public selectedLocation: string = '';
   public filteredShelters: Observable<string[]> = of([]);

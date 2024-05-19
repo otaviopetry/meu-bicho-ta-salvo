@@ -43,15 +43,17 @@
     </mat-form-field>
     } @else if(userType === 'shelter') {
     <app-shelter-input
-      class="col-span-1 sm:col-span-2 lg:col-span-4 lg:mx-5"
+      class="col-span-1 sm:col-span-2 lg:col-span-4"
       [shelterForm]="shelterForm"
       [shelterOptions]="shelterOptions$ | async"
+      [shelterType]="'Abrigo'"
     ></app-shelter-input>
     } @else if(userType === 'temporary-home') {
     <app-shelter-input
-      class="col-span-1 sm:col-span-2 lg:col-span-4 lg:mx-5"
+      class="col-span-1 sm:col-span-2 lg:col-span-4"
       [shelterForm]="shelterForm"
       [shelterOptions]="temporaryHomeOptions$ | async"
+      [shelterType]="'Lar temporário'"
     ></app-shelter-input>
     }
   </div>
