@@ -1,9 +1,8 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { AnimalFilters, AnimalsService } from '../../services/animals.service';
 import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
 import {
-  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -16,23 +15,9 @@ import {
   SIZE_OPTIONS,
   SPECIES_OPTIONS,
 } from '../../constants/constants';
-import {
-  Observable,
-  Subscription,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  of,
-  startWith,
-  tap,
-} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute } from '@angular/router';
-import { ColorInputComponent } from './color-input/color-input.component';
-import { SexInputComponent } from './sex-input/sex-input.component';
-import { SizeInputComponent } from './size-input/size-input.component';
-import { SpeciesInputComponent } from './species-input/species-input.component';
 import { ShelterInputComponent } from './shelter-input/shelter-input.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
