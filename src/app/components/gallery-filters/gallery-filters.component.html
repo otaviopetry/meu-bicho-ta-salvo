@@ -9,7 +9,9 @@
       <mat-label>Espécie</mat-label>
       <mat-select [formControl]="speciesFormControl" multiple>
         @for (species of speciesOptions; track species) {
-        <mat-option [value]="species">{{ species }}</mat-option>
+        <mat-option [value]="species">{{
+          capitalizeFirstWord(species)
+        }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -28,7 +30,7 @@
       <mat-label>Sexo</mat-label>
       <mat-select [formControl]="sexFormControl" multiple>
         @for (sex of sexOptions; track sex) {
-        <mat-option [value]="sex">{{ sex }}</mat-option>
+        <mat-option [value]="sex">{{ capitalizeFirstWord(sex) }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
@@ -37,7 +39,9 @@
       <mat-label>Cor</mat-label>
       <mat-select [formControl]="colorFormControl" multiple>
         @for (color of colorOptions; track color) {
-        <mat-option [value]="color">{{ color }}</mat-option>
+        <mat-option [value]="color">{{
+          capitalizeFirstWord(color)
+        }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
