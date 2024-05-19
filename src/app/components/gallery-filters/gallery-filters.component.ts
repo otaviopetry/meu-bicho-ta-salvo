@@ -164,16 +164,11 @@ export class GalleryFiltersComponent {
     this.onFilterAnimals();
   }
 
-  public resetFiltersWithoutLoadingData() {
+  public resetFilterAndLoadInitialData() {
     this.filtersForm.reset();
     this.shelterForm.reset();
     this.animalsService.resetFilters();
     this.onFilterAnimals();
-  }
-
-  public resetFilterAndLoadInitialData() {
-    this.resetFiltersWithoutLoadingData();
-    this.animalsService.loadInitialData();
   }
 
   private populateFilters() {
