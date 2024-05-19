@@ -52,27 +52,16 @@ import { ShelterInputComponent } from './shelter-input/shelter-input.component';
   styleUrl: './gallery-filters.component.scss',
 })
 export class GalleryFiltersComponent {
-  public speciesOptions = SPECIES_OPTIONS;
-
   public shelterOptions$ = this.animalsService.locations$.asObservable();
-
   public temporaryHomeOptions$ =
     this.animalsService.temporaryHomeLocations$.asObservable();
-
+  public speciesOptions = SPECIES_OPTIONS;
   public sizeOptions = SIZE_OPTIONS;
   public sexOptions = SEX_OPTIONS;
   public colorOptions = COLOR_OPTIONS;
 
-  public selectedSpecies: string = '0';
-  public selectedSize: string = '0';
-  public selectedSex: string = '0';
-  public selectedColors: { [color: string]: boolean } = {};
-
-  public shelterForm!: FormGroup;
-  public locationOptions: string[] = [];
-  public filteredShelters: Observable<string[]> = of([]);
-
   public filtersForm!: FormGroup;
+  public shelterForm!: FormGroup;
 
   public userType: UserType = 'tutor';
 
@@ -236,9 +225,6 @@ export class GalleryFiltersComponent {
   }
 
   public resetFiltersWithoutLoadingData() {
-    this.selectedSpecies = '0';
-    this.selectedSize = '0';
-    this.selectedSex = '0';
     this.filtersForm.reset();
     this.shelterForm.reset();
     this.animalsService.resetFilters();

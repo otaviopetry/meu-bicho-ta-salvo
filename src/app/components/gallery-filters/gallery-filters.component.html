@@ -28,9 +28,7 @@
       [colorOptions]="colorOptions"
       class="w-full relative gallery-filter"
     ></app-color-input>
-
-    } @else if(userType === 'shelter' && (shelterOptions$ | async) !== null) {
-    <!-- Location Dropdown -->
+    } @else if(userType === 'shelter') {
     <app-shelter-input
       class="w-full"
       [shelterForm]="shelterForm"
