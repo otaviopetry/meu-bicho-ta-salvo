@@ -44,23 +44,10 @@
         />
       </div>
       <mat-autocomplete #auto="matAutocomplete">
-        @for (option of filteredLocations; track option) {
+        @for (option of filteredShelters | async; track option) {
         <mat-option [value]="option">{{ option }}</mat-option>
         }
       </mat-autocomplete>
-
-      <!-- @if (showLocationSuggestions && !filledLocationWithSuggestion) {
-      <div class="shelter-suggestions flex-1 min-w-[140px]">
-        <ul>
-          @for (locationSuggestion of filteredLocations; track
-          locationSuggestion) {
-          <li (click)="selectSuggestion(locationSuggestion)">
-            {{ locationSuggestion }}
-          </li>
-          }
-        </ul>
-      </div>
-      } -->
     </form>
     } @else if(userType === 'temporary-home') {
     <div class="flex-1 min-w-[140px]">

@@ -17,10 +17,14 @@ import {
   SPECIES_OPTIONS,
 } from '../../constants/constants';
 import {
+  Observable,
   Subscription,
   debounceTime,
   distinctUntilChanged,
   filter,
+  map,
+  of,
+  startWith,
   tap,
 } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
@@ -65,9 +69,7 @@ export class GalleryFiltersComponent {
   public selectedLocation: string = '';
   public shelterForm!: FormGroup;
   public locationOptions: string[] = [];
-  public filteredLocations: string[] = [];
-  public showLocationSuggestions = false;
-  public filledLocationWithSuggestion = false;
+  public filteredShelters: Observable<string[]> = of([]);
 
   public filtersForm!: FormGroup;
 
@@ -88,22 +90,12 @@ export class GalleryFiltersComponent {
 
   ngOnInit() {
     this.subscriptions.push(
-      this.animalsService.userType$.subscribe((userType) => {
-        this.userType = userType;
-        this.selectedLocation = '';
-      }),
-      this.route.queryParams.subscribe((params) => {
-        if (params['abrigo']) {
-          this.selectedLocation = params['abrigo'];
-        }
-      }),
-      this.animalsService.locations$.subscribe((locations) => {
-        this.locationOptions = [...locations].sort();
-        this.filteredLocations = [...this.locationOptions];
-      })
+      this.listenUserTypeChange(),
+      this.checkShelterQueryParam(),
+      this.getLocationOptions()
     );
     this.buildShelterForm();
-    this.buildForm();
+    this.buildFiltersForm();
     this.listenLocationChanges();
   }
 
@@ -112,11 +104,25 @@ export class GalleryFiltersComponent {
     this.subscriptions = [];
   }
 
-  public selectSuggestion(location: string) {
-    this.selectedLocation = location;
-    this.shelterForm.get('shelter')?.setValue(location);
-    this.showLocationSuggestions = false;
-    this.filledLocationWithSuggestion = true;
+  private listenUserTypeChange() {
+    return this.animalsService.userType$.subscribe((userType) => {
+      this.userType = userType;
+      this.selectedLocation = '';
+    });
+  }
+
+  private checkShelterQueryParam() {
+    return this.route.queryParams.subscribe((params) => {
+      if (params['abrigo']) {
+        this.selectedLocation = params['abrigo'];
+      }
+    });
+  }
+
+  private getLocationOptions() {
+    return this.animalsService.locations$.subscribe((locations) => {
+      this.locationOptions = [...locations].sort();
+    });
   }
 
   private buildShelterForm() {
@@ -131,66 +137,7 @@ export class GalleryFiltersComponent {
     }
   }
 
-  public listenLocationChanges() {
-    const shelterControl = this.shelterForm.get('shelter')?.valueChanges;
-
-    if (shelterControl) {
-      this.subscriptions.push(
-        shelterControl
-          .pipe(
-            debounceTime(300),
-            distinctUntilChanged(),
-            tap({
-              next: (value) => {
-                this.filledLocationWithSuggestion = false;
-
-                if (value && !value.length) {
-                  this.showLocationSuggestions = false;
-                  this.filteredLocations = [];
-
-                  return;
-                }
-
-                this.selectedLocation = value;
-              },
-            }),
-            filter((value) => value?.length > 1)
-          )
-          .subscribe((value) => {
-            this.filteredLocations = this.locationOptions.filter((location) =>
-              location.toLowerCase().includes(value.toLowerCase())
-            );
-
-            const currentValue = this.shelterForm.get('shelter')?.value;
-
-            if (value !== currentValue) {
-              this.filledLocationWithSuggestion = false;
-            }
-
-            this.showLocationSuggestions = this.filteredLocations.length > 0;
-
-            if (value.trim() === this.filteredLocations[0]) {
-              this.filledLocationWithSuggestion = true;
-            }
-          })
-      );
-    }
-  }
-
-  @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'Escape' || event.key === 'Esc') {
-      this.onEscPressed();
-    }
-  }
-
-  private onEscPressed() {
-    if (this.showLocationSuggestions) {
-      this.showLocationSuggestions = false;
-    }
-  }
-
-  buildForm(): void {
+  private buildFiltersForm(): void {
     this.filtersForm = this.formBuilder.group({
       species: this.formBuilder.array([]),
       size: this.formBuilder.array([]),
@@ -301,7 +248,6 @@ export class GalleryFiltersComponent {
     this.selectedSex = '0';
     this.filtersForm.reset();
     this.shelterForm.reset();
-    this.showLocationSuggestions = false;
     this.selectedLocation = '';
     this.animalsService.resetFilters();
     this.onFilterAnimals();
@@ -346,5 +292,28 @@ export class GalleryFiltersComponent {
         }
       });
     }
+  }
+
+  public listenLocationChanges() {
+    const shelterControl = this.shelterForm.get('shelter')?.valueChanges;
+
+    if (shelterControl) {
+      this.filteredShelters = shelterControl.pipe(
+        startWith(''),
+        map((value) => this._filter(value || ''))
+      );
+    }
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = this._normalizeValue(value);
+
+    return this.locationOptions.filter((street) =>
+      this._normalizeValue(street).includes(filterValue)
+    );
+  }
+
+  private _normalizeValue(value: string): string {
+    return value.toLowerCase().replace(/\s/g, '');
   }
 }
