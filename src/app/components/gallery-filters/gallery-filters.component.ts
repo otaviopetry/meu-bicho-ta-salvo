@@ -33,7 +33,7 @@ import { ColorInputComponent } from './color-input/color-input.component';
 import { SexInputComponent } from './sex-input/sex-input.component';
 import { SizeInputComponent } from './size-input/size-input.component';
 import { SpeciesInputComponent } from './species-input/species-input.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ShelterInputComponent } from './shelter-input/shelter-input.component';
 
 @Component({
   selector: 'app-gallery-filters',
@@ -46,14 +46,16 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SexInputComponent,
     SizeInputComponent,
     SpeciesInputComponent,
-    MatAutocompleteModule,
+    ShelterInputComponent,
   ],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
 })
 export class GalleryFiltersComponent {
   public speciesOptions = SPECIES_OPTIONS;
-  public locationOptions$ = this.animalsService.locations$.asObservable();
+
+  public shelterOptions$ = this.animalsService.locations$.asObservable();
+
   public temporaryHomeOptions$ =
     this.animalsService.temporaryHomeLocations$.asObservable();
 
@@ -91,12 +93,10 @@ export class GalleryFiltersComponent {
   ngOnInit() {
     this.subscriptions.push(
       this.listenUserTypeChange(),
-      this.checkShelterQueryParam(),
-      this.getLocationOptions()
+      this.checkShelterQueryParam()
     );
     this.buildShelterForm();
     this.buildFiltersForm();
-    this.listenLocationChanges();
   }
 
   ngOnDestroy() {
@@ -116,12 +116,6 @@ export class GalleryFiltersComponent {
       if (params['abrigo']) {
         this.selectedLocation = params['abrigo'];
       }
-    });
-  }
-
-  private getLocationOptions() {
-    return this.animalsService.locations$.subscribe((locations) => {
-      this.locationOptions = [...locations].sort();
     });
   }
 
@@ -292,28 +286,5 @@ export class GalleryFiltersComponent {
         }
       });
     }
-  }
-
-  public listenLocationChanges() {
-    const shelterControl = this.shelterForm.get('shelter')?.valueChanges;
-
-    if (shelterControl) {
-      this.filteredShelters = shelterControl.pipe(
-        startWith(''),
-        map((value) => this._filter(value || ''))
-      );
-    }
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-
-    return this.locationOptions.filter((street) =>
-      this._normalizeValue(street).includes(filterValue)
-    );
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
   }
 }

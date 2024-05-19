@@ -29,26 +29,13 @@
       class="w-full relative gallery-filter"
     ></app-color-input>
 
-    } @else if(userType === 'shelter') {
+    } @else if(userType === 'shelter' && (shelterOptions$ | async) !== null) {
     <!-- Location Dropdown -->
-    <form class="w-full" [formGroup]="shelterForm">
-      <div class="flex-1 min-w-[140px]">
-        <input
-          type="text"
-          id="shelter-location"
-          name="shelter"
-          formControlName="shelter"
-          placeholder="Digite o nome do abrigo"
-          class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          [matAutocomplete]="auto"
-        />
-      </div>
-      <mat-autocomplete #auto="matAutocomplete">
-        @for (option of filteredShelters | async; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
-        }
-      </mat-autocomplete>
-    </form>
+    <app-shelter-input
+      class="w-full"
+      [shelterForm]="shelterForm"
+      [shelterOptions]="shelterOptions$ | async"
+    ></app-shelter-input>
     } @else if(userType === 'temporary-home') {
     <div class="flex-1 min-w-[140px]">
       <select
