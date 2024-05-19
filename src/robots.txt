@@ -1,4 +1,3 @@
-# Allow root
+# Allow all content to be crawled
 User-agent: *
-Allow: /$
-Disallow: /
+Allow: /

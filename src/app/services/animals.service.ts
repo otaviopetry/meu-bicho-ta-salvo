@@ -1,15 +1,6 @@
 import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  ReplaySubject,
-  Subject,
-  concatMap,
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { IAnimal } from '../interfaces/animal.interface';
 import { UserType } from '../types/user-type.type';
 
