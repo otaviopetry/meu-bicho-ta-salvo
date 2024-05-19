@@ -2,32 +2,45 @@
   #menuContainer
   class="bg-white rounded drop-shadow -mt-20 p-4 mb-6 w-full mx-auto text-center"
 >
-  <div class="flex flex-wrap items-center justify-center gap-2 w-full">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
     @if (userType === 'tutor') {
     <!-- Species Dropdown -->
-    <app-species-input
-      [formGroup]="filtersForm"
-      [speciesOptions]="speciesOptions"
-      class="flex-1 min-w-[140px] relative gallery-filter"
-    ></app-species-input>
+    <mat-form-field class="flex-1 min-w-[240px]">
+      <mat-label>Espécie</mat-label>
+      <mat-select [formControl]="speciesFormControl" multiple>
+        @for (species of speciesOptions; track species) {
+        <mat-option [value]="species">{{ species }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
     <!-- Size Dropdown -->
-    <app-size-input
-      [formGroup]="filtersForm"
-      [sizeOptions]="sizeOptions"
-      class="flex-1 min-w-[140px] relative gallery-filter"
-    ></app-size-input>
+    <mat-form-field class="flex-1 min-w-[240px]">
+      <mat-label>Tamanho</mat-label>
+      <mat-select [formControl]="sizeFormControl" multiple>
+        @for (size of sizeOptions; track size) {
+        <mat-option [value]="size">{{ getSizeWord(size) }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
     <!-- Sex Dropdown -->
-    <app-sex-input
-      [formGroup]="filtersForm"
-      [sexOptions]="sexOptions"
-      class="flex-1 min-w-[140px] relative gallery-filter"
-    ></app-sex-input>
+    <mat-form-field class="flex-1 min-w-[240px]">
+      <mat-label>Sexo</mat-label>
+      <mat-select [formControl]="sexFormControl" multiple>
+        @for (sex of sexOptions; track sex) {
+        <mat-option [value]="sex">{{ sex }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
     <!-- Color Dropdown -->
-    <app-color-input
-      [formGroup]="filtersForm"
-      [colorOptions]="colorOptions"
-      class="w-full relative gallery-filter"
-    ></app-color-input>
+    <mat-form-field class="flex-1 min-w-[240px]">
+      <mat-label>Cor</mat-label>
+      <mat-select [formControl]="colorFormControl" multiple>
+        @for (color of colorOptions; track color) {
+        <mat-option [value]="color">{{ color }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
     } @else if(userType === 'shelter') {
     <app-shelter-input
       class="w-full"

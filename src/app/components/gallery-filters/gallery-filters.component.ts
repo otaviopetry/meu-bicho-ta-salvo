@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { AnimalFilters, AnimalsService } from '../../services/animals.service';
-import { capitalizeFirstWord } from '../../utils/label-functions';
+import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
 import { CommonModule } from '@angular/common';
 import {
   FormArray,
@@ -34,6 +34,9 @@ import { SexInputComponent } from './sex-input/sex-input.component';
 import { SizeInputComponent } from './size-input/size-input.component';
 import { SpeciesInputComponent } from './species-input/species-input.component';
 import { ShelterInputComponent } from './shelter-input/shelter-input.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { AnimalSize } from '../../interfaces/animal.interface';
 
 @Component({
   selector: 'app-gallery-filters',
@@ -42,11 +45,9 @@ import { ShelterInputComponent } from './shelter-input/shelter-input.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ColorInputComponent,
-    SexInputComponent,
-    SizeInputComponent,
-    SpeciesInputComponent,
     ShelterInputComponent,
+    MatFormFieldModule,
+    MatSelectModule,
   ],
   templateUrl: './gallery-filters.component.html',
   styleUrl: './gallery-filters.component.scss',
@@ -55,9 +56,17 @@ export class GalleryFiltersComponent {
   public shelterOptions$ = this.animalsService.locations$.asObservable();
   public temporaryHomeOptions$ =
     this.animalsService.temporaryHomeLocations$.asObservable();
+
+  public speciesFormControl = new FormControl<string[]>([]);
   public speciesOptions = SPECIES_OPTIONS;
+
+  public sizeFormControl = new FormControl<string[]>([]);
   public sizeOptions = SIZE_OPTIONS;
+
+  public sexFormControl = new FormControl<string[]>([]);
   public sexOptions = SEX_OPTIONS;
+
+  public colorFormControl = new FormControl<string[]>([]);
   public colorOptions = COLOR_OPTIONS;
 
   public filtersForm!: FormGroup;
@@ -121,35 +130,13 @@ export class GalleryFiltersComponent {
 
   private buildFiltersForm(): void {
     this.filtersForm = this.formBuilder.group({
-      species: this.formBuilder.array([]),
-      size: this.formBuilder.array([]),
-      sex: this.formBuilder.array([]),
-      color: this.formBuilder.array([]),
+      species: this.speciesFormControl,
+      size: this.sizeFormControl,
+      sex: this.sexFormControl,
+      color: this.colorFormControl,
     });
 
-    this.speciesOptions.forEach(() =>
-      this.species.push(new FormControl(false))
-    );
-    this.sizeOptions.forEach(() => this.sizes.push(new FormControl(false)));
-    this.colorOptions.forEach(() => this.colors.push(new FormControl(false)));
-    this.sexOptions.forEach(() => this.sexes.push(new FormControl(false)));
     this.populateFilters();
-  }
-
-  get species(): FormArray {
-    return this.filtersForm.get('species') as FormArray;
-  }
-
-  get colors(): FormArray {
-    return this.filtersForm.get('color') as FormArray;
-  }
-
-  get sexes(): FormArray {
-    return this.filtersForm.get('sex') as FormArray;
-  }
-
-  get sizes(): FormArray {
-    return this.filtersForm.get('size') as FormArray;
   }
 
   public onFilterAnimals() {
@@ -170,19 +157,19 @@ export class GalleryFiltersComponent {
     this.animalsService.resetAnimals();
     this.animalsService.filterAnimals$.next();
 
-    const selectedColors = this.getSelectedColors();
-    const selectedSexes = this.getSelectedSexes();
-    const selectedSizes = this.getSelectedSizes();
-    const selectedSpecies = this.getSelectedSpecies();
+    const selectedColors = this.colorFormControl.value;
+    const selectedSexes = this.sexFormControl.value;
+    const selectedSizes = this.sizeFormControl.value;
+    const selectedSpecies = this.speciesFormControl.value;
 
     if (this.shelterForm.get('shelter')?.value) {
       localFilters['whereItIs'] = this.shelterForm.get('shelter')?.value;
     } else {
       localFilters = {
-        species: selectedSpecies.length ? selectedSpecies : undefined,
-        sex: selectedSexes.length ? selectedSexes : undefined,
-        size: selectedSizes.length ? selectedSizes : undefined,
-        color: selectedColors.length ? selectedColors : undefined,
+        species: selectedSpecies?.length ? selectedSpecies : undefined,
+        sex: selectedSexes?.length ? selectedSexes : undefined,
+        size: selectedSizes?.length ? selectedSizes : undefined,
+        color: selectedColors?.length ? selectedColors : undefined,
       };
     }
 
@@ -190,38 +177,6 @@ export class GalleryFiltersComponent {
       console.error('Error fetching filtered animals:', error);
     });
     this.onFilterAnimals();
-  }
-
-  public getSelectedSpecies() {
-    return this.filtersForm.value.species
-      .map((checked: boolean, i: number) =>
-        checked ? this.speciesOptions[i] : null
-      )
-      .filter((value: string | null) => value !== null);
-  }
-
-  public getSelectedSexes() {
-    return this.filtersForm.value.sex
-      .map((checked: boolean, i: number) =>
-        checked ? this.sexOptions[i] : null
-      )
-      .filter((value: string | null) => value !== null);
-  }
-
-  public getSelectedSizes() {
-    return this.filtersForm.value.size
-      .map((checked: boolean, i: number) =>
-        checked ? this.sizeOptions[i] : null
-      )
-      .filter((value: string | null) => value !== null);
-  }
-
-  public getSelectedColors() {
-    return this.filtersForm.value.color
-      .map((checked: boolean, i: number) =>
-        checked ? this.colorOptions[i] : null
-      )
-      .filter((value: string | null) => value !== null);
   }
 
   public resetFiltersWithoutLoadingData() {
@@ -240,35 +195,23 @@ export class GalleryFiltersComponent {
     const filters = { ...this.animalsService.selectedFilters };
 
     if (filters.species?.length) {
-      this.speciesOptions.forEach((option, index) => {
-        if (filters.species?.includes(option)) {
-          this.species.at(index).setValue(true);
-        }
-      });
+      this.speciesFormControl.setValue(filters.species);
     }
 
     if (filters.size?.length) {
-      this.sizeOptions.forEach((option, index) => {
-        if (filters.size?.includes(option)) {
-          this.sizes.at(index).setValue(true);
-        }
-      });
+      this.sizeFormControl.setValue(filters.size);
     }
 
     if (filters.sex?.length) {
-      this.sexOptions.forEach((option, index) => {
-        if (filters.sex?.includes(option)) {
-          this.sexes.at(index).setValue(true);
-        }
-      });
+      this.sexFormControl.setValue(filters.sex);
     }
 
     if (filters.color?.length) {
-      this.colorOptions.forEach((option, index) => {
-        if (filters.color?.includes(option)) {
-          this.colors.at(index).setValue(true);
-        }
-      });
+      this.colorFormControl.setValue(filters.color);
     }
+  }
+
+  public getSizeWord(sizeOption: AnimalSize) {
+    return getSizeWord(sizeOption);
   }
 }
