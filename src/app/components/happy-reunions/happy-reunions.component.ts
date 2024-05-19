@@ -31,7 +31,6 @@ export class HappyReunionsComponent {
     this.subscriptions.push(
       this.happyReunionsService.getAnimals().subscribe({
         next: (animals) => {
-          console.log('===> animals', animals);
           this.animals = animals;
           this.loading = false;
         },
