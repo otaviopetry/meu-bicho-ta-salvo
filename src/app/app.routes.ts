@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AnimalGalleryComponent } from './components/animal-gallery/animal-gallery.component';
 import { AnimalPageComponent } from './components/animal-page/animal-page.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
+import { HappyReunionsComponent } from './components/happy-reunions/happy-reunions.component';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'como-utilizar',
     component: HowToUseComponent,
+  },
+  {
+    path: 'reencontros',
+    component: HappyReunionsComponent,
   },
 ];

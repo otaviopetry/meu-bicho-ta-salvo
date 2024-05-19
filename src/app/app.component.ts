@@ -6,12 +6,13 @@ import { CommonModule } from '@angular/common';
 import { UserType } from './types/user-type.type';
 import { Subscription } from 'rxjs';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { HappyReunionsService } from './services/happy-reunions.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HttpClientModule, CommonModule, NavbarComponent],
-  providers: [AnimalsService],
+  providers: [AnimalsService, HappyReunionsService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -23,6 +24,7 @@ export class AppComponent {
 
   constructor(
     private animalsService: AnimalsService,
+    private happyReunionsService: HappyReunionsService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -33,6 +35,7 @@ export class AppComponent {
     this.animalsService.loadLocations();
     this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
+    this.happyReunionsService.loadHappyReunitedAnimals();
     this.subscriptions.push(
       this.route.queryParams.subscribe((params) => {
         if (params['abrigo']) {
