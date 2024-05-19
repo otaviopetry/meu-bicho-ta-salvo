@@ -68,7 +68,6 @@ export class GalleryFiltersComponent {
   public selectedSex: string = '0';
   public selectedColors: { [color: string]: boolean } = {};
 
-  public selectedLocation: string = '';
   public shelterForm!: FormGroup;
   public locationOptions: string[] = [];
   public filteredShelters: Observable<string[]> = of([]);
@@ -107,14 +106,14 @@ export class GalleryFiltersComponent {
   private listenUserTypeChange() {
     return this.animalsService.userType$.subscribe((userType) => {
       this.userType = userType;
-      this.selectedLocation = '';
+      this.shelterForm?.reset();
     });
   }
 
   private checkShelterQueryParam() {
     return this.route.queryParams.subscribe((params) => {
       if (params['abrigo']) {
-        this.selectedLocation = params['abrigo'];
+        this.shelterForm.get('shelter')?.setValue(params['abrigo']);
       }
     });
   }
@@ -242,7 +241,6 @@ export class GalleryFiltersComponent {
     this.selectedSex = '0';
     this.filtersForm.reset();
     this.shelterForm.reset();
-    this.selectedLocation = '';
     this.animalsService.resetFilters();
     this.onFilterAnimals();
   }

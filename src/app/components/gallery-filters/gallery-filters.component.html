@@ -37,22 +37,11 @@
       [shelterOptions]="shelterOptions$ | async"
     ></app-shelter-input>
     } @else if(userType === 'temporary-home') {
-    <div class="flex-1 min-w-[140px]">
-      <select
-        id="home-location"
-        name="home-location"
-        [(ngModel)]="selectedLocation"
-        class="w-full h-full p-2 border border-gray-300 rounded-md text-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-      >
-        <option value="0">Selecione um LT</option>
-        @for (locationOption of (temporaryHomeOptions$ | async)?.sort(); track
-        $index) {
-        <option value="{{ locationOption }}">
-          {{ capitalizeFirstWord(locationOption) }}
-        </option>
-        }
-      </select>
-    </div>
+    <app-shelter-input
+      class="w-full"
+      [shelterForm]="shelterForm"
+      [shelterOptions]="temporaryHomeOptions$ | async"
+    ></app-shelter-input>
     }
   </div>
   <div class="flex-auto items-center justify-center mt-3">
