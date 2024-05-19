@@ -23,7 +23,6 @@ export class ShelterInputComponent {
 
   ngOnInit() {
     this.listenLocationChanges();
-    console.log('===> shelterOptions', this.shelterOptions);
   }
 
   public listenLocationChanges() {
