@@ -187,8 +187,8 @@ export class GalleryFiltersComponent {
     const selectedSizes = this.getSelectedSizes();
     const selectedSpecies = this.getSelectedSpecies();
 
-    if (this.selectedLocation !== '') {
-      localFilters['whereItIs'] = this.selectedLocation;
+    if (this.shelterForm.get('shelter')?.value) {
+      localFilters['whereItIs'] = this.shelterForm.get('shelter')?.value;
     } else {
       localFilters = {
         species: selectedSpecies.length ? selectedSpecies : undefined,
