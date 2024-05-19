@@ -31,7 +31,8 @@ export class ShelterInputComponent {
     if (shelterControl) {
       this.filteredShelters = shelterControl.pipe(
         startWith(''),
-        map((value) => this._filter(value || ''))
+        map((value) => this._filter(value || '')),
+        map((value) => value.sort())
       );
     }
   }
