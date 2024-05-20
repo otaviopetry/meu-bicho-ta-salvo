@@ -12,6 +12,11 @@
 
 .logo {
   cursor: pointer;
+
+  img {
+    max-width: 145px;
+    height: auto;
+  }
 }
 
 .user-type-selector {
