@@ -3,7 +3,7 @@
   class="masonry-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-full"
 >
   @for (animal of animals; track animal.id) {
-  <a [routerLink]="[animal.id]">
+  <a [routerLink]="[animal.id]" class="card">
     <app-animal-card [animal]="animal"></app-animal-card>
   </a>
   } @empty {
