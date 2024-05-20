@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="header bg-gray-900 pt-8" [class]="getHeaderPadding()">
+<div class="header bg-gray-900" [class]="getHeaderPadding()">
   <div
     (click)="navigateHome()"
     class="logo container mx-auto mt-4 px-4 w-full text-center"
@@ -23,6 +23,7 @@
         >&#64;meubichotasalvocanoas</a
       >
     </p>
+    @if (isHome()) {
     <p
       class="text-2xl font-thin text-center text-gray-300 max-w-xl mx-auto mb-8"
     >
@@ -34,7 +35,6 @@
       <strong>Animais cadastrados:</strong>
       {{ (animalCount$ | async) || "..." }}
     </p>
-    @if (isHome()) {
     <div class="user-type-selector text-gray-300">
       <button
         (click)="changeUserType('tutor')"
@@ -55,10 +55,15 @@
         Procure por LT
       </button>
     </div>
+    } @if (isReunions()) {
+    <p
+      class="text-2xl font-thin text-center text-gray-300 max-w-xl mx-auto mb-8"
+    >
+      Animais que tiveram seus tutores identificados ❤️‍🩹
+    </p>
     }
   </div>
 </div>
-
 <div class="container mx-auto px-4 py-8">
   <router-outlet></router-outlet>
 </div>

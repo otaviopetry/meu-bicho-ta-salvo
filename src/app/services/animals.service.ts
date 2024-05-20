@@ -32,7 +32,7 @@ export class AnimalsService {
   public locations$ = new BehaviorSubject<string[]>([]);
   public temporaryHomeLocations$ = new BehaviorSubject<string[]>([]);
   public userType$ = new BehaviorSubject<UserType>('tutor');
-  public animalCount$ = new Subject<number>();
+  public animalCount$ = new BehaviorSubject<number>(0);
 
   public filterAnimals$ = new Subject<void>();
   public resetFilters$ = new Subject<void>();

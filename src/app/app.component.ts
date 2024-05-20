@@ -61,12 +61,16 @@ export class AppComponent {
     return this.router.url.endsWith('animais');
   }
 
+  public isReunions() {
+    return this.router.url.endsWith('reencontros');
+  }
+
   public getHeaderPadding() {
     if (this.isHome()) {
-      return 'pb-20';
+      return 'pt-8 pb-20';
     }
 
-    return 'pb-16';
+    return 'py-8';
   }
 
   public changeUserType(userType: UserType) {
