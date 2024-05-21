@@ -88,8 +88,14 @@ export class GalleryFiltersComponent {
 
   private listenUserTypeChange() {
     return this.animalsService.userType$.subscribe((userType) => {
+      const currentType = this.userType;
+
       this.userType = userType;
       this.shelterForm?.reset();
+
+      if (currentType !== userType) {
+        this.onFilterAnimals();
+      }
     });
   }
 
@@ -125,9 +131,14 @@ export class GalleryFiltersComponent {
   }
 
   public onFilterAnimals() {
-    this.menuContainer.nativeElement.scrollIntoView({
+    const offset = 100; // Set your desired offset here
+    const menuElement = this.menuContainer.nativeElement;
+    const elementPosition = menuElement.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
       behavior: 'smooth',
-      block: 'start',
     });
   }
 
