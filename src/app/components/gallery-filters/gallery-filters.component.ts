@@ -124,9 +124,9 @@ export class GalleryFiltersComponent {
       this.userType = userType;
       this.shelterForm?.reset();
 
-      if (currentType !== userType) {
-        this.onFilterAnimals();
-      }
+      // if (currentType !== userType) {
+      //   this.onFilterAnimals();
+      // }
     });
   }
 
@@ -210,14 +210,14 @@ export class GalleryFiltersComponent {
       .catch((error) => {
         console.error('Error fetching filtered animals:', error);
       });
-    this.onFilterAnimals();
+    // this.onFilterAnimals();
   }
 
   public resetFilterAndLoadInitialData() {
     this.filtersForm.reset();
     this.shelterForm.reset();
     this.animalsService.resetFilters();
-    this.onFilterAnimals();
+    // this.onFilterAnimals();
 
     this.router.navigate(['.'], {
       relativeTo: this.route,

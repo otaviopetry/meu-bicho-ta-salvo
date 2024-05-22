@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AnimalsService } from './services/animals.service';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,6 +21,8 @@ export class AppComponent {
   public animalCount$ = this.animalsService.animalCount$.asObservable();
 
   private subscriptions: Subscription[] = [];
+
+  @ViewChild('mainContainer') mainContainer!: ElementRef<HTMLDivElement>;
 
   constructor(
     private animalsService: AnimalsService,
@@ -70,9 +72,26 @@ export class AppComponent {
   public changeUserType(userType: UserType) {
     this.animalsService.changeUserType(userType);
     this.userType = userType;
+    this.scrollToMainContainer();
   }
 
   public navigateToHowToUse() {
     this.router.navigate(['/como-utilizar']);
+  }
+
+  private scrollToMainContainer() {
+    const offset = 320;
+    const menuElement = this.mainContainer.nativeElement;
+    const elementPosition = menuElement.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.scrollY - offset;
+
+    if (elementPosition > 2000) {
+      return;
+    }
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    });
   }
 }
