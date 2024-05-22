@@ -154,7 +154,7 @@ export class GalleryFiltersComponent {
   }
 
   public onFilterAnimals() {
-    const offset = 100;
+    const offset = 200;
     const menuElement = this.menuContainer.nativeElement;
     const elementPosition = menuElement.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.scrollY - offset;

@@ -53,3 +53,9 @@
     }
   }
 }
+
+.container {
+  @media (min-width: 2000px) {
+    max-width: 1920px;
+  }
+}

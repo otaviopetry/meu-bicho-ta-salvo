@@ -1,18 +1,18 @@
 <app-gallery-filters></app-gallery-filters>
 <div
-  class="masonry-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 w-full"
+  class="masonry-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5 w-full"
 >
   @for (animal of animals; track animal.id) {
   <a [routerLink]="[animal.id]" class="card">
     <app-animal-card [animal]="animal"></app-animal-card>
   </a>
-  } @empty {
+  } @empty { @if (!(loading$ | async) && !loading) {
   <div class="empty-list">
     <p class="text-gray-500 text-center w-full">
       Nenhum animal com os critérios selecionados.
     </p>
   </div>
-  }
+  } }
 </div>
 @if (loading$ | async) {
 <div class="loader-overlay">

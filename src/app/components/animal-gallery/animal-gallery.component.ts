@@ -39,7 +39,7 @@ export class AnimalGalleryComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   constructor(private animalsService: AnimalsService) {
-    this.loading = true;
+    //
   }
 
   ngOnInit() {
@@ -57,6 +57,12 @@ export class AnimalGalleryComponent implements OnInit {
         },
       })
     );
+    this.loading = true;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions = [];
   }
 
   public scrollToTop() {
