@@ -15,7 +15,7 @@ import {
   SIZE_OPTIONS,
   SPECIES_OPTIONS,
 } from '../../constants/constants';
-import { Subscription, delay, filter, take } from 'rxjs';
+import { Subscription, debounce, delay, filter, take } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ShelterInputComponent } from './shelter-input/shelter-input.component';
@@ -157,6 +157,10 @@ export class GalleryFiltersComponent {
     const menuElement = this.menuContainer.nativeElement;
     const elementPosition = menuElement.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.scrollY - offset;
+
+    if (elementPosition > 2000) {
+      return;
+    }
 
     window.scrollTo({
       top: offsetPosition,
