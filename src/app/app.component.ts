@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AnimalsService } from './services/animals.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -25,8 +25,7 @@ export class AppComponent {
   constructor(
     private animalsService: AnimalsService,
     private happyReunionsService: HappyReunionsService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {
     //
   }
@@ -36,16 +35,6 @@ export class AppComponent {
     this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
     this.happyReunionsService.loadHappyReunitedAnimals();
-    this.subscriptions.push(
-      this.route.queryParams.subscribe((params) => {
-        if (params['abrigo']) {
-          this.changeUserType('shelter');
-          this.animalsService.handleShelterDirectAccess(params['abrigo']);
-        } else {
-          this.animalsService.loadInitialData();
-        }
-      })
-    );
   }
 
   ngOnDestroy() {
@@ -58,7 +47,7 @@ export class AppComponent {
   }
 
   public isHome() {
-    return this.router.url.endsWith('animais');
+    return this.router.url.includes('animais');
   }
 
   public isReunions() {

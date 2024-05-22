@@ -15,9 +15,9 @@ import {
   SIZE_OPTIONS,
   SPECIES_OPTIONS,
 } from '../../constants/constants';
-import { Subscription } from 'rxjs';
+import { Subscription, delay, filter, take } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ShelterInputComponent } from './shelter-input/shelter-input.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -67,18 +67,48 @@ export class GalleryFiltersComponent {
   constructor(
     private animalsService: AnimalsService,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
     //
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.listenUserTypeChange(),
-      this.checkShelterQueryParam()
-    );
+    this.subscriptions.push(this.listenUserTypeChange());
     this.buildShelterForm();
     this.buildFiltersForm();
+  }
+
+  ngAfterViewInit() {
+    this.subscriptions.push(
+      this.route.queryParams
+        .pipe(
+          filter(() => !this.animalsService.hasInitialized),
+          delay(500),
+          take(1)
+        )
+        .subscribe((params) => {
+          if (params['whereItIs']) {
+            this.animalsService.handleShelterDirectAccess(params['whereItIs']);
+            this.shelterForm.get('shelter')?.setValue(params['whereItIs']);
+          } else if (Object.keys(params).length) {
+            this.animalsService.handleFilterDirectAccess(params);
+            Object.entries(params).forEach(([key, value]) => {
+              if (key !== 'whereItIs') {
+                if (Array.isArray(value)) {
+                  this.filtersForm.get(key)?.setValue(value);
+                } else {
+                  this.filtersForm.get(key)?.setValue([value]);
+                }
+              }
+            });
+          } else {
+            this.animalsService.loadInitialData();
+          }
+
+          this.animalsService.hasInitialized = true;
+        })
+    );
   }
 
   ngOnDestroy() {
@@ -95,14 +125,6 @@ export class GalleryFiltersComponent {
 
       if (currentType !== userType) {
         this.onFilterAnimals();
-      }
-    });
-  }
-
-  private checkShelterQueryParam() {
-    return this.route.queryParams.subscribe((params) => {
-      if (params['abrigo']) {
-        this.shelterForm.get('shelter')?.setValue(params['abrigo']);
       }
     });
   }
@@ -169,9 +191,20 @@ export class GalleryFiltersComponent {
       };
     }
 
-    this.animalsService.getAnimalsFromDatabase(localFilters).catch((error) => {
-      console.error('Error fetching filtered animals:', error);
-    });
+    this.animalsService
+      .getAnimalsFromDatabase(localFilters)
+      .then(() => {
+        const params: Params = { ...this.animalsService.selectedFilters };
+
+        this.router.navigate(['.'], {
+          relativeTo: this.route,
+          queryParams: params,
+          queryParamsHandling: 'merge',
+        });
+      })
+      .catch((error) => {
+        console.error('Error fetching filtered animals:', error);
+      });
     this.onFilterAnimals();
   }
 
@@ -180,6 +213,11 @@ export class GalleryFiltersComponent {
     this.shelterForm.reset();
     this.animalsService.resetFilters();
     this.onFilterAnimals();
+
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParams: null,
+    });
   }
 
   private populateFilters() {

@@ -37,6 +37,8 @@ export class AnimalsService {
   public filterAnimals$ = new Subject<void>();
   public resetFilters$ = new Subject<void>();
 
+  public hasInitialized = false;
+
   constructor(private http: HttpClient) {
     //
   }
@@ -196,6 +198,7 @@ export class AnimalsService {
 
   public handleShelterDirectAccess(shelter: string) {
     this.selectedFilters.whereItIs = shelter;
+    this.changeUserType('shelter');
     this.getAnimalsFromDatabase(this.selectedFilters)
       .then((response) => {
         if (response.animals.length > 0) {
@@ -205,6 +208,21 @@ export class AnimalsService {
       })
       .catch((error) => {
         console.error('Failed to load shelter data:', error);
+      });
+  }
+
+  public handleFilterDirectAccess(filters: AnimalFilters) {
+    this.changeUserType('tutor');
+    this.selectedFilters = { ...filters };
+    this.getAnimalsFromDatabase(this.selectedFilters)
+      .then((response) => {
+        if (response.animals.length > 0) {
+          this.allAnimals = response.animals;
+          this.animalsCache.next(this.allAnimals);
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to load filtered data:', error);
       });
   }
 }

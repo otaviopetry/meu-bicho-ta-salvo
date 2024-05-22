@@ -5,18 +5,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  AnimalSex,
-  AnimalSize,
-  IAnimal,
-} from '../../interfaces/animal.interface';
+import { IAnimal } from '../../interfaces/animal.interface';
 import { AnimalCardComponent } from '../animal-card/animal-card.component';
 import { FormsModule } from '@angular/forms';
 import { AnimalsService } from '../../services/animals.service';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
-import { Router, RouterModule } from '@angular/router';
-import { capitalizeFirstWord, getSizeWord } from '../../utils/label-functions';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { GalleryFiltersComponent } from '../gallery-filters/gallery-filters.component';
 
@@ -43,7 +38,7 @@ export class AnimalGalleryComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private animalsService: AnimalsService, private router: Router) {
+  constructor(private animalsService: AnimalsService) {
     this.loading = true;
   }
 
