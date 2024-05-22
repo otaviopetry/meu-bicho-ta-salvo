@@ -1,3 +1,17 @@
-img {
-  height: 385px;
+.animal-card {
+  border-radius: .5rem;
+  width: 100%;
+
+  img {
+    height: 600px;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+}
+
+.img-container {
+  height: 600px;
+  background-color: #bdbdbd;
 }

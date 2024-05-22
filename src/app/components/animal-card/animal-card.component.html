@@ -1,13 +1,12 @@
-<div
-  class="animal-card max-w-sm rounded overflow-hidden shadow-lg mx-auto mb-5"
->
-  <img
-    class="w-full object-cover"
-    [src]="animal.imageURLs[0]"
-    alt="Animal resgatado"
-    loading="lazy"
-  />
-
+<div class="animal-card overflow-hidden shadow-lg mx-auto">
+  <div class="img-container">
+    <img
+      class="w-full object-cover"
+      [src]="animal.imageURLs[0]"
+      alt="Animal resgatado"
+      loading="lazy"
+    />
+  </div>
   <div class="p-4">
     <p>
       <span class="font-bold size-field">Porte: </span>
@@ -20,17 +19,11 @@
       {{ capitalizePhrase(animal.sex) }}
     </p> -->
     <p>
-      <span class="font-bold">Cores dominantes:</span>
+      <span class="font-bold">Cores presentes no animal:</span><br />
       {{ capitalizePhrase(animal.color) }}
     </p>
-    @if (animal.whereWasFound?.length) {
     <p>
-      <span class="font-bold">Onde foi encontrado:</span>
-      {{ capitalizePhrase(animal.whereWasFound ?? "") }}
-    </p>
-    }
-    <p>
-      <span class="font-bold">Onde está abrigado:</span>
+      <span class="font-bold">Onde está abrigado:</span><br />
       {{ capitalizePhrase(animal.whereItIs) }}
     </p>
   </div>

@@ -15,7 +15,7 @@ import {
   SIZE_OPTIONS,
   SPECIES_OPTIONS,
 } from '../../constants/constants';
-import { Subscription, debounce, delay, filter, take } from 'rxjs';
+import { Subscription, delay, filter, take } from 'rxjs';
 import { UserType } from '../../types/user-type.type';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ShelterInputComponent } from './shelter-input/shelter-input.component';
@@ -93,6 +93,7 @@ export class GalleryFiltersComponent {
             this.shelterForm.get('shelter')?.setValue(params['whereItIs']);
           } else if (Object.keys(params).length) {
             this.animalsService.handleFilterDirectAccess(params);
+
             Object.entries(params).forEach(([key, value]) => {
               if (key !== 'whereItIs') {
                 if (Array.isArray(value)) {
@@ -153,7 +154,7 @@ export class GalleryFiltersComponent {
   }
 
   public onFilterAnimals() {
-    const offset = 100; // Set your desired offset here
+    const offset = 100;
     const menuElement = this.menuContainer.nativeElement;
     const elementPosition = menuElement.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.scrollY - offset;
