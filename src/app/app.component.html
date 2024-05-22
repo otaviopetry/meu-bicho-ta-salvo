@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="header bg-gray-900" [class]="getHeaderPadding()">
+<div class="header" [class]="getHeaderPadding()">
   <div
     (click)="navigateHome()"
     class="logo container mx-auto mt-4 px-4 w-full text-center"
@@ -35,7 +35,7 @@
       <strong>Animais cadastrados:</strong>
       {{ (animalCount$ | async) || "..." }}
     </p>
-    <div class="user-type-selector text-gray-300">
+    <div class="user-type-selector">
       <button
         (click)="changeUserType('tutor')"
         [ngClass]="{ active: userType === 'tutor' }"

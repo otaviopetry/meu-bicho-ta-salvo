@@ -10,6 +10,10 @@
   }
 }
 
+.header {
+  background-color: #204169;
+}
+
 .logo {
   cursor: pointer;
 
@@ -25,6 +29,7 @@
     border-radius: .75rem;
     padding: .5rem;
     width: 100%;
+    color: #FFF;
 
     &:not(:last-child) {
       margin-bottom: 1rem;
@@ -44,7 +49,7 @@
 
     &.active {
       background-color: white;
-      color: #111827;
+      color: #204169;
     }
   }
 }
