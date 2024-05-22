@@ -35,6 +35,11 @@ export class AppComponent {
     this.animalsService.loadTemporaryHomeLocations();
     this.animalsService.loadAnimalCount();
     this.happyReunionsService.loadHappyReunitedAnimals();
+    this.subscriptions.push(
+      this.animalsService.userType$.subscribe((userType) => {
+        this.userType = userType;
+      })
+    );
   }
 
   ngOnDestroy() {

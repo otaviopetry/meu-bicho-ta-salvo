@@ -198,7 +198,13 @@ export class AnimalsService {
 
   public handleShelterDirectAccess(shelter: string) {
     this.selectedFilters.whereItIs = shelter;
-    this.changeUserType('shelter');
+
+    if (shelter.includes('LT')) {
+      this.changeUserType('temporary-home');
+    } else {
+      this.changeUserType('shelter');
+    }
+
     this.getAnimalsFromDatabase(this.selectedFilters)
       .then((response) => {
         if (response.animals.length > 0) {
