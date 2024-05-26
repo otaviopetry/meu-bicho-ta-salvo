@@ -13,7 +13,7 @@ export class HappyReunionsService {
   public hasMorePages = true;
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  public itemsPerPage = 35;
+  public itemsPerPage = 50;
 
   constructor(private http: HttpClient) {
     //
