@@ -54,7 +54,10 @@ export class AppComponent {
   }
 
   public isHome() {
-    return this.router.url.includes('animais');
+    return (
+      this.router.url.endsWith('animais') ||
+      this.router.url.includes('animais?')
+    );
   }
 
   public isReunions() {
