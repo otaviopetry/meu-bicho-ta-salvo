@@ -13,7 +13,7 @@ export class HappyReunionsService {
   public hasMorePages = true;
   public loading$ = new BehaviorSubject<boolean>(false);
 
-  public itemsPerPage = 50;
+  public itemsPerPage = 35;
 
   constructor(private http: HttpClient) {
     //
@@ -49,6 +49,10 @@ export class HappyReunionsService {
         this.reunitedAnimalsCache.next([]);
       }
 
+      if (response.animals.length < this.itemsPerPage) {
+        this.hasMorePages = false;
+      }
+
       if (response.animals.length > 0) {
         this.allAnimals = [...this.allAnimals, ...response.animals];
         this.reunitedAnimalsCache.next(this.allAnimals);
@@ -64,9 +68,7 @@ export class HappyReunionsService {
 
   public loadNextPage(): void {
     if (this.nextPageToken && this.hasMorePages) {
-      this.loadHappyReunitedAnimals(true).then((response) => {
-        this.hasMorePages = response.animals.length >= this.itemsPerPage;
-      });
+      this.loadHappyReunitedAnimals(true);
     }
   }
 }
