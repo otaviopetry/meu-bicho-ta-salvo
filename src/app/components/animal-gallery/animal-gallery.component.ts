@@ -57,7 +57,6 @@ export class AnimalGalleryComponent implements OnInit {
         },
       })
     );
-    this.loading = true;
   }
 
   ngOnDestroy() {
