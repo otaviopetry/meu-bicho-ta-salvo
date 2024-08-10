@@ -24,7 +24,7 @@ export class HappyReunionsComponent {
   @ViewChild('scrollToTopBtn') scrollToTopBtn!: ElementRef<HTMLButtonElement>;
 
   constructor(private happyReunionsService: HappyReunionsService) {
-    this.loading = true;
+    //
   }
 
   ngOnInit() {
